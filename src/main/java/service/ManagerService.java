@@ -2,10 +2,11 @@ package service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import repository.EmployeeRepository;
+import repository.ManagerRepository;
 
 @Service
-public class EmployeeService {
+public class ManagerService {
     @Autowired
-    private EmployeeRepository employeeRepository;
+    private ManagerRepository managerRepository;
+
 }

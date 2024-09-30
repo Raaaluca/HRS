@@ -2,10 +2,11 @@ package controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RestController;
-import service.EmployeeService;
+import service.ManagerService;
 
 @RestController
-public class EmployeeController {
+public class ManagerController {
     @Autowired
-    private EmployeeService employeeService;
+    private ManagerService managerService;
+
 }
