@@ -1,6 +1,6 @@
-package repository;
+package ro.siit.HRS.repository;
 
-import model.Employee;
+import ro.siit.HRS.model.Employee;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

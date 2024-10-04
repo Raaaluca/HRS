@@ -1,6 +1,6 @@
-package repository;
+package ro.siit.HRS.repository;
 
-import model.Manager;
+import ro.siit.HRS.model.Manager;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

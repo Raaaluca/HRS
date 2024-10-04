@@ -1,6 +1,6 @@
-package repository;
+package ro.siit.HRS.repository;
 
-import model.LeaveRequest;
+import ro.siit.HRS.model.LeaveRequest;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface LeaveRequestRepository extends JpaRepository<LeaveRequest,Long> {
