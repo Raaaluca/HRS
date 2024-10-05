@@ -15,7 +15,7 @@ public class LeaveRequest {
     private Long id;
     private String type;
     private int numberOfDays;
-    private String senderName;
-    private String approverName;
+    private Long employeeId;
+    private Long managerId;
     private boolean isApproved;
 }

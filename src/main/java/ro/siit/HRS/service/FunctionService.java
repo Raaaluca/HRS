@@ -3,15 +3,17 @@ package ro.siit.HRS.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ro.siit.HRS.model.Employee;
+import ro.siit.HRS.model.Function;
 import ro.siit.HRS.repository.EmployeeRepository;
-@Service
-public class EmployeeService {
-    @Autowired
-    private EmployeeRepository employeeRepository;
-    public Employee findById(Long id) {
+import ro.siit.HRS.repository.FunctionRepository;
 
-        return employeeRepository.findById(id)
+@Service
+public class FunctionService {
+    @Autowired
+    private FunctionRepository functionRepository;
+    public Function findById(Long id) {
+
+        return functionRepository.findById(id)
                 .orElseThrow();
     }
-
 }

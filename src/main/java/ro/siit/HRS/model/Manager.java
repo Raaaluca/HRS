@@ -4,6 +4,9 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.time.LocalDate;
+import java.util.List;
+
 @Entity
 @Getter
 @Setter
@@ -15,4 +18,18 @@ public class Manager {
     private Long id;
     @OneToOne
     private User user;
+    @OneToMany
+    private List<Employee> employees;
+    @OneToMany
+    private List<LeaveRequest> leaveRequestsToManage;
+    private String name;
+    private String email;
+    private String phoneNumber;
+    private String nationalId;
+    private String gender;
+    private String address;
+    private LocalDate startDate;
+    private LocalDate endDate;
+    @OneToMany
+    private List<LeaveRequest> leaveRequests;
 }

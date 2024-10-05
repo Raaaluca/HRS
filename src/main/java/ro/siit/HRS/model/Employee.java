@@ -20,13 +20,12 @@ public class Employee {
     private User user;
     private String email;
     private String phoneNumber;
+    private Long managerId;
     private String nationalId;
     private String gender;
     private String address;
     private LocalDate startDate;
     private LocalDate endDate;
-    @ManyToOne
-    private Employee manager;
     @OneToMany
     private List<LeaveRequest> leaveRequests;
 }
