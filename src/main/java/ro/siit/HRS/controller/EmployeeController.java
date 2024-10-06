@@ -2,6 +2,7 @@ package ro.siit.HRS.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import ro.siit.HRS.model.Employee;
@@ -16,5 +17,10 @@ public class EmployeeController {
     public Employee getEmployeeById(@RequestParam Long id) {
 
         return employeeService.findById(id);
+    }
+
+    @GetMapping(path = "/employees/create")
+    public Employee createEmployee(){
+        return employeeService.createEmployee();
     }
 }

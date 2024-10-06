@@ -2,6 +2,7 @@ package ro.siit.HRS.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import ro.siit.HRS.model.Employee;
@@ -17,5 +18,17 @@ public class ManagerController {
 
         return managerService.findById(id);
     }
+    @GetMapping(path = "/managers/create")
+    public Manager createManager() {
+
+        return managerService.createManager();
+    }
+
+    @GetMapping(path = "/managers/add")
+    public Manager addEmployee(@RequestParam Long employeeId, @RequestParam Long managerId) {
+
+        return managerService.addEmployee(employeeId, managerId);
+    }
+
 
 }
