@@ -1,26 +1,27 @@
 package ro.siit.HRS.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import ro.siit.HRS.dto.EmployeeCreateDto;
+import ro.siit.HRS.dto.ManagerCreateDto;
 import ro.siit.HRS.model.Employee;
 import ro.siit.HRS.service.EmployeeService;
 
+@RequestMapping(path = "/employees")
 @RestController
 public class EmployeeController {
     @Autowired
     private EmployeeService employeeService;
 
-    @GetMapping(path = "/employees/id")
+    @GetMapping(path = "/id")
     public Employee getEmployeeById(@RequestParam Long id) {
 
         return employeeService.findById(id);
     }
 
-    @GetMapping(path = "/employees/create")
-    public Employee createEmployee(){
-        return employeeService.createEmployee();
+    @GetMapping(path = "/create")
+    public Employee createEmployee(@RequestBody EmployeeCreateDto employeeCreateDto) {
+
+        return employeeService.createEmployee(employeeCreateDto);
     }
 }

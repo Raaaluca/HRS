@@ -2,15 +2,13 @@ package ro.siit.HRS.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import ro.siit.HRS.dto.ManagerCreateDto;
 import ro.siit.HRS.model.Employee;
 import ro.siit.HRS.model.Manager;
 import ro.siit.HRS.model.User;
 import ro.siit.HRS.repository.EmployeeRepository;
 import ro.siit.HRS.repository.ManagerRepository;
 import ro.siit.HRS.repository.UserRepository;
-
-import java.time.LocalDate;
-import java.util.ArrayList;
 
 @Service
 public class ManagerService {
@@ -27,7 +25,7 @@ public class ManagerService {
                 .orElseThrow();
     }
 
-    public Manager createManager() {
+    public Manager createManager(ManagerCreateDto managerCreateDto) {
 
         Manager manager = new Manager();
 
@@ -37,14 +35,14 @@ public class ManagerService {
         user = userRepository.save(user);
 
         manager.setUser(user);
-        manager.setAddress("Str Dionisie Lupu");
-        manager.setEmail("emilian_e@yahoo.com");
-        manager.setGender("male");
-        manager.setName("Emilian Enache");
-        manager.setStartDate(LocalDate.of(2024, 5, 15));
-        manager.setEndDate(LocalDate.of(2025, 12, 3));
-        manager.setNationalId("112200");
-        manager.setPhoneNumber("0754312927");
+        manager.setAddress(managerCreateDto.getAddress());
+        manager.setEmail(managerCreateDto.getEmail());
+        manager.setGender(managerCreateDto.getGender());
+        manager.setName(managerCreateDto.getName());
+        manager.setStartDate(managerCreateDto.getStartDate());
+        manager.setEndDate(managerCreateDto.getEndDate());
+        manager.setNationalId(managerCreateDto.getNationalId());
+        manager.setPhoneNumber(managerCreateDto.getPhoneNumber());
         manager = managerRepository.save(manager);
         return manager;
     }

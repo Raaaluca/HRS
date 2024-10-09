@@ -2,6 +2,7 @@ package ro.siit.HRS.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import ro.siit.HRS.dto.EmployeeCreateDto;
 import ro.siit.HRS.model.Employee;
 import ro.siit.HRS.model.User;
 import ro.siit.HRS.repository.EmployeeRepository;
@@ -23,7 +24,7 @@ public class EmployeeService {
                 .orElseThrow();
     }
 
-    public Employee createEmployee() {
+    public Employee createEmployee(EmployeeCreateDto employeeCreateDto) {
 
         Employee employee = new Employee();
 
@@ -33,16 +34,16 @@ public class EmployeeService {
         user = userRepository.save(user);
 
         employee.setUser(user);
-        employee.setSuperiorId(1L);
-        employee.setGender("female");
-        employee.setEmail("bia_udrea@yahoo.com");
-        employee.setAddress("Str. Scoverga");
-        employee.setStartDate(LocalDate.of(2024, 3, 22));
-        employee.setEndDate(LocalDate.of(2024, 12, 28));
+        employee.setSuperiorId(employeeCreateDto.getSuperiorId());
+        employee.setGender(employeeCreateDto.getGender());
+        employee.setEmail(employeeCreateDto.getEmail());
+        employee.setAddress(employeeCreateDto.getAddress());
+        employee.setStartDate(employeeCreateDto.getStartDate());
+        employee.setEndDate(employeeCreateDto.getEndDate());
         employee.setLeaveRequests(new ArrayList<>());
-        employee.setName("Bianca Udrea");
-        employee.setNationalId("123489");
-        employee.setPhoneNumber("0799500886");
+        employee.setName(employeeCreateDto.getName());
+        employee.setNationalId(employeeCreateDto.getNationalId());
+        employee.setPhoneNumber(employeeCreateDto.getPhoneNumber());
         employee = employeeRepository.save(employee);
         return employee;
     }
