@@ -3,6 +3,7 @@ package ro.siit.HRS.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import ro.siit.HRS.dto.EmployeeCreateDto;
+import ro.siit.HRS.dto.EmployeeReturnDto;
 import ro.siit.HRS.dto.ManagerCreateDto;
 import ro.siit.HRS.model.Employee;
 import ro.siit.HRS.service.EmployeeService;
@@ -14,7 +15,7 @@ public class EmployeeController {
     private EmployeeService employeeService;
 
     @GetMapping(path = "/id")
-    public Employee getEmployeeById(@RequestParam Long id) {
+    public EmployeeReturnDto getEmployeeById(@RequestParam Long id) {
 
         return employeeService.findById(id);
     }

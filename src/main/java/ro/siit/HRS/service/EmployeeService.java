@@ -3,6 +3,7 @@ package ro.siit.HRS.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ro.siit.HRS.dto.EmployeeCreateDto;
+import ro.siit.HRS.dto.EmployeeReturnDto;
 import ro.siit.HRS.model.Employee;
 import ro.siit.HRS.model.User;
 import ro.siit.HRS.repository.EmployeeRepository;
@@ -18,10 +19,23 @@ public class EmployeeService {
     @Autowired
     private UserRepository userRepository;
 
-    public Employee findById(Long id) {
+    public EmployeeReturnDto findById(Long id) {
 
-        return employeeRepository.findById(id)
+        Employee employee = employeeRepository.findById(id)
                 .orElseThrow();
+        return mapEmployee(employee);
+    }
+
+    public EmployeeReturnDto mapEmployee(Employee employee) {
+
+        EmployeeReturnDto employeeReturnDto = new EmployeeReturnDto();
+        employeeReturnDto.setGender(employee.getGender());
+        employeeReturnDto.setEmail(employee.getEmail());
+        employeeReturnDto.setSuperiorId(employee.getSuperiorId());
+        employeeReturnDto.setStartDate(employee.getStartDate());
+        employeeReturnDto.setEndDate(employee.getEndDate());
+
+        return employeeReturnDto;
     }
 
     public Employee createEmployee(EmployeeCreateDto employeeCreateDto) {
