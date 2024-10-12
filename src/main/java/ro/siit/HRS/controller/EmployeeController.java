@@ -21,7 +21,7 @@ public class EmployeeController {
     }
 
     @GetMapping(path = "/create")
-    public Employee createEmployee(@RequestBody EmployeeCreateDto employeeCreateDto) {
+    public EmployeeReturnDto createEmployee(@RequestBody EmployeeCreateDto employeeCreateDto) {
 
         return employeeService.createEmployee(employeeCreateDto);
     }

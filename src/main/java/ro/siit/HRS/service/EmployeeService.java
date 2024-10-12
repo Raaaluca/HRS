@@ -9,7 +9,6 @@ import ro.siit.HRS.model.User;
 import ro.siit.HRS.repository.EmployeeRepository;
 import ro.siit.HRS.repository.UserRepository;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
 
 @Service
@@ -18,13 +17,6 @@ public class EmployeeService {
     private EmployeeRepository employeeRepository;
     @Autowired
     private UserRepository userRepository;
-
-    public EmployeeReturnDto findById(Long id) {
-
-        Employee employee = employeeRepository.findById(id)
-                .orElseThrow();
-        return mapEmployee(employee);
-    }
 
     public EmployeeReturnDto mapEmployee(Employee employee) {
 
@@ -38,7 +30,16 @@ public class EmployeeService {
         return employeeReturnDto;
     }
 
-    public Employee createEmployee(EmployeeCreateDto employeeCreateDto) {
+    public EmployeeReturnDto findById(Long id) {
+
+        Employee employee = employeeRepository.findById(id)
+                .orElseThrow();
+        return mapEmployee(employee);
+    }
+
+
+
+    public EmployeeReturnDto createEmployee(EmployeeCreateDto employeeCreateDto) {
 
         Employee employee = new Employee();
 
@@ -59,6 +60,6 @@ public class EmployeeService {
         employee.setNationalId(employeeCreateDto.getNationalId());
         employee.setPhoneNumber(employeeCreateDto.getPhoneNumber());
         employee = employeeRepository.save(employee);
-        return employee;
+        return mapEmployee(employee);
     }
 }

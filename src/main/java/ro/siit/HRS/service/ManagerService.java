@@ -3,6 +3,7 @@ package ro.siit.HRS.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ro.siit.HRS.dto.ManagerCreateDto;
+import ro.siit.HRS.dto.ManagerReturnDto;
 import ro.siit.HRS.model.Employee;
 import ro.siit.HRS.model.Manager;
 import ro.siit.HRS.model.User;
@@ -19,13 +20,28 @@ public class ManagerService {
     @Autowired
     private EmployeeRepository employeeRepository;
 
-    public Manager findById(Long id) {
+    public ManagerReturnDto mapManager(Manager manager) {
 
-        return managerRepository.findById(id)
-                .orElseThrow();
+        ManagerReturnDto managerReturnDto = new ManagerReturnDto();
+        managerReturnDto.setAddress(manager.getAddress());
+        managerReturnDto.setEmail(manager.getEmail());
+        managerReturnDto.setName(manager.getName());
+        managerReturnDto.setGender(manager.getGender());
+        managerReturnDto.setNationalId(manager.getNationalId());
+        managerReturnDto.setPhoneNumber(manager.getPhoneNumber());
+        managerReturnDto.setStartDate(manager.getStartDate());
+        managerReturnDto.setEndDate(manager.getEndDate());
+
+        return managerReturnDto;
     }
 
-    public Manager createManager(ManagerCreateDto managerCreateDto) {
+    public ManagerReturnDto findById(Long id) {
+
+        return mapManager(managerRepository.findById(id)
+                .orElseThrow());
+    }
+
+    public ManagerReturnDto createManager(ManagerCreateDto managerCreateDto) {
 
         Manager manager = new Manager();
 
@@ -44,14 +60,15 @@ public class ManagerService {
         manager.setNationalId(managerCreateDto.getNationalId());
         manager.setPhoneNumber(managerCreateDto.getPhoneNumber());
         manager = managerRepository.save(manager);
-        return manager;
+        return mapManager(manager);
     }
 
-    public Manager addEmployee(Long employeeId, Long managerId) {
+    public ManagerReturnDto addEmployee(Long employeeId, Long managerId) {
 
         Employee employee = employeeRepository.findById(employeeId).get();
-        Manager manager = findById(managerId);
+        Manager manager = managerRepository.findById(managerId).get();
         manager.getEmployees().add(employee);
-        return managerRepository.save(manager);
+        manager = managerRepository.save(manager);
+        return mapManager(manager);
     }
 }
