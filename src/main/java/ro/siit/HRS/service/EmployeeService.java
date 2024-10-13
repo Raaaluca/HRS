@@ -62,4 +62,9 @@ public class EmployeeService {
         employee = employeeRepository.save(employee);
         return mapEmployee(employee);
     }
+    public String deleteEmployee(Long employeeId){
+        Employee employee = employeeRepository.findById(employeeId).orElseThrow();
+        employeeRepository.delete(employee);
+        return "This employee has been deleted!";
+    }
 }
