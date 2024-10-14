@@ -5,8 +5,10 @@ import org.springframework.stereotype.Service;
 import ro.siit.HRS.dto.EmployeeCreateDto;
 import ro.siit.HRS.dto.EmployeeReturnDto;
 import ro.siit.HRS.model.Employee;
+import ro.siit.HRS.model.Manager;
 import ro.siit.HRS.model.User;
 import ro.siit.HRS.repository.EmployeeRepository;
+import ro.siit.HRS.repository.ManagerRepository;
 import ro.siit.HRS.repository.UserRepository;
 
 import java.util.ArrayList;
@@ -17,6 +19,8 @@ public class EmployeeService {
     private EmployeeRepository employeeRepository;
     @Autowired
     private UserRepository userRepository;
+    @Autowired
+    private ManagerRepository managerRepository;
 
     public EmployeeReturnDto mapEmployee(Employee employee) {
 
@@ -46,9 +50,9 @@ public class EmployeeService {
         User user = new User();
         user.setUsername("bia_u");
         user.setPassword("670d$1P");
-        user = userRepository.save(user);
-
         employee.setUser(user);
+        userRepository.save(user);
+
         employee.setSuperiorId(employeeCreateDto.getSuperiorId());
         employee.setGender(employeeCreateDto.getGender());
         employee.setEmail(employeeCreateDto.getEmail());
@@ -60,11 +64,25 @@ public class EmployeeService {
         employee.setNationalId(employeeCreateDto.getNationalId());
         employee.setPhoneNumber(employeeCreateDto.getPhoneNumber());
         employee = employeeRepository.save(employee);
+
+        Manager manager = managerRepository.findById(employeeCreateDto.getSuperiorId()).orElseThrow();
+        manager.getEmployees().add(employee);
+        managerRepository.save(manager);
+
         return mapEmployee(employee);
     }
     public String deleteEmployee(Long employeeId){
         Employee employee = employeeRepository.findById(employeeId).orElseThrow();
+        Long managerId = employee.getSuperiorId();
+
+        Manager manager = managerRepository.findById(managerId).orElseThrow();
+        manager.getEmployees().remove(employee);
+
+        managerRepository.save(manager);
         employeeRepository.delete(employee);
+
+        User user = userRepository.findById(employee.getUser().getId()).orElseThrow();
+        userRepository.deleteById(user.getId());
         return "This employee has been deleted!";
     }
 }
