@@ -63,12 +63,20 @@ public class ManagerService {
         return mapManager(manager);
     }
 
-    public ManagerReturnDto addEmployee(Long employeeId, Long managerId) {
+    public ManagerReturnDto assignEmployeeToManager(Long employeeId, Long managerId) {
 
         Employee employee = employeeRepository.findById(employeeId).get();
         Manager manager = managerRepository.findById(managerId).get();
         manager.getEmployees().add(employee);
         manager = managerRepository.save(manager);
         return mapManager(manager);
+    }
+    public String deleteManager(Long managerId){
+
+        Manager manager = managerRepository.findById(managerId).orElseThrow();
+
+        managerRepository.deleteById(managerId);
+        userRepository.deleteById(manager.getUser().getId());
+        return "This manager has been deleted!";
     }
 }
