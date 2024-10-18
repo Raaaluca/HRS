@@ -20,6 +20,7 @@ public class Employee {
     private User user;
     private String email;
     private String phoneNumber;
+    private String city;
     private Long superiorId;
     private String nationalId;
     private String gender;

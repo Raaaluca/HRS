@@ -9,6 +9,7 @@ public class EmployeeCreateDto {
 
     private String name;
     private String email;
+    private String city;
     private String phoneNumber;
     private Long superiorId;
     private String nationalId;

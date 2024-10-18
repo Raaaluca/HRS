@@ -26,6 +26,7 @@ public class EmployeeService {
 
         EmployeeReturnDto employeeReturnDto = new EmployeeReturnDto();
         employeeReturnDto.setGender(employee.getGender());
+        employeeReturnDto.setCity(employee.getCity());
         employeeReturnDto.setEmail(employee.getEmail());
         employeeReturnDto.setSuperiorId(employee.getSuperiorId());
         employeeReturnDto.setStartDate(employee.getStartDate());
@@ -55,6 +56,7 @@ public class EmployeeService {
 
         employee.setSuperiorId(employeeCreateDto.getSuperiorId());
         employee.setGender(employeeCreateDto.getGender());
+        employee.setCity(employeeCreateDto.getCity());
         employee.setEmail(employeeCreateDto.getEmail());
         employee.setAddress(employeeCreateDto.getAddress());
         employee.setStartDate(employeeCreateDto.getStartDate());

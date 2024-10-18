@@ -24,6 +24,7 @@ public class ManagerService {
 
         ManagerReturnDto managerReturnDto = new ManagerReturnDto();
         managerReturnDto.setAddress(manager.getAddress());
+        managerReturnDto.setCity(manager.getCity());
         managerReturnDto.setEmail(manager.getEmail());
         managerReturnDto.setName(manager.getName());
         managerReturnDto.setGender(manager.getGender());
@@ -53,6 +54,7 @@ public class ManagerService {
         manager.setUser(user);
         manager.setAddress(managerCreateDto.getAddress());
         manager.setEmail(managerCreateDto.getEmail());
+        manager.setCity(managerCreateDto.getCity());
         manager.setGender(managerCreateDto.getGender());
         manager.setName(managerCreateDto.getName());
         manager.setStartDate(managerCreateDto.getStartDate());

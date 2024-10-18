@@ -15,9 +15,9 @@ public class LeaveRequestController {
     @Autowired
     private LeaveRequestService leaveRequestService;
 
-    @GetMapping (path = "/create")
-    public LeaveRequestReturnDto createLeaveRequest (@RequestBody LeaveRequestCreateDto leaveRequestCreateDto){
+    @GetMapping(path = "/create")
+    public LeaveRequestReturnDto createLeaveRequest(@RequestBody LeaveRequestCreateDto leaveRequestCreateDto) {
 
-       return leaveRequestService.createLeaveRequest(leaveRequestCreateDto);
+        return leaveRequestService.createLeaveRequest(leaveRequestCreateDto);
     }
 }

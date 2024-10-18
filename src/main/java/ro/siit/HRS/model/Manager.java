@@ -24,6 +24,7 @@ public class Manager {
     private List<LeaveRequest> leaveRequestsToManage;
     private String name;
     private String email;
+    private String city;
     private String phoneNumber;
     private String nationalId;
     private String gender;
