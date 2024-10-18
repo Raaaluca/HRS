@@ -49,8 +49,9 @@ public class EmployeeService {
         Employee employee = new Employee();
 
         User user = new User();
-        user.setUsername("bia_u");
-        user.setPassword("670d$1P");
+        user.setRole("EMPLOYEE");
+        user.setUsername(employeeCreateDto.getEmail());
+        user.setPassword(employeeCreateDto.getNationalId());  //to be encripted
         employee.setUser(user);
         userRepository.save(user);
 

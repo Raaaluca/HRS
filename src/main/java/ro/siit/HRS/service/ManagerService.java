@@ -47,8 +47,9 @@ public class ManagerService {
         Manager manager = new Manager();
 
         User user = new User();
-        user.setUsername("emy_e");
-        user.setPassword("8899@!");
+        user.setRole("MANAGER");
+        user.setUsername(managerCreateDto.getEmail());
+        user.setPassword(managerCreateDto.getNationalId()); // to be encripted
         user = userRepository.save(user);
 
         manager.setUser(user);
