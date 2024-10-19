@@ -17,5 +17,6 @@ public class EmployeeCreateDto {
     private String address;
     private LocalDate startDate;
     private LocalDate endDate;
+    private String jobTitle;
 
 }

@@ -4,14 +4,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ro.siit.HRS.dto.EmployeeCreateDto;
 import ro.siit.HRS.dto.EmployeeReturnDto;
+import ro.siit.HRS.model.Department;
 import ro.siit.HRS.model.Employee;
 import ro.siit.HRS.model.Manager;
 import ro.siit.HRS.model.User;
+import ro.siit.HRS.repository.DepartmentRepository;
 import ro.siit.HRS.repository.EmployeeRepository;
 import ro.siit.HRS.repository.ManagerRepository;
 import ro.siit.HRS.repository.UserRepository;
 
 import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class EmployeeService {
@@ -21,6 +24,13 @@ public class EmployeeService {
     private UserRepository userRepository;
     @Autowired
     private ManagerRepository managerRepository;
+    @Autowired
+    private DepartmentRepository departmentRepository;
+
+    public static final List<String> IT_DEPARTMENT_JOB_TITLES = List.of("IT Engineer", "Tester", "UI/UX Designer");
+    public static final List<String> SALES_DEPARTMENT_JOB_TITLES = List.of("Sales Officer", "Associate Officer");
+    public static final List<String> HR_DEPARTMENT_JOB_TITLES = List.of("HR Admin", "Payroll Admin");
+
 
     public EmployeeReturnDto mapEmployee(Employee employee) {
 
@@ -31,6 +41,7 @@ public class EmployeeService {
         employeeReturnDto.setSuperiorId(employee.getSuperiorId());
         employeeReturnDto.setStartDate(employee.getStartDate());
         employeeReturnDto.setEndDate(employee.getEndDate());
+        employeeReturnDto.setJobTitle(employee.getJobTitle());
 
         return employeeReturnDto;
     }
@@ -41,7 +52,6 @@ public class EmployeeService {
                 .orElseThrow();
         return mapEmployee(employee);
     }
-
 
 
     public EmployeeReturnDto createEmployee(EmployeeCreateDto employeeCreateDto) {
@@ -55,7 +65,7 @@ public class EmployeeService {
         employee.setUser(user);
         userRepository.save(user);
 
-        employee.setSuperiorId(employeeCreateDto.getSuperiorId());
+        employee.setSuperiorId(getSuperiorIdByJobTitle(employeeCreateDto.getJobTitle()));
         employee.setGender(employeeCreateDto.getGender());
         employee.setCity(employeeCreateDto.getCity());
         employee.setEmail(employeeCreateDto.getEmail());
@@ -66,15 +76,37 @@ public class EmployeeService {
         employee.setName(employeeCreateDto.getName());
         employee.setNationalId(employeeCreateDto.getNationalId());
         employee.setPhoneNumber(employeeCreateDto.getPhoneNumber());
+        employee.setJobTitle(employeeCreateDto.getJobTitle());
         employee = employeeRepository.save(employee);
 
-        Manager manager = managerRepository.findById(employeeCreateDto.getSuperiorId()).orElseThrow();
+        Manager manager = managerRepository.findById(employee.getSuperiorId()).orElseThrow();
         manager.getEmployees().add(employee);
         managerRepository.save(manager);
 
         return mapEmployee(employee);
     }
-    public String deleteEmployee(Long employeeId){
+
+    public Long getSuperiorIdByJobTitle(String jobTitle) {
+
+        Long superiorId = null;
+        if (IT_DEPARTMENT_JOB_TITLES.contains(jobTitle)) {
+            Department department = departmentRepository.findByDepartmentName("IT");
+            superiorId = department.getManagerId();
+        }
+        if (SALES_DEPARTMENT_JOB_TITLES.contains(jobTitle)) {
+            Department department = departmentRepository.findByDepartmentName("SALES");
+            superiorId = department.getManagerId();
+        }
+        if (HR_DEPARTMENT_JOB_TITLES.contains(jobTitle)) {
+            Department department = departmentRepository.findByDepartmentName("HR");
+            superiorId = department.getManagerId();
+        }
+        return superiorId;
+
+    }
+
+    public String deleteEmployee(Long employeeId) {
+
         Employee employee = employeeRepository.findById(employeeId).orElseThrow();
         Long managerId = employee.getSuperiorId();
 

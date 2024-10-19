@@ -13,4 +13,5 @@ public class EmployeeReturnDto {
     private String gender;
     private LocalDate startDate;
     private LocalDate endDate;
+    private String jobTitle;
 }

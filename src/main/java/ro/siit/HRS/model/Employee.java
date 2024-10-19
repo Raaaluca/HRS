@@ -27,6 +27,7 @@ public class Employee {
     private String address;
     private LocalDate startDate;
     private LocalDate endDate;
+    private String jobTitle;
     @OneToMany
     private List<LeaveRequest> leaveRequests;
 }
