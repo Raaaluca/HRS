@@ -4,6 +4,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ro.siit.HRS.dto.LeaveRequestCreateDto;
 import ro.siit.HRS.dto.LeaveRequestReturnDto;
+import ro.siit.HRS.exceptions.EmployeeNotFoundException;
+import ro.siit.HRS.exceptions.LeaveRequestNotFoundException;
+import ro.siit.HRS.exceptions.ManagerNotFoundException;
 import ro.siit.HRS.model.Employee;
 import ro.siit.HRS.model.LeaveRequest;
 import ro.siit.HRS.model.Manager;
@@ -22,7 +25,8 @@ public class LeaveRequestService {
 
     public LeaveRequest findById(Long id) {
 
-        return leaveRequestRepository.findById(id).orElseThrow();
+        return leaveRequestRepository.findById(id)
+                .orElseThrow(() -> new LeaveRequestNotFoundException("This Leave Request id " + id + "was not found!"));
     }
 
     public LeaveRequestReturnDto mapLeaveRequestReturnDto(LeaveRequest leaveRequest) {
@@ -50,11 +54,13 @@ public class LeaveRequestService {
         //    @OneToMany
         //    private List<LeaveRequest> leaveRequests;
 
-        Employee employee = employeeRepository.findById(leaveRequestCreateDto.getEmployeeId()).orElseThrow();
+        Employee employee = employeeRepository.findById(leaveRequestCreateDto.getEmployeeId())
+                .orElseThrow(() -> new EmployeeNotFoundException("This employee id " + leaveRequestCreateDto.getEmployeeId() + "was not found!"));
         employee.getLeaveRequests().add(leaveRequest);
         employeeRepository.save(employee);
 
-        Manager manager = managerRepository.findById(employee.getSuperiorId()).orElseThrow();
+        Manager manager = managerRepository.findById(employee.getSuperiorId())
+                .orElseThrow(() -> new ManagerNotFoundException("This manager id " + employee.getSuperiorId() + "was not found!"));
         manager.getLeaveRequestsToManage().add(leaveRequest);
         managerRepository.save(manager);
 

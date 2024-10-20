@@ -4,6 +4,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ro.siit.HRS.dto.EmployeeCreateDto;
 import ro.siit.HRS.dto.EmployeeReturnDto;
+import ro.siit.HRS.exceptions.DepartmentNotFoundException;
+import ro.siit.HRS.exceptions.EmployeeNotFoundException;
+import ro.siit.HRS.exceptions.ManagerNotFoundException;
+import ro.siit.HRS.exceptions.UserNotFoundException;
 import ro.siit.HRS.model.Department;
 import ro.siit.HRS.model.Employee;
 import ro.siit.HRS.model.Manager;
@@ -49,7 +53,7 @@ public class EmployeeService {
     public EmployeeReturnDto findById(Long id) {
 
         Employee employee = employeeRepository.findById(id)
-                .orElseThrow();
+                .orElseThrow(() -> new EmployeeNotFoundException("This employee id " + id + "does not exist!"));
         return mapEmployee(employee);
     }
 
@@ -79,7 +83,9 @@ public class EmployeeService {
         employee.setJobTitle(employeeCreateDto.getJobTitle());
         employee = employeeRepository.save(employee);
 
-        Manager manager = managerRepository.findById(employee.getSuperiorId()).orElseThrow();
+        Employee finalEmployee = employee;
+        Manager manager = managerRepository.findById(employee.getSuperiorId())
+                .orElseThrow(() -> new ManagerNotFoundException("This manager id" + finalEmployee.getSuperiorId() + "does not exist"));
         manager.getEmployees().add(employee);
         managerRepository.save(manager);
 
@@ -91,14 +97,23 @@ public class EmployeeService {
         Long superiorId = null;
         if (IT_DEPARTMENT_JOB_TITLES.contains(jobTitle)) {
             Department department = departmentRepository.findByDepartmentName("IT");
+            if(department == null) {
+                throw new DepartmentNotFoundException("IT Department was not found");
+            }
             superiorId = department.getManagerId();
         }
         if (SALES_DEPARTMENT_JOB_TITLES.contains(jobTitle)) {
             Department department = departmentRepository.findByDepartmentName("SALES");
+            if(department == null) {
+                throw new DepartmentNotFoundException("SALES Department was not found");
+            }
             superiorId = department.getManagerId();
         }
         if (HR_DEPARTMENT_JOB_TITLES.contains(jobTitle)) {
             Department department = departmentRepository.findByDepartmentName("HR");
+            if(department == null){
+                throw new DepartmentNotFoundException("HR Department was not found");
+            }
             superiorId = department.getManagerId();
         }
         return superiorId;
@@ -107,16 +122,19 @@ public class EmployeeService {
 
     public String deleteEmployee(Long employeeId) {
 
-        Employee employee = employeeRepository.findById(employeeId).orElseThrow();
+        Employee employee = employeeRepository.findById(employeeId)
+                .orElseThrow(() -> new EmployeeNotFoundException("The employee with id " + employeeId + "was not found!"));
         Long managerId = employee.getSuperiorId();
 
-        Manager manager = managerRepository.findById(managerId).orElseThrow();
+        Manager manager = managerRepository.findById(managerId)
+                .orElseThrow(() -> new ManagerNotFoundException("This manager id " + managerId + "does not exist!"));
         manager.getEmployees().remove(employee);
 
         managerRepository.save(manager);
         employeeRepository.delete(employee);
 
-        User user = userRepository.findById(employee.getUser().getId()).orElseThrow();
+        User user = userRepository.findById(employee.getUser().getId())
+                .orElseThrow(() -> new UserNotFoundException("The user with id " + employee.getUser().getId() + "does not exist!"));
         userRepository.deleteById(user.getId());
         return "This employee has been deleted!";
     }

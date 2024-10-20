@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ro.siit.HRS.dto.ManagerCreateDto;
 import ro.siit.HRS.dto.ManagerReturnDto;
+import ro.siit.HRS.exceptions.ManagerNotFoundException;
 import ro.siit.HRS.model.Employee;
 import ro.siit.HRS.model.Manager;
 import ro.siit.HRS.model.User;
@@ -39,7 +40,7 @@ public class ManagerService {
     public ManagerReturnDto findById(Long id) {
 
         return mapManager(managerRepository.findById(id)
-                .orElseThrow());
+                .orElseThrow(() -> new ManagerNotFoundException("This manager id " + id + "does not exist!")));
     }
 
     public ManagerReturnDto createManager(ManagerCreateDto managerCreateDto) {
@@ -74,9 +75,11 @@ public class ManagerService {
         manager = managerRepository.save(manager);
         return mapManager(manager);
     }
-    public String deleteManager(Long managerId){
 
-        Manager manager = managerRepository.findById(managerId).orElseThrow();
+    public String deleteManager(Long managerId) {
+
+        Manager manager = managerRepository.findById(managerId)
+                .orElseThrow(() -> new ManagerNotFoundException("This manager id " + managerId + "was not found!"));
 
         managerRepository.deleteById(managerId);
         userRepository.deleteById(manager.getUser().getId());
