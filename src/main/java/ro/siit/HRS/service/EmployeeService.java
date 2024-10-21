@@ -111,6 +111,15 @@ public class EmployeeService {
         }
         if (employeeUpdateDto.getJobTitle() != null) {
             employee.setJobTitle(employeeUpdateDto.getJobTitle());
+
+            Manager oldManager = managerRepository.findById(employee.getSuperiorId()).orElseThrow();
+            oldManager.getEmployees().remove(employee);
+            managerRepository.save(oldManager);
+
+            employee.setSuperiorId(getSuperiorIdByJobTitle(employee.getJobTitle()));
+            Manager newManager = managerRepository.findById(employee.getSuperiorId()).orElseThrow();
+            newManager.getEmployees().add(employee);
+            managerRepository.save(newManager);
         }
         if (employeeUpdateDto.getPhoneNumber() != null) {
             employee.setPhoneNumber(employeeUpdateDto.getPhoneNumber());
