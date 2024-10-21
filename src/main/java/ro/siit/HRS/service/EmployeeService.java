@@ -2,8 +2,9 @@ package ro.siit.HRS.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import ro.siit.HRS.dto.EmployeeCreateDto;
-import ro.siit.HRS.dto.EmployeeReturnDto;
+import ro.siit.HRS.dto.create.EmployeeCreateDto;
+import ro.siit.HRS.dto.rturn.EmployeeReturnDto;
+import ro.siit.HRS.dto.update.EmployeeUpdateDto;
 import ro.siit.HRS.exceptions.DepartmentNotFoundException;
 import ro.siit.HRS.exceptions.EmployeeNotFoundException;
 import ro.siit.HRS.exceptions.ManagerNotFoundException;
@@ -92,26 +93,57 @@ public class EmployeeService {
         return mapEmployee(employee);
     }
 
+    public EmployeeReturnDto updateEmployee(EmployeeUpdateDto employeeUpdateDto) {
+
+        Employee employee = employeeRepository.findById(employeeUpdateDto.getId())
+                .orElseThrow(() -> new EmployeeNotFoundException("This employee id " + employeeUpdateDto.getId() + "can not be found!!"));
+        if (employeeUpdateDto.getAddress() != null) {
+            employee.setAddress(employeeUpdateDto.getAddress());
+        }
+        if (employeeUpdateDto.getName() != null) {
+            employee.setName(employeeUpdateDto.getName());
+        }
+        if (employeeUpdateDto.getCity() != null) {
+            employee.setCity(employeeUpdateDto.getCity());
+        }
+        if (employeeUpdateDto.getEmail() != null) {
+            employee.setEmail(employeeUpdateDto.getEmail());
+        }
+        if (employeeUpdateDto.getJobTitle() != null) {
+            employee.setJobTitle(employeeUpdateDto.getJobTitle());
+        }
+        if (employeeUpdateDto.getPhoneNumber() != null) {
+            employee.setPhoneNumber(employeeUpdateDto.getPhoneNumber());
+        }
+        if (employeeUpdateDto.getEndDate() != null) {
+            employee.setEndDate(employeeUpdateDto.getEndDate());
+        }
+
+        employee = employeeRepository.save(employee);
+
+        return mapEmployee(employee);
+    }
+
     public Long getSuperiorIdByJobTitle(String jobTitle) {
 
         Long superiorId = null;
         if (IT_DEPARTMENT_JOB_TITLES.contains(jobTitle)) {
             Department department = departmentRepository.findByDepartmentName("IT");
-            if(department == null) {
+            if (department == null) {
                 throw new DepartmentNotFoundException("IT Department was not found");
             }
             superiorId = department.getManagerId();
         }
         if (SALES_DEPARTMENT_JOB_TITLES.contains(jobTitle)) {
             Department department = departmentRepository.findByDepartmentName("SALES");
-            if(department == null) {
+            if (department == null) {
                 throw new DepartmentNotFoundException("SALES Department was not found");
             }
             superiorId = department.getManagerId();
         }
         if (HR_DEPARTMENT_JOB_TITLES.contains(jobTitle)) {
             Department department = departmentRepository.findByDepartmentName("HR");
-            if(department == null){
+            if (department == null) {
                 throw new DepartmentNotFoundException("HR Department was not found");
             }
             superiorId = department.getManagerId();

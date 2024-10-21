@@ -1,4 +1,4 @@
-package ro.siit.HRS.dto;
+package ro.siit.HRS.dto.create;
 
 import lombok.Data;
 

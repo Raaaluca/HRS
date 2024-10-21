@@ -2,8 +2,8 @@ package ro.siit.HRS.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import ro.siit.HRS.dto.LeaveRequestCreateDto;
-import ro.siit.HRS.dto.LeaveRequestReturnDto;
+import ro.siit.HRS.dto.create.LeaveRequestCreateDto;
+import ro.siit.HRS.dto.rturn.LeaveRequestReturnDto;
 import ro.siit.HRS.exceptions.EmployeeNotFoundException;
 import ro.siit.HRS.exceptions.LeaveRequestNotFoundException;
 import ro.siit.HRS.exceptions.ManagerNotFoundException;

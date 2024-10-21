@@ -2,8 +2,8 @@ package ro.siit.HRS.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import ro.siit.HRS.dto.ManagerCreateDto;
-import ro.siit.HRS.dto.ManagerReturnDto;
+import ro.siit.HRS.dto.create.ManagerCreateDto;
+import ro.siit.HRS.dto.rturn.ManagerReturnDto;
 import ro.siit.HRS.service.ManagerService;
 
 @RestController
@@ -18,7 +18,7 @@ public class ManagerController {
         return managerService.findById(id);
     }
 
-    @GetMapping(path = "/create")
+    @PostMapping(path = "/create")
     public ManagerReturnDto createManager(@RequestBody ManagerCreateDto managerCreateDto) {
 
         return managerService.createManager(managerCreateDto);

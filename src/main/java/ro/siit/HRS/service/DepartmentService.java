@@ -2,8 +2,8 @@ package ro.siit.HRS.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import ro.siit.HRS.dto.DepartmentCreateDto;
-import ro.siit.HRS.dto.DepartmentReturnDto;
+import ro.siit.HRS.dto.create.DepartmentCreateDto;
+import ro.siit.HRS.dto.rturn.DepartmentReturnDto;
 import ro.siit.HRS.model.Department;
 import ro.siit.HRS.repository.DepartmentRepository;
 
