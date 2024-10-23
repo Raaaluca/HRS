@@ -1,6 +1,7 @@
 package ro.siit.HRS.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import ro.siit.HRS.dto.create.EmployeeCreateDto;
 import ro.siit.HRS.dto.rturn.EmployeeReturnDto;
@@ -31,6 +32,8 @@ public class EmployeeService {
     private ManagerRepository managerRepository;
     @Autowired
     private DepartmentRepository departmentRepository;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     public static final List<String> IT_DEPARTMENT_JOB_TITLES = List.of("IT Engineer", "Tester", "UI/UX Designer");
     public static final List<String> SALES_DEPARTMENT_JOB_TITLES = List.of("Sales Officer", "Associate Officer");
@@ -66,7 +69,7 @@ public class EmployeeService {
         User user = new User();
         user.setRole("EMPLOYEE");
         user.setUsername(employeeCreateDto.getEmail());
-        user.setPassword(employeeCreateDto.getNationalId());  //to be encripted
+        user.setPassword(passwordEncoder.encode(employeeCreateDto.getNationalId()));
         employee.setUser(user);
         userRepository.save(user);
 
