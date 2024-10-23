@@ -3,7 +3,10 @@ package ro.siit.HRS.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import ro.siit.HRS.dto.create.ManagerCreateDto;
+import ro.siit.HRS.dto.rturn.EmployeeReturnDto;
 import ro.siit.HRS.dto.rturn.ManagerReturnDto;
+import ro.siit.HRS.dto.update.EmployeeUpdateDto;
+import ro.siit.HRS.dto.update.ManagerUpdateDto;
 import ro.siit.HRS.service.ManagerService;
 
 @RestController
@@ -34,5 +37,10 @@ public class ManagerController {
     public String deleteManager(@RequestParam Long managerId) {
 
         return managerService.deleteManager(managerId);
+    }
+    @PutMapping(path = "/update")
+    public ManagerReturnDto update(@RequestBody ManagerUpdateDto managerUpdateDto) {
+
+        return managerService.updateManager(managerUpdateDto);
     }
 }

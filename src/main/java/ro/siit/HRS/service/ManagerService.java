@@ -4,6 +4,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ro.siit.HRS.dto.create.ManagerCreateDto;
 import ro.siit.HRS.dto.rturn.ManagerReturnDto;
+import ro.siit.HRS.dto.update.ManagerUpdateDto;
+import ro.siit.HRS.exceptions.EmployeeNotFoundException;
 import ro.siit.HRS.exceptions.ManagerNotFoundException;
 import ro.siit.HRS.model.Employee;
 import ro.siit.HRS.model.Manager;
@@ -64,6 +66,34 @@ public class ManagerService {
         manager.setNationalId(managerCreateDto.getNationalId());
         manager.setPhoneNumber(managerCreateDto.getPhoneNumber());
         manager = managerRepository.save(manager);
+        return mapManager(manager);
+    }
+
+    public ManagerReturnDto updateManager(ManagerUpdateDto managerUpdateDto) {
+
+        Manager manager = managerRepository.findById(managerUpdateDto.getId())
+                .orElseThrow(() -> new ManagerNotFoundException("This manager id " + managerUpdateDto.getId() + "can not be found!!"));
+        if (managerUpdateDto.getAddress() != null) {
+            manager.setAddress(managerUpdateDto.getAddress());
+        }
+        if (managerUpdateDto.getName() != null) {
+            manager.setName(managerUpdateDto.getName());
+        }
+        if (managerUpdateDto.getCity() != null) {
+            manager.setCity(managerUpdateDto.getCity());
+        }
+        if (managerUpdateDto.getEmail() != null) {
+            manager.setEmail(managerUpdateDto.getEmail());
+            manager.getUser().setUsername(manager.getEmail());
+        }
+        if (managerUpdateDto.getEndDate() != null) {
+            manager.setEndDate(managerUpdateDto.getEndDate());
+        }
+        if (managerUpdateDto.getPhoneNumber() != null) {
+            manager.setPhoneNumber(managerUpdateDto.getPhoneNumber());
+        }
+        manager = managerRepository.save(manager);
+
         return mapManager(manager);
     }
 
