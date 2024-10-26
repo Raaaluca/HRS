@@ -30,4 +30,5 @@ public class Employee {
     private String jobTitle;
     @OneToMany
     private List<LeaveRequest> leaveRequests;
+
 }

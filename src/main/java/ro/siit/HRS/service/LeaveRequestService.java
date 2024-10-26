@@ -29,13 +29,26 @@ public class LeaveRequestService {
                 .orElseThrow(() -> new LeaveRequestNotFoundException("This Leave Request id " + id + "was not found!"));
     }
 
+    public String getEmployeeNameById(Long employeeId){
+
+        Employee employee = employeeRepository.findById(employeeId).orElseThrow();
+        return employee.getName();
+    }
+
+    public String getManagerNameById(Long managerId){
+
+        Manager manager = managerRepository.findById(managerId).orElseThrow();
+        return manager.getName();
+
+    }
+
     public LeaveRequestReturnDto mapLeaveRequestReturnDto(LeaveRequest leaveRequest) {
 
         LeaveRequestReturnDto leaveRequestReturnDto = new LeaveRequestReturnDto();
         leaveRequestReturnDto.setNumberOfDaysForLeaveRequest(leaveRequest.getNumberOfDays());
         leaveRequestReturnDto.setTypeOfLeaveRequest(leaveRequest.getType());
-        leaveRequestReturnDto.setEmployeeId(leaveRequest.getEmployeeId());
-        leaveRequestReturnDto.setManagerId(leaveRequest.getManagerId());
+        leaveRequestReturnDto.setEmployeeName(getEmployeeNameById(leaveRequest.getEmployeeId()));
+        leaveRequestReturnDto.setManagerName(getManagerNameById(leaveRequest.getManagerId()));
 
         return leaveRequestReturnDto;
     }

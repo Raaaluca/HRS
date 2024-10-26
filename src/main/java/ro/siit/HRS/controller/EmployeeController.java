@@ -24,6 +24,7 @@ public class EmployeeController {
 
         return employeeService.createEmployee(employeeCreateDto);
     }
+
     @DeleteMapping(path = "/delete")
     public String deleteEmployee(@RequestParam Long employeeId){
 

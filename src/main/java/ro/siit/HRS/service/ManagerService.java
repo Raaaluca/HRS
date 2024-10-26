@@ -3,25 +3,32 @@ package ro.siit.HRS.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ro.siit.HRS.dto.create.ManagerCreateDto;
+import ro.siit.HRS.dto.rturn.LeaveRequestReturnDto;
 import ro.siit.HRS.dto.rturn.ManagerReturnDto;
 import ro.siit.HRS.dto.update.ManagerUpdateDto;
 import ro.siit.HRS.exceptions.EmployeeNotFoundException;
 import ro.siit.HRS.exceptions.ManagerNotFoundException;
-import ro.siit.HRS.model.Employee;
-import ro.siit.HRS.model.Manager;
-import ro.siit.HRS.model.User;
+import ro.siit.HRS.model.*;
+import ro.siit.HRS.repository.DepartmentRepository;
 import ro.siit.HRS.repository.EmployeeRepository;
 import ro.siit.HRS.repository.ManagerRepository;
 import ro.siit.HRS.repository.UserRepository;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Service
 public class ManagerService {
+    @Autowired
+    private LeaveRequestService leaveRequestService;
     @Autowired
     private UserRepository userRepository;
     @Autowired
     private ManagerRepository managerRepository;
     @Autowired
     private EmployeeRepository employeeRepository;
+    @Autowired
+    private DepartmentRepository departmentRepository;
 
     public ManagerReturnDto mapManager(Manager manager) {
 
@@ -114,5 +121,33 @@ public class ManagerService {
         managerRepository.deleteById(managerId);
         userRepository.deleteById(manager.getUser().getId());
         return "This manager has been deleted!";
+    }
+
+    public List<Employee> getManagerEmployees(String username) {
+
+        User user = userRepository.findByUsername(username).orElseThrow();
+        Manager manager = managerRepository.findByUser(user).orElseThrow();
+
+        return manager.getEmployees();
+    }
+
+    public List<LeaveRequestReturnDto> getManagerPendingLeaveRequests(String username) {
+
+        User user = userRepository.findByUsername(username).orElseThrow();
+        Manager manager = managerRepository.findByUser(user).orElseThrow();
+
+        return manager.getLeaveRequestsToManage()
+                .stream()
+                .map(p -> leaveRequestService.mapLeaveRequestReturnDto(p))
+                .collect(Collectors.toList());
+    }
+
+    public String getAuthenticationDetails(String username) {
+
+        User user = userRepository.findByUsername(username).orElseThrow();
+        Manager manager = managerRepository.findByUser(user).orElseThrow();
+        Department department = departmentRepository.findByManagerId(manager.getId()).orElseThrow();
+
+        return manager.getName() + ", " + department.getDepartmentName() + " Manager";
     }
 }
