@@ -29,26 +29,24 @@ public class LeaveRequestService {
                 .orElseThrow(() -> new LeaveRequestNotFoundException("This Leave Request id " + id + "was not found!"));
     }
 
-    public String getEmployeeNameById(Long employeeId){
+    public String getEmployeeNameById(Long employeeId) {
 
         Employee employee = employeeRepository.findById(employeeId).orElseThrow();
         return employee.getName();
     }
 
-    public String getManagerNameById(Long managerId){
-
-        Manager manager = managerRepository.findById(managerId).orElseThrow();
-        return manager.getName();
-
-    }
-
     public LeaveRequestReturnDto mapLeaveRequestReturnDto(LeaveRequest leaveRequest) {
 
         LeaveRequestReturnDto leaveRequestReturnDto = new LeaveRequestReturnDto();
+        leaveRequestReturnDto.setId(leaveRequest.getId());
         leaveRequestReturnDto.setNumberOfDaysForLeaveRequest(leaveRequest.getNumberOfDays());
         leaveRequestReturnDto.setTypeOfLeaveRequest(leaveRequest.getType());
         leaveRequestReturnDto.setEmployeeName(getEmployeeNameById(leaveRequest.getEmployeeId()));
-        leaveRequestReturnDto.setManagerName(getManagerNameById(leaveRequest.getManagerId()));
+        if (leaveRequest.isApproved()) {
+            leaveRequestReturnDto.setStatus("APPROVED");
+        } else {
+            leaveRequestReturnDto.setStatus("PENDING...");
+        }
 
         return leaveRequestReturnDto;
     }
@@ -63,10 +61,6 @@ public class LeaveRequestService {
         leaveRequest.setApproved(false);
         leaveRequest = leaveRequestRepository.save(leaveRequest);
 
-
-        //    @OneToMany
-        //    private List<LeaveRequest> leaveRequests;
-
         Employee employee = employeeRepository.findById(leaveRequestCreateDto.getEmployeeId())
                 .orElseThrow(() -> new EmployeeNotFoundException("This employee id " + leaveRequestCreateDto.getEmployeeId() + "was not found!"));
         employee.getLeaveRequests().add(leaveRequest);
@@ -79,4 +73,5 @@ public class LeaveRequestService {
 
         return mapLeaveRequestReturnDto(leaveRequest);
     }
+
 }

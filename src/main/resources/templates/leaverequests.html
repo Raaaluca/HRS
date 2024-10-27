@@ -68,25 +68,22 @@
     <table class="table table-striped" style="width:70%">
         <thead>
         <tr>
+            <th scope="col">Employee</th>
             <th scope="col">Request Type</th>
             <th scope="col">Days</th>
-            <th scope="col">Employee</th>
-            <th scope="col">Manager</th>
             <th scope="col">Status</th>
         </tr>
         </thead>
         <tbody>
         <tr th:each="leaverequest : ${pendingLeaveRequests}">
+            <td><span th:text="${leaverequest.employeeName}"> Employee </span></td>
             <td><span th:text="${leaverequest.typeOfLeaveRequest}"> Request Type </span></td>
             <td><span th:text="${leaverequest.numberOfDaysForLeaveRequest}"> Days </span></td>
-            <td><span th:text="${leaverequest.employeeName}"> Employee </span></td>
-            <td><span th:text="${leaverequest.managerName}"> Manager </span></td>
-            <td><span th:text="${leaverequest.isApproved}"> Status </span></td>
+            <td><span th:text="${leaverequest.status}"> Status </span></td>
             <td>
             <span>
                 <form ACTION="#" th:action="@{/managers/approve}" th:modelAttribute="leaverequest" method="POST">
-<!--     <input type="hidden" th:value="${leaverequest.id}" name="id"/>-->
-     <input type="hidden" th:value="${leaverequest.isApproved}" name="isApproved"/>
+     <input type="hidden" th:value="${leaverequest.id}" name="id"/>
                     <!-- ADD ALL THE OTHER FIELDS THAT ARE PART OF THE OBJECT -->
      <button type="submit" class="btn btn-outline-success">Approve</button>
 </form>

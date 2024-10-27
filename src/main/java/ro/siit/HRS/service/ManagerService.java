@@ -6,13 +6,9 @@ import ro.siit.HRS.dto.create.ManagerCreateDto;
 import ro.siit.HRS.dto.rturn.LeaveRequestReturnDto;
 import ro.siit.HRS.dto.rturn.ManagerReturnDto;
 import ro.siit.HRS.dto.update.ManagerUpdateDto;
-import ro.siit.HRS.exceptions.EmployeeNotFoundException;
 import ro.siit.HRS.exceptions.ManagerNotFoundException;
 import ro.siit.HRS.model.*;
-import ro.siit.HRS.repository.DepartmentRepository;
-import ro.siit.HRS.repository.EmployeeRepository;
-import ro.siit.HRS.repository.ManagerRepository;
-import ro.siit.HRS.repository.UserRepository;
+import ro.siit.HRS.repository.*;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -21,6 +17,8 @@ import java.util.stream.Collectors;
 public class ManagerService {
     @Autowired
     private LeaveRequestService leaveRequestService;
+    @Autowired
+    private LeaveRequestRepository leaveRequestRepository;
     @Autowired
     private UserRepository userRepository;
     @Autowired
@@ -49,7 +47,8 @@ public class ManagerService {
     public ManagerReturnDto findById(Long id) {
 
         return mapManager(managerRepository.findById(id)
-                .orElseThrow(() -> new ManagerNotFoundException("This manager id " + id + "does not exist!")));
+                .orElseThrow(() -> new ManagerNotFoundException(
+                        "This manager id " + id + "does not exist!")));
     }
 
     public ManagerReturnDto createManager(ManagerCreateDto managerCreateDto) {
@@ -79,7 +78,8 @@ public class ManagerService {
     public ManagerReturnDto updateManager(ManagerUpdateDto managerUpdateDto) {
 
         Manager manager = managerRepository.findById(managerUpdateDto.getId())
-                .orElseThrow(() -> new ManagerNotFoundException("This manager id " + managerUpdateDto.getId() + "can not be found!!"));
+                .orElseThrow(() -> new ManagerNotFoundException(
+                        "This manager id " + managerUpdateDto.getId() + "can not be found!!"));
         if (managerUpdateDto.getAddress() != null) {
             manager.setAddress(managerUpdateDto.getAddress());
         }
@@ -116,7 +116,8 @@ public class ManagerService {
     public String deleteManager(Long managerId) {
 
         Manager manager = managerRepository.findById(managerId)
-                .orElseThrow(() -> new ManagerNotFoundException("This manager id " + managerId + "was not found!"));
+                .orElseThrow(() ->
+                        new ManagerNotFoundException("This manager id " + managerId + "was not found!"));
 
         managerRepository.deleteById(managerId);
         userRepository.deleteById(manager.getUser().getId());
@@ -149,5 +150,12 @@ public class ManagerService {
         Department department = departmentRepository.findByManagerId(manager.getId()).orElseThrow();
 
         return manager.getName() + ", " + department.getDepartmentName() + " Manager";
+    }
+
+    public void approveLeaveRequest(Long leaveRequestId) {
+
+        LeaveRequest leaveRequest = leaveRequestRepository.findById(leaveRequestId).orElseThrow();
+        leaveRequest.setApproved(true);
+        leaveRequestRepository.save(leaveRequest);
     }
 }
