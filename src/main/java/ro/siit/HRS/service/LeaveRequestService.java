@@ -10,9 +10,11 @@ import ro.siit.HRS.exceptions.ManagerNotFoundException;
 import ro.siit.HRS.model.Employee;
 import ro.siit.HRS.model.LeaveRequest;
 import ro.siit.HRS.model.Manager;
+import ro.siit.HRS.model.User;
 import ro.siit.HRS.repository.EmployeeRepository;
 import ro.siit.HRS.repository.LeaveRequestRepository;
 import ro.siit.HRS.repository.ManagerRepository;
+import ro.siit.HRS.repository.UserRepository;
 
 @Service
 public class LeaveRequestService {
@@ -22,6 +24,8 @@ public class LeaveRequestService {
     private EmployeeRepository employeeRepository;
     @Autowired
     private ManagerRepository managerRepository;
+    @Autowired
+    private UserRepository userRepository;
 
     public LeaveRequest findById(Long id) {
 
@@ -35,7 +39,7 @@ public class LeaveRequestService {
         return employee.getName();
     }
 
-    public String getJobTitle(Long employeeId){
+    public String getJobTitle(Long employeeId) {
 
         Employee employee = employeeRepository.findById(employeeId).orElseThrow();
         return employee.getJobTitle();
@@ -47,8 +51,10 @@ public class LeaveRequestService {
         leaveRequestReturnDto.setId(leaveRequest.getId());
         leaveRequestReturnDto.setNumberOfDaysForLeaveRequest(leaveRequest.getNumberOfDays());
         leaveRequestReturnDto.setTypeOfLeaveRequest(leaveRequest.getType());
-        leaveRequestReturnDto.setEmployeeName(getEmployeeNameById(leaveRequest.getEmployeeId()));
-        leaveRequestReturnDto.setJobTitle(getJobTitle(leaveRequest.getEmployeeId()));
+        if (leaveRequest.getEmployeeId() != null) {
+            leaveRequestReturnDto.setEmployeeName(getEmployeeNameById(leaveRequest.getEmployeeId()));
+            leaveRequestReturnDto.setJobTitle(getJobTitle(leaveRequest.getEmployeeId()));
+        }
         if (leaveRequest.isApproved()) {
             leaveRequestReturnDto.setStatus("APPROVED");
         } else {
@@ -56,6 +62,15 @@ public class LeaveRequestService {
         }
 
         return leaveRequestReturnDto;
+    }
+
+    public void createLeaveRequestByUsername(LeaveRequestCreateDto leaveRequestCreateDto, String username) {
+
+        User user = userRepository.findByUsername(username).orElseThrow();
+        Manager manager = managerRepository.findByUser(user).orElseThrow();
+
+        leaveRequestCreateDto.setManagerId(manager.getId());
+        createLeaveRequest(leaveRequestCreateDto);
     }
 
     public LeaveRequestReturnDto createLeaveRequest(LeaveRequestCreateDto leaveRequestCreateDto) {
@@ -68,16 +83,22 @@ public class LeaveRequestService {
         leaveRequest.setApproved(false);
         leaveRequest = leaveRequestRepository.save(leaveRequest);
 
-        Employee employee = employeeRepository.findById(leaveRequestCreateDto.getEmployeeId())
-                .orElseThrow(() -> new EmployeeNotFoundException("This employee id " + leaveRequestCreateDto.getEmployeeId() + "was not found!"));
-        employee.getLeaveRequests().add(leaveRequest);
-        employeeRepository.save(employee);
+        if (leaveRequestCreateDto.getEmployeeId() != null) {
+            Employee employee = employeeRepository.findById(leaveRequestCreateDto.getEmployeeId())
+                    .orElseThrow(() -> new EmployeeNotFoundException("This employee id " + leaveRequestCreateDto.getEmployeeId() + "was not found!"));
+            employee.getLeaveRequests().add(leaveRequest);
+            employeeRepository.save(employee);
 
-        Manager manager = managerRepository.findById(employee.getSuperiorId())
-                .orElseThrow(() -> new ManagerNotFoundException("This manager id " + employee.getSuperiorId() + "was not found!"));
-        manager.getLeaveRequestsToManage().add(leaveRequest);
-        managerRepository.save(manager);
-
+            Manager manager = managerRepository.findById(employee.getSuperiorId())
+                    .orElseThrow(() -> new ManagerNotFoundException("This manager id " + employee.getSuperiorId() + "was not found!"));
+            manager.getLeaveRequestsToManage().add(leaveRequest);
+            managerRepository.save(manager);
+        } else {
+            Manager manager = managerRepository.findById(leaveRequestCreateDto.getManagerId())
+                    .orElseThrow(() -> new ManagerNotFoundException("This manager id " + leaveRequestCreateDto.getManagerId() + "was not found!"));
+            manager.getLeaveRequests().add(leaveRequest);
+            managerRepository.save(manager);
+        }
         return mapLeaveRequestReturnDto(leaveRequest);
     }
 

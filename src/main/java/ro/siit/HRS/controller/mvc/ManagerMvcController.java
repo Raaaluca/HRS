@@ -9,10 +9,12 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import ro.siit.HRS.dto.create.LeaveRequestCreateDto;
 import ro.siit.HRS.dto.rturn.ManagerReturnDto;
 import ro.siit.HRS.dto.update.ManagerUpdateDto;
 import ro.siit.HRS.model.LeaveRequest;
 import ro.siit.HRS.service.HrsUserDetails;
+import ro.siit.HRS.service.LeaveRequestService;
 import ro.siit.HRS.service.ManagerService;
 
 @Controller
@@ -21,6 +23,8 @@ public class ManagerMvcController {
 
     @Autowired
     private ManagerService managerService;
+    @Autowired
+    private LeaveRequestService leaveRequestService;
 
     @GetMapping(path = "/selfservice")
     public String selfService(@AuthenticationPrincipal HrsUserDetails user, Model model) {
@@ -55,10 +59,18 @@ public class ManagerMvcController {
     @GetMapping(path = "/leaverequest")
     public String getLeaveRequest(@AuthenticationPrincipal HrsUserDetails user, Model model) {
 
+        model.addAttribute("leaverequest", new LeaveRequestCreateDto());
         model.addAttribute("authenticationDetails", managerService
                 .getAuthenticationDetails(user.getUsername()));
 
         return "/leaverequest";
+    }
+
+    @PostMapping(path = "/leaverequest/create")
+    public String createLeaveRequest(@AuthenticationPrincipal HrsUserDetails user, @ModelAttribute LeaveRequestCreateDto leaverequest, Model model) {
+
+        leaveRequestService.createLeaveRequestByUsername(leaverequest, user.getUsername());
+        return "/selfservice";
     }
 
     @GetMapping(path = "/employees")
