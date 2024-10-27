@@ -14,4 +14,5 @@ public class EmployeeReturnDto {
     private LocalDate startDate;
     private LocalDate endDate;
     private String jobTitle;
+    private Integer annualLeaveDays;
 }

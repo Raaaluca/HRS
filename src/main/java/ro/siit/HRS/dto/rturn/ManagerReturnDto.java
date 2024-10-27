@@ -17,4 +17,5 @@ public class ManagerReturnDto {
     private String address;
     private LocalDate startDate;
     private LocalDate endDate;
+    private Integer annualLeaveDays;
 }

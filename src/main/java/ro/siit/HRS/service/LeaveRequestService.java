@@ -45,6 +45,12 @@ public class LeaveRequestService {
         return employee.getJobTitle();
     }
 
+    public Integer getAnnualLeaveDaysByEmployeeId(Long employeeId) {
+
+        Employee employee = employeeRepository.findById(employeeId).orElseThrow();
+        return employee.getAnnualLeaveDays();
+    }
+
     public LeaveRequestReturnDto mapLeaveRequestReturnDto(LeaveRequest leaveRequest) {
 
         LeaveRequestReturnDto leaveRequestReturnDto = new LeaveRequestReturnDto();
@@ -54,6 +60,7 @@ public class LeaveRequestService {
         if (leaveRequest.getEmployeeId() != null) {
             leaveRequestReturnDto.setEmployeeName(getEmployeeNameById(leaveRequest.getEmployeeId()));
             leaveRequestReturnDto.setJobTitle(getJobTitle(leaveRequest.getEmployeeId()));
+            leaveRequestReturnDto.setAnnualLeaveDays(getAnnualLeaveDaysByEmployeeId(leaveRequest.getEmployeeId()));
         }
         if (leaveRequest.isApproved()) {
             leaveRequestReturnDto.setStatus("APPROVED");
@@ -87,6 +94,7 @@ public class LeaveRequestService {
             Employee employee = employeeRepository.findById(leaveRequestCreateDto.getEmployeeId())
                     .orElseThrow(() -> new EmployeeNotFoundException("This employee id " + leaveRequestCreateDto.getEmployeeId() + "was not found!"));
             employee.getLeaveRequests().add(leaveRequest);
+            employee.setAnnualLeaveDays(employee.getAnnualLeaveDays() - leaveRequestCreateDto.getNumberOfDaysForLeaveRequest());
             employeeRepository.save(employee);
 
             Manager manager = managerRepository.findById(employee.getSuperiorId())

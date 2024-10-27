@@ -11,4 +11,5 @@ public class LeaveRequestReturnDto {
     private String jobTitle;
     private String employeeName;
     private String status;
+    private Integer annualLeaveDays;
 }

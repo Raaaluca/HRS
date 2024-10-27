@@ -41,6 +41,7 @@ public class ManagerService {
         managerReturnDto.setPhoneNumber(manager.getPhoneNumber());
         managerReturnDto.setStartDate(manager.getStartDate());
         managerReturnDto.setEndDate(manager.getEndDate());
+        managerReturnDto.setAnnualLeaveDays(manager.getAnnualLeaveDays());
 
         return managerReturnDto;
     }

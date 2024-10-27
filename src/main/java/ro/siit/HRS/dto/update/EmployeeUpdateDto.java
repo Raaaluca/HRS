@@ -15,4 +15,5 @@ public class EmployeeUpdateDto {
     private String address;
     private LocalDate endDate;
     private String jobTitle;
+    private Integer annualLeaveDays;
 }

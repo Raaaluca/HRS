@@ -50,6 +50,7 @@ public class EmployeeService {
         employeeReturnDto.setStartDate(employee.getStartDate());
         employeeReturnDto.setEndDate(employee.getEndDate());
         employeeReturnDto.setJobTitle(employee.getJobTitle());
+        employeeReturnDto.setAnnualLeaveDays(employee.getAnnualLeaveDays());
 
         return employeeReturnDto;
     }

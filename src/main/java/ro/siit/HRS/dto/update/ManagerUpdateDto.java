@@ -14,5 +14,6 @@ public class ManagerUpdateDto {
     private String phoneNumber;
     private String address;
     private LocalDate endDate;
+    private Integer annualLeaveDays;
 
 }
