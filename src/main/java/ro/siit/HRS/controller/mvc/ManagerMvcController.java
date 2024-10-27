@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import ro.siit.HRS.dto.rturn.ManagerReturnDto;
+import ro.siit.HRS.dto.update.ManagerUpdateDto;
 import ro.siit.HRS.model.LeaveRequest;
 import ro.siit.HRS.service.HrsUserDetails;
 import ro.siit.HRS.service.ManagerService;
@@ -27,7 +29,36 @@ public class ManagerMvcController {
         model.addAttribute("authenticationDetails", managerService
                 .getAuthenticationDetails(user.getUsername()));
 
-        return "selfservice";
+        return "/selfservice";
+    }
+
+    @GetMapping(path = "/personaldetails")
+    public String getPersonalDetails(@AuthenticationPrincipal HrsUserDetails user, Model model) {
+
+        model.addAttribute("manager",
+                managerService.getUpdatePersonalDetails(user.getUsername()));
+        model.addAttribute("authenticationDetails",
+                managerService.getAuthenticationDetails(user.getUsername()));
+
+        return "/personaldetails";
+    }
+
+    @PostMapping(path = "/personaldetails/update")
+    public String updatePersonalDetails(@ModelAttribute ManagerUpdateDto manager, Model model) {
+
+        model.addAttribute("manager",
+                managerService.updateManager(manager));
+
+        return "/personaldetails";
+    }
+
+    @GetMapping(path = "/leaverequest")
+    public String getLeaveRequest(@AuthenticationPrincipal HrsUserDetails user, Model model) {
+
+        model.addAttribute("authenticationDetails", managerService
+                .getAuthenticationDetails(user.getUsername()));
+
+        return "/leaverequest";
     }
 
     @GetMapping(path = "/employees")
@@ -38,7 +69,7 @@ public class ManagerMvcController {
         model.addAttribute("authenticationDetails", managerService
                 .getAuthenticationDetails(user.getUsername()));
 
-        return "employees";
+        return "/employees";
     }
 
     @GetMapping(path = "/requestsForApproval")
@@ -49,7 +80,7 @@ public class ManagerMvcController {
         model.addAttribute("authenticationDetails",
                 managerService.getAuthenticationDetails(user.getUsername()));
 
-        return "leaverequests";
+        return "/leaverequests";
     }
 
     @PostMapping(path = "/approve")

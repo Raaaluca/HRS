@@ -31,6 +31,7 @@ public class ManagerService {
     public ManagerReturnDto mapManager(Manager manager) {
 
         ManagerReturnDto managerReturnDto = new ManagerReturnDto();
+        managerReturnDto.setId(manager.getId());
         managerReturnDto.setAddress(manager.getAddress());
         managerReturnDto.setCity(manager.getCity());
         managerReturnDto.setEmail(manager.getEmail());
@@ -157,5 +158,13 @@ public class ManagerService {
         LeaveRequest leaveRequest = leaveRequestRepository.findById(leaveRequestId).orElseThrow();
         leaveRequest.setApproved(true);
         leaveRequestRepository.save(leaveRequest);
+    }
+
+    public ManagerReturnDto getUpdatePersonalDetails(String username) {
+
+        User user = userRepository.findByUsername(username).orElseThrow();
+        Manager manager = managerRepository.findByUser(user).orElseThrow();
+
+        return mapManager(manager);
     }
 }

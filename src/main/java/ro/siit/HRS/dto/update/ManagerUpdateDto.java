@@ -6,6 +6,7 @@ import java.time.LocalDate;
 
 @Data
 public class ManagerUpdateDto {
+
     private Long id;
     private String name;
     private String email;

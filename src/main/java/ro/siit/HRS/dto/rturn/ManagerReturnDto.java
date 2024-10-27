@@ -7,6 +7,7 @@ import java.time.LocalDate;
 @Data
 public class ManagerReturnDto {
 
+    private Long id;
     private String name;
     private String email;
     private String city;
