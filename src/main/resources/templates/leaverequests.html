@@ -69,6 +69,7 @@
         <thead>
         <tr>
             <th scope="col">Employee</th>
+            <th scope="col">Job Title</th>
             <th scope="col">Request Type</th>
             <th scope="col">Days</th>
             <th scope="col">Status</th>
@@ -77,6 +78,7 @@
         <tbody>
         <tr th:each="leaverequest : ${pendingLeaveRequests}">
             <td><span th:text="${leaverequest.employeeName}"> Employee </span></td>
+            <td><span th:text="${leaverequest.jobTitle}"> Job Title </span></td>
             <td><span th:text="${leaverequest.typeOfLeaveRequest}"> Request Type </span></td>
             <td><span th:text="${leaverequest.numberOfDaysForLeaveRequest}"> Days </span></td>
             <td><span th:text="${leaverequest.status}"> Status </span></td>
@@ -85,12 +87,8 @@
                 <form ACTION="#" th:action="@{/managers/approve}" th:modelAttribute="leaverequest" method="POST">
      <input type="hidden" th:value="${leaverequest.id}" name="id"/>
                     <!-- ADD ALL THE OTHER FIELDS THAT ARE PART OF THE OBJECT -->
-     <button type="submit" class="btn btn-outline-success">Approve</button>
+     <button th:if="${leaverequest.status == 'PENDING...'}" type="submit" class="btn btn-outline-success">Approve</button>
 </form>
-<!--                <button type="button" class="btn btn-outline-success"-->
-<!--                          th:onclick="|window.location.href='/managers/approve'|">-->
-<!--                Approve-->
-<!--            </button>-->
                 </span>
             </td>
         </tr>

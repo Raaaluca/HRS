@@ -44,10 +44,10 @@ public class ManagerMvcController {
     @GetMapping(path = "/requestsForApproval")
     public String getPendingLeaveRequests(@AuthenticationPrincipal HrsUserDetails user, Model model) {
 
-        model.addAttribute("pendingLeaveRequests", managerService
-                .getManagerPendingLeaveRequests(user.getUsername()));
-        model.addAttribute("authenticationDetails", managerService
-                .getAuthenticationDetails(user.getUsername()));
+        model.addAttribute("pendingLeaveRequests",
+                managerService.getManagerPendingLeaveRequests(user.getUsername()));
+        model.addAttribute("authenticationDetails",
+                managerService.getAuthenticationDetails(user.getUsername()));
 
         return "leaverequests";
     }

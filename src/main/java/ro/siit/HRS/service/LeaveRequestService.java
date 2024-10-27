@@ -35,6 +35,12 @@ public class LeaveRequestService {
         return employee.getName();
     }
 
+    public String getJobTitle(Long employeeId){
+
+        Employee employee = employeeRepository.findById(employeeId).orElseThrow();
+        return employee.getJobTitle();
+    }
+
     public LeaveRequestReturnDto mapLeaveRequestReturnDto(LeaveRequest leaveRequest) {
 
         LeaveRequestReturnDto leaveRequestReturnDto = new LeaveRequestReturnDto();
@@ -42,6 +48,7 @@ public class LeaveRequestService {
         leaveRequestReturnDto.setNumberOfDaysForLeaveRequest(leaveRequest.getNumberOfDays());
         leaveRequestReturnDto.setTypeOfLeaveRequest(leaveRequest.getType());
         leaveRequestReturnDto.setEmployeeName(getEmployeeNameById(leaveRequest.getEmployeeId()));
+        leaveRequestReturnDto.setJobTitle(getJobTitle(leaveRequest.getEmployeeId()));
         if (leaveRequest.isApproved()) {
             leaveRequestReturnDto.setStatus("APPROVED");
         } else {
