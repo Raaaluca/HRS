@@ -24,7 +24,8 @@ public class HrsController {
     @GetMapping(path = "/services")
     public String services(@AuthenticationPrincipal UserDetails user, Model model) {
 
-        model.addAttribute("authenticationDetails", managerService.getAuthenticationDetails(user.getUsername()));
+        model.addAttribute("authenticationDetails", managerService
+                .getAuthenticationDetails(user.getUsername()));
         return "/services";
     }
 
