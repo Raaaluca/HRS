@@ -48,7 +48,6 @@
             <img src="/img/logo.png" alt="">
             <h1 class="sitename">
                 <div th:text="${authenticationDetails}"></div>
-
             </h1>
         </a>
 
@@ -77,7 +76,7 @@
 
             <div class="row g-5">
 
-                <div data-aos="fade-up" data-aos-delay="100">
+                <div sec:authorize="hasAuthority('MANAGER')" data-aos="fade-up" data-aos-delay="100">
                     <form ACTION="#" th:action="@{/managers/personaldetails/update}" th:modelAttribute="manager" method="POST">
                         <input type="hidden" th:value="${manager.id}" name="id"/>
                         <p><strong> Name </strong></p>
@@ -91,7 +90,29 @@
                         <p><strong> Address </strong></p>
                         <input th:value="${manager.address}" name="address"/>
                         <!-- ADD ALL THE OTHER FIELDS THAT ARE PART OF THE OBJECT -->
-                        <button type="submit" class="btn btn-outline-success">Update</button>
+                        <p></p>
+                        <p></p>
+                        <button type="submit" class="btn btn-outline-success"> Update details </button>
+                    </form>
+                </div><!-- End Service Item -->
+
+                <div sec:authorize="hasAuthority('EMPLOYEE')" data-aos="fade-up" data-aos-delay="100">
+                    <form ACTION="#" th:action="@{/employees/personaldetails/update}" th:modelAttribute="employee" method="POST">
+                        <input type="hidden" th:value="${employee.id}" name="id"/>
+                        <p><strong> Name </strong></p>
+                        <input th:value="${employee.name}" name="name"/>
+                        <p><strong> Email </strong></p>
+                        <input th:value="${employee.email}" name="email"/>
+                        <p><strong> City </strong></p>
+                        <input th:value="${employee.city}" name="city"/>
+                        <p><strong> Phone </strong></p>
+                        <input th:value="${employee.phoneNumber}" name="phoneNumber"/>
+                        <p><strong> Address </strong></p>
+                        <input th:value="${employee.address}" name="address"/>
+                        <!-- ADD ALL THE OTHER FIELDS THAT ARE PART OF THE OBJECT -->
+                        <p></p>
+                        <p></p>
+                        <button type="submit" class="btn btn-outline-success"> Update details </button>
                     </form>
                 </div><!-- End Service Item -->
 

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml"
+<html xmlns:th="http://www.thymeleaf.org"
       lang="en">
 
 <head>
@@ -47,7 +47,6 @@
             <img src="/img/logo.png" alt="">
             <h1 class="sitename">
                 <div th:text="${authenticationDetails}"></div>
-
             </h1>
         </a>
 
@@ -78,8 +77,6 @@
 
             <div class="row g-5">
 
-
-
                 <div sec:authorize="hasAuthority('MANAGER')" class="col-lg-6" data-aos="fade-up" data-aos-delay="200">
                     <div class="service-item item-orange position-relative">
                         <i class="bi bi-bounding-box-circles icon"></i>
@@ -100,11 +97,21 @@
                     </div>
                 </div><!-- End Service Item -->
 
-                <div class="col-lg-6" data-aos="fade-up" data-aos-delay="100">
+                <div sec:authorize="hasAuthority('MANAGER')" class="col-lg-6" data-aos="fade-up" data-aos-delay="100">
                     <div class="service-item item-cyan position-relative">
                         <i class="bi bi-chat-square-text icon"></i>
                         <div>
                             <a href="/managers/selfservice"> <h3>Self Service</h3> </a>
+                            <p>Create own leave requests, edit personal details</p>
+                        </div>
+                    </div>
+                </div><!-- End Service Item -->
+
+                <div sec:authorize="hasAuthority('EMPLOYEE')" class="col-lg-6" data-aos="fade-up" data-aos-delay="100">
+                    <div class="service-item item-cyan position-relative">
+                        <i class="bi bi-chat-square-text icon"></i>
+                        <div>
+                            <a href="/employees/selfservice"> <h3>Self Service</h3> </a>
                             <p>Create own leave requests, edit personal details</p>
                         </div>
                     </div>

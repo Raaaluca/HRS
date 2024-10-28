@@ -47,7 +47,8 @@
         <a href="/index" class="logo d-flex align-items-center me-auto">
             <img src="/img/logo.png" alt="">
             <h1 class="sitename">
-                <div th:text="${authenticationDetails}"></div>
+                <div sec:authorize="hasAuthority('MANAGER')" th:text="${authenticationDetails}"></div>
+                <div sec:authorize="hasAuthority('EMPLOYEE')" th:text="Employee"></div>
             </h1>
         </a>
 

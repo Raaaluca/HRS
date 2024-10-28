@@ -48,7 +48,6 @@
             <img src="/img/logo.png" alt="">
             <h1 class="sitename">
                 <div th:text="${authenticationDetails}"></div>
-
             </h1>
         </a>
 
@@ -77,11 +76,20 @@
 
             <div class="row g-5">
 
-                <div class="col-lg-6" data-aos="fade-up" data-aos-delay="100">
+                <div sec:authorize="hasAuthority('MANAGER')"class="col-lg-6" data-aos="fade-up" data-aos-delay="100">
                     <div class="service-item item-cyan position-relative">
                         <i class="bi bi-chat-square-text icon"></i>
                         <div>
                             <a href="/managers/personaldetails"> <h3>My personal details</h3> </a>
+                            <p>Edit personal details</p>
+                        </div>
+                    </div>
+                </div><!-- End Service Item -->
+                <div sec:authorize="hasAuthority('EMPLOYEE')"class="col-lg-6" data-aos="fade-up" data-aos-delay="100">
+                    <div class="service-item item-cyan position-relative">
+                        <i class="bi bi-chat-square-text icon"></i>
+                        <div>
+                            <a href="/employees/personaldetails"> <h3>My personal details</h3> </a>
                             <p>Edit personal details</p>
                         </div>
                     </div>

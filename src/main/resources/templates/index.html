@@ -70,8 +70,11 @@
         <div class="d-flex flex-column justify-content-center align-items-center">
           <h1 data-aos="fade-up">Welcome to <span>HRS App</span></h1>
           <p data-aos="fade-up" data-aos-delay="100">Your administrative routine in a nutshell<br></p>
-          <div class="d-flex" data-aos="fade-up" data-aos-delay="200">
-            <a href="/services" class="btn-get-started">Start</a>
+          <div sec:authorize="hasAuthority('EMPLOYEE')" class="d-flex" data-aos="fade-up" data-aos-delay="200">
+            <a href="/employees/services" class="btn-get-started">Start</a>
+          </div>
+          <div sec:authorize="hasAuthority('MANAGER')" class="d-flex" data-aos="fade-up" data-aos-delay="200">
+            <a href="/managers/services" class="btn-get-started">Start</a>
           </div>
 
           <img src="/img/hero-services-img.webp" class="img-fluid hero-img" alt="" data-aos="zoom-out" data-aos-delay="300">

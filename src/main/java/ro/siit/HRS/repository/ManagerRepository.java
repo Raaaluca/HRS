@@ -11,5 +11,4 @@ import java.util.Optional;
 public interface ManagerRepository extends JpaRepository<Manager, Long> {
 
     public Optional<Manager> findByUser(User user);
-
 }

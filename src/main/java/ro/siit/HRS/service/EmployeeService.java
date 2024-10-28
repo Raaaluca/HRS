@@ -5,6 +5,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import ro.siit.HRS.dto.create.EmployeeCreateDto;
 import ro.siit.HRS.dto.rturn.EmployeeReturnDto;
+import ro.siit.HRS.dto.rturn.ManagerReturnDto;
 import ro.siit.HRS.dto.update.EmployeeUpdateDto;
 import ro.siit.HRS.exceptions.DepartmentNotFoundException;
 import ro.siit.HRS.exceptions.EmployeeNotFoundException;
@@ -43,7 +44,11 @@ public class EmployeeService {
     public EmployeeReturnDto mapEmployee(Employee employee) {
 
         EmployeeReturnDto employeeReturnDto = new EmployeeReturnDto();
+        employeeReturnDto.setId(employee.getId());
         employeeReturnDto.setGender(employee.getGender());
+        employeeReturnDto.setName(employee.getName());
+        employeeReturnDto.setPhoneNumber(employee.getPhoneNumber());
+        employeeReturnDto.setAddress(employee.getAddress());
         employeeReturnDto.setCity(employee.getCity());
         employeeReturnDto.setEmail(employee.getEmail());
         employeeReturnDto.setSuperiorId(employee.getSuperiorId());
@@ -182,5 +187,20 @@ public class EmployeeService {
                 .orElseThrow(() -> new UserNotFoundException("The user with id " + employee.getUser().getId() + "does not exist!"));
         userRepository.deleteById(user.getId());
         return "This employee has been deleted!";
+    }
+
+    public String getAuthenticationDetails(String username) {
+
+        User user = userRepository.findByUsername(username).orElseThrow();
+        Employee employee = employeeRepository.findByUser(user).orElseThrow();
+
+        return employee.getName() + ", " + employee.getJobTitle();
+    }
+    public EmployeeReturnDto getUpdatePersonalDetails(String username) {
+
+        User user = userRepository.findByUsername(username).orElseThrow();
+        Employee employee = employeeRepository.findByUser(user).orElseThrow();
+
+        return mapEmployee(employee);
     }
 }

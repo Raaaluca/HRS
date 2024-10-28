@@ -11,27 +11,26 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import ro.siit.HRS.dto.create.LeaveRequestCreateDto;
-import ro.siit.HRS.dto.rturn.ManagerReturnDto;
+import ro.siit.HRS.dto.update.EmployeeUpdateDto;
 import ro.siit.HRS.dto.update.ManagerUpdateDto;
 import ro.siit.HRS.model.LeaveRequest;
+import ro.siit.HRS.service.EmployeeService;
 import ro.siit.HRS.service.HrsUserDetails;
 import ro.siit.HRS.service.LeaveRequestService;
-import ro.siit.HRS.service.ManagerService;
 
 @Controller
-@RequestMapping(path = "/managers")
-public class ManagerMvcController {
+@RequestMapping(path = "/employees")
+public class EmployeeMvcController {
 
     @Autowired
-    private ManagerService managerService;
+    private EmployeeService employeeService;
     @Autowired
     private LeaveRequestService leaveRequestService;
 
     @GetMapping(path = "/selfservice")
     public String selfService(@AuthenticationPrincipal HrsUserDetails user, Model model) {
 
-        //model.addAttribute("employees", managerService.getManagerEmployees(user.getUsername()));
-        model.addAttribute("authenticationDetails", managerService
+        model.addAttribute("authenticationDetails", employeeService
                 .getAuthenticationDetails(user.getUsername()));
 
         return "/selfservice";
@@ -40,22 +39,22 @@ public class ManagerMvcController {
     @GetMapping(path = "/personaldetails")
     public String getPersonalDetails(@AuthenticationPrincipal HrsUserDetails user, Model model) {
 
-        model.addAttribute("manager",
-                managerService.getUpdatePersonalDetails(user.getUsername()));
+        model.addAttribute("employee",
+                employeeService.getUpdatePersonalDetails(user.getUsername()));
         model.addAttribute("authenticationDetails",
-                managerService.getAuthenticationDetails(user.getUsername()));
+                employeeService.getAuthenticationDetails(user.getUsername()));
 
         return "/personaldetails";
     }
 
     @PostMapping(path = "/personaldetails/update")
     public String updatePersonalDetails(@AuthenticationPrincipal HrsUserDetails user,
-                                        @ModelAttribute ManagerUpdateDto manager, Model model) {
+                                        @ModelAttribute EmployeeUpdateDto employee, Model model) {
 
-        model.addAttribute("manager",
-                managerService.updateManager(manager));
+        model.addAttribute("employee",
+                employeeService.updateEmployee(employee));
         model.addAttribute("authenticationDetails",
-                managerService.getAuthenticationDetails(user.getUsername()));
+                employeeService.getAuthenticationDetails(user.getUsername()));
 
         return "/personaldetails";
     }
@@ -63,11 +62,11 @@ public class ManagerMvcController {
     @GetMapping(path = "/myleaverequests")
     public String getLeaveRequest(@AuthenticationPrincipal HrsUserDetails user, Model model) {
 
-        model.addAttribute("leaverequest", new LeaveRequestCreateDto());
-        model.addAttribute("authenticationDetails", managerService
-                .getAuthenticationDetails(user.getUsername()));
-        model.addAttribute("myLeaveRequests",managerService.myLeaveRequests(user.getUsername()));
-        model.addAttribute("managerRemainingDays", managerService.getManagerRemainingDays(user.getUsername()));
+//        model.addAttribute("leaverequest", new LeaveRequestCreateDto());
+//        model.addAttribute("authenticationDetails", managerService
+//                .getAuthenticationDetails(user.getUsername()));
+//        model.addAttribute("myLeaveRequests",managerService.myLeaveRequests(user.getUsername()));
+//        model.addAttribute("managerRemainingDays", managerService.getManagerRemainingDays(user.getUsername()));
 
         return "leaverequest";
     }
@@ -78,22 +77,22 @@ public class ManagerMvcController {
                                      BindingResult bindingResult,
                                      Model model) {
 
-        leaveRequestService.createLeaveRequestByUsername(leaverequest, user.getUsername());
-        model.addAttribute("leaverequest", new LeaveRequestCreateDto());
-        model.addAttribute("authenticationDetails", managerService
-                .getAuthenticationDetails(user.getUsername()));
-        model.addAttribute("myLeaveRequests",managerService.myLeaveRequests(user.getUsername()));
-        model.addAttribute("managerRemainingDays", managerService.getManagerRemainingDays(user.getUsername()));
+//        leaveRequestService.createLeaveRequestByUsername(leaverequest, user.getUsername());
+//        model.addAttribute("leaverequest", new LeaveRequestCreateDto());
+//        model.addAttribute("authenticationDetails", managerService
+//                .getAuthenticationDetails(user.getUsername()));
+//        model.addAttribute("myLeaveRequests",managerService.myLeaveRequests(user.getUsername()));
+//        model.addAttribute("managerRemainingDays", managerService.getManagerRemainingDays(user.getUsername()));
         return "leaverequest";
     }
 
     @GetMapping(path = "/employees")
     public String getEmployees(@AuthenticationPrincipal HrsUserDetails user, Model model) {
 
-        model.addAttribute("employees", managerService
-                .getManagerEmployees(user.getUsername()));
-        model.addAttribute("authenticationDetails", managerService
-                .getAuthenticationDetails(user.getUsername()));
+//        model.addAttribute("employees", managerService
+//                .getManagerEmployees(user.getUsername()));
+//        model.addAttribute("authenticationDetails", managerService
+//                .getAuthenticationDetails(user.getUsername()));
 
         return "/employees";
     }
@@ -101,10 +100,10 @@ public class ManagerMvcController {
     @GetMapping(path = "/requestsForApproval")
     public String getPendingLeaveRequests(@AuthenticationPrincipal HrsUserDetails user, Model model) {
 
-        model.addAttribute("pendingLeaveRequests",
-                managerService.getManagerPendingLeaveRequests(user.getUsername()));
-        model.addAttribute("authenticationDetails",
-                managerService.getAuthenticationDetails(user.getUsername()));
+//        model.addAttribute("pendingLeaveRequests",
+//                managerService.getManagerPendingLeaveRequests(user.getUsername()));
+//        model.addAttribute("authenticationDetails",
+//                managerService.getAuthenticationDetails(user.getUsername()));
 
         return "/leaverequests";
     }
@@ -114,14 +113,14 @@ public class ManagerMvcController {
                                       BindingResult bindingResult,
                                       Model model) {
 
-        managerService.approveLeaveRequest(leaveRequest.getId());
+//        managerService.approveLeaveRequest(leaveRequest.getId());
 
         return "redirect:requestsForApproval";
     }
     @GetMapping(path = "/services")
     public String services(@AuthenticationPrincipal UserDetails user, Model model) {
 
-        model.addAttribute("authenticationDetails", managerService
+        model.addAttribute("authenticationDetails", employeeService
                 .getAuthenticationDetails(user.getUsername()));
         return "/services";
     }
