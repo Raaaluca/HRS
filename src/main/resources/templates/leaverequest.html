@@ -47,8 +47,7 @@
         <a href="/index" class="logo d-flex align-items-center me-auto">
             <img src="/img/logo.png" alt="">
             <h1 class="sitename">
-                <div sec:authorize="hasAuthority('MANAGER')" th:text="${authenticationDetails}"></div>
-                <div sec:authorize="hasAuthority('EMPLOYEE')" th:text="Employee"></div>
+                <div th:text="${authenticationDetails}"></div>
             </h1>
         </a>
 
@@ -102,9 +101,12 @@
                         <p><strong> Number of Days </strong></p>
                         <input th:value="${leaverequest.numberOfDaysForLeaveRequest}" name="numberOfDaysForLeaveRequest"/>
                         <!-- ADD ALL THE OTHER FIELDS THAT ARE PART OF THE OBJECT -->
+                        <p> </p>
+                        <p> </p>
                         <button type="submit" class="btn btn-outline-success">Create request</button>
                     </form>
                 </div><!-- End Service Item -->
+
 
                 <div sec:authorize="hasAuthority('EMPLOYEE')" class="col-lg-6" data-aos="fade-up" data-aos-delay="100">
 
@@ -120,7 +122,7 @@
                         <tr th:each="leaverequest : ${myLeaveRequests}">
                             <td><span th:text="${leaverequest.typeOfLeaveRequest}"> Request Type </span></td>
                             <td><span th:text="${leaverequest.numberOfDaysForLeaveRequest}"> Used Days </span></td>
-                            <td><span th:text="${leaverequest.superiorId}"> Approval Manager </span></td>
+                            <td><span th:text="${leaverequest.superiorName}"> Approval Manager </span></td>
                         </tr>
                         </tbody>
                     </table>
@@ -134,6 +136,8 @@
                         <p><strong> Number of Days </strong></p>
                         <input th:value="${leaverequest.numberOfDaysForLeaveRequest}" name="numberOfDaysForLeaveRequest"/>
                         <!-- ADD ALL THE OTHER FIELDS THAT ARE PART OF THE OBJECT -->
+                        <p> </p>
+                        <p> </p>
                         <button type="submit" class="btn btn-outline-success">Create request</button>
                     </form>
                 </div><!-- End Service Item -->

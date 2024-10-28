@@ -5,6 +5,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import ro.siit.HRS.dto.create.EmployeeCreateDto;
 import ro.siit.HRS.dto.rturn.EmployeeReturnDto;
+import ro.siit.HRS.dto.rturn.LeaveRequestReturnDto;
 import ro.siit.HRS.dto.rturn.ManagerReturnDto;
 import ro.siit.HRS.dto.update.EmployeeUpdateDto;
 import ro.siit.HRS.exceptions.DepartmentNotFoundException;
@@ -22,9 +23,12 @@ import ro.siit.HRS.repository.UserRepository;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class EmployeeService {
+    @Autowired
+    private LeaveRequestService leaveRequestService;
     @Autowired
     private EmployeeRepository employeeRepository;
     @Autowired
@@ -196,11 +200,31 @@ public class EmployeeService {
 
         return employee.getName() + ", " + employee.getJobTitle();
     }
+
     public EmployeeReturnDto getUpdatePersonalDetails(String username) {
 
         User user = userRepository.findByUsername(username).orElseThrow();
         Employee employee = employeeRepository.findByUser(user).orElseThrow();
 
         return mapEmployee(employee);
+    }
+
+    public List<LeaveRequestReturnDto> myLeaveRequests(String username) {
+
+        User user = userRepository.findByUsername(username).orElseThrow();
+        Employee employee = employeeRepository.findByUser(user).orElseThrow();
+
+        return employee.getLeaveRequests()
+                .stream()
+                .map(p -> leaveRequestService.mapLeaveRequestReturnDto(p))
+                .collect(Collectors.toList());
+    }
+
+    public Integer getEmployeeRemainingDays(String username) {
+
+        User user = userRepository.findByUsername(username).orElseThrow();
+        Employee employee = employeeRepository.findByUser(user).orElseThrow();
+
+        return employee.getAnnualLeaveDays();
     }
 }

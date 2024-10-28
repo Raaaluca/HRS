@@ -62,11 +62,11 @@ public class EmployeeMvcController {
     @GetMapping(path = "/myleaverequests")
     public String getLeaveRequest(@AuthenticationPrincipal HrsUserDetails user, Model model) {
 
-//        model.addAttribute("leaverequest", new LeaveRequestCreateDto());
-//        model.addAttribute("authenticationDetails", managerService
-//                .getAuthenticationDetails(user.getUsername()));
-//        model.addAttribute("myLeaveRequests",managerService.myLeaveRequests(user.getUsername()));
-//        model.addAttribute("managerRemainingDays", managerService.getManagerRemainingDays(user.getUsername()));
+        model.addAttribute("leaverequest", new LeaveRequestCreateDto());
+        model.addAttribute("authenticationDetails", employeeService
+                .getAuthenticationDetails(user.getUsername()));
+        model.addAttribute("myLeaveRequests",employeeService.myLeaveRequests(user.getUsername()));
+        model.addAttribute("employeeRemainingDays", employeeService.getEmployeeRemainingDays(user.getUsername()));
 
         return "leaverequest";
     }
@@ -77,12 +77,12 @@ public class EmployeeMvcController {
                                      BindingResult bindingResult,
                                      Model model) {
 
-//        leaveRequestService.createLeaveRequestByUsername(leaverequest, user.getUsername());
-//        model.addAttribute("leaverequest", new LeaveRequestCreateDto());
-//        model.addAttribute("authenticationDetails", managerService
-//                .getAuthenticationDetails(user.getUsername()));
-//        model.addAttribute("myLeaveRequests",managerService.myLeaveRequests(user.getUsername()));
-//        model.addAttribute("managerRemainingDays", managerService.getManagerRemainingDays(user.getUsername()));
+        leaveRequestService.createEmployeeLeaveRequestByUsername(leaverequest, user.getUsername());
+        model.addAttribute("leaverequest", new LeaveRequestCreateDto());
+        model.addAttribute("authenticationDetails", employeeService
+                .getAuthenticationDetails(user.getUsername()));
+        model.addAttribute("myLeaveRequests",employeeService.myLeaveRequests(user.getUsername()));
+        model.addAttribute("employeeRemainingDays", employeeService.getEmployeeRemainingDays(user.getUsername()));
         return "leaverequest";
     }
 

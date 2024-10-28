@@ -6,6 +6,7 @@ import lombok.Data;
 public class LeaveRequestReturnDto {
 
     private Long id;
+    private String superiorName;
     private String typeOfLeaveRequest;
     private int numberOfDaysForLeaveRequest;
     private String jobTitle;

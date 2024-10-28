@@ -61,6 +61,7 @@ public class LeaveRequestService {
             leaveRequestReturnDto.setEmployeeName(getEmployeeNameById(leaveRequest.getEmployeeId()));
             leaveRequestReturnDto.setJobTitle(getJobTitle(leaveRequest.getEmployeeId()));
             leaveRequestReturnDto.setAnnualLeaveDays(getAnnualLeaveDaysByEmployeeId(leaveRequest.getEmployeeId()));
+            leaveRequestReturnDto.setSuperiorName(getSuperiorNameBySuperiorId(leaveRequest.getManagerId()));
         }
         if (leaveRequest.isApproved()) {
             leaveRequestReturnDto.setStatus("APPROVED");
@@ -70,6 +71,11 @@ public class LeaveRequestService {
 
         return leaveRequestReturnDto;
     }
+    public String getSuperiorNameBySuperiorId(Long superiorId){
+
+        Manager manager = managerRepository.findById(superiorId).orElseThrow();
+        return manager.getName();
+    }
 
     public void createLeaveRequestByUsername(LeaveRequestCreateDto leaveRequestCreateDto, String username) {
 
@@ -77,6 +83,15 @@ public class LeaveRequestService {
         Manager manager = managerRepository.findByUser(user).orElseThrow();
 
         leaveRequestCreateDto.setManagerId(manager.getId());
+        createLeaveRequest(leaveRequestCreateDto);
+    }
+    public void createEmployeeLeaveRequestByUsername(LeaveRequestCreateDto leaveRequestCreateDto, String username) {
+
+        User user = userRepository.findByUsername(username).orElseThrow();
+        Employee employee = employeeRepository.findByUser(user).orElseThrow();
+
+        leaveRequestCreateDto.setEmployeeId(employee.getId());
+        leaveRequestCreateDto.setManagerId(employee.getSuperiorId());
         createLeaveRequest(leaveRequestCreateDto);
     }
 
