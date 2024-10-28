@@ -77,13 +77,32 @@
 
             <div class="row g-5">
                 <div class="col-lg-6" data-aos="fade-up" data-aos-delay="100">
+
+                    <table class="table table-striped" style="width:70%">
+                        <thead>
+                        <tr>
+                            <th scope="col">Request Type</th>
+                            <th scope="col">Used Days</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="leaverequest : ${myLeaveRequests}">
+                            <td><span th:text="${leaverequest.typeOfLeaveRequest}"> Request Type </span></td>
+                            <td><span th:text="${leaverequest.numberOfDaysForLeaveRequest}"> Used Days </span></td>
+                        </tr>
+                        </tbody>
+                    </table>
+
+                    <table><tr><td><strong> Total Remaining Days: </strong> </td><td th:text="${managerRemainingDays}"></td></tr></table>
+                    <p> </p>
+                    <p> </p>
                     <form ACTION="#" th:action="@{/managers/leaverequest/create}" th:modelAttribute="leaverequest" method="POST">
-                        <p><strong> Leave Request Type </strong></p>
+                        <p><strong> Type of Leave Request </strong></p>
                         <input th:value="${leaverequest.typeOfLeaveRequest}" name="typeOfLeaveRequest"/>
                         <p><strong> Number of Days </strong></p>
                         <input th:value="${leaverequest.numberOfDaysForLeaveRequest}" name="numberOfDaysForLeaveRequest"/>
                         <!-- ADD ALL THE OTHER FIELDS THAT ARE PART OF THE OBJECT -->
-                        <button type="submit" class="btn btn-outline-success">Create</button>
+                        <button type="submit" class="btn btn-outline-success">Create request</button>
                     </form>
                 </div><!-- End Service Item -->
 

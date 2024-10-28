@@ -71,8 +71,7 @@
             <th scope="col">Employee</th>
             <th scope="col">Job Title</th>
             <th scope="col">Request Type</th>
-            <th scope="col">Days</th>
-            <th scope="col">Remaining Days</th>
+            <th scope="col">Number of Days</th>
             <th scope="col">Status</th>
         </tr>
         </thead>
@@ -81,8 +80,7 @@
             <td><span th:text="${leaverequest.employeeName}"> Employee </span></td>
             <td><span th:text="${leaverequest.jobTitle}"> Job Title </span></td>
             <td><span th:text="${leaverequest.typeOfLeaveRequest}"> Request Type </span></td>
-            <td><span th:text="${leaverequest.numberOfDaysForLeaveRequest}"> Days </span></td>
-            <td><span th:text="${leaverequest.annualLeaveDays}"> Remaining Days </span></td>
+            <td><span th:text="${leaverequest.numberOfDaysForLeaveRequest}"> Number of Days </span></td>
             <td><span th:text="${leaverequest.status}"> Status </span></td>
             <td>
             <span>

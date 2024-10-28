@@ -145,6 +145,17 @@ public class ManagerService {
                 .collect(Collectors.toList());
     }
 
+    public List<LeaveRequestReturnDto> myLeaveRequests(String username) {
+
+        User user = userRepository.findByUsername(username).orElseThrow();
+        Manager manager = managerRepository.findByUser(user).orElseThrow();
+
+        return manager.getLeaveRequests()
+                .stream()
+                .map(p -> leaveRequestService.mapLeaveRequestReturnDto(p))
+                .collect(Collectors.toList());
+    }
+
     public String getAuthenticationDetails(String username) {
 
         User user = userRepository.findByUsername(username).orElseThrow();
@@ -167,5 +178,13 @@ public class ManagerService {
         Manager manager = managerRepository.findByUser(user).orElseThrow();
 
         return mapManager(manager);
+    }
+
+    public Integer getManagerRemainingDays(String username) {
+
+        User user = userRepository.findByUsername(username).orElseThrow();
+        Manager manager = managerRepository.findByUser(user).orElseThrow();
+
+        return manager.getAnnualLeaveDays();
     }
 }

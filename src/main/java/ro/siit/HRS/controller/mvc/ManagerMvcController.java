@@ -56,21 +56,31 @@ public class ManagerMvcController {
         return "/personaldetails";
     }
 
-    @GetMapping(path = "/leaverequest")
+    @GetMapping(path = "/myleaverequests")
     public String getLeaveRequest(@AuthenticationPrincipal HrsUserDetails user, Model model) {
 
         model.addAttribute("leaverequest", new LeaveRequestCreateDto());
         model.addAttribute("authenticationDetails", managerService
                 .getAuthenticationDetails(user.getUsername()));
+        model.addAttribute("myLeaveRequests",managerService.myLeaveRequests(user.getUsername()));
+        model.addAttribute("managerRemainingDays", managerService.getManagerRemainingDays(user.getUsername()));
 
-        return "/leaverequest";
+        return "leaverequest";
     }
 
     @PostMapping(path = "/leaverequest/create")
-    public String createLeaveRequest(@AuthenticationPrincipal HrsUserDetails user, @ModelAttribute LeaveRequestCreateDto leaverequest, Model model) {
+    public String createLeaveRequest(@AuthenticationPrincipal HrsUserDetails user,
+                                     @ModelAttribute("leaverequest") LeaveRequestCreateDto leaverequest,
+                                     BindingResult bindingResult,
+                                     Model model) {
 
         leaveRequestService.createLeaveRequestByUsername(leaverequest, user.getUsername());
-        return "/selfservice";
+        model.addAttribute("leaverequest", new LeaveRequestCreateDto());
+        model.addAttribute("authenticationDetails", managerService
+                .getAuthenticationDetails(user.getUsername()));
+        model.addAttribute("myLeaveRequests",managerService.myLeaveRequests(user.getUsername()));
+        model.addAttribute("managerRemainingDays", managerService.getManagerRemainingDays(user.getUsername()));
+        return "leaverequest";
     }
 
     @GetMapping(path = "/employees")

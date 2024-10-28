@@ -105,6 +105,7 @@ public class LeaveRequestService {
             Manager manager = managerRepository.findById(leaveRequestCreateDto.getManagerId())
                     .orElseThrow(() -> new ManagerNotFoundException("This manager id " + leaveRequestCreateDto.getManagerId() + "was not found!"));
             manager.getLeaveRequests().add(leaveRequest);
+            manager.setAnnualLeaveDays(manager.getAnnualLeaveDays() - leaveRequestCreateDto.getNumberOfDaysForLeaveRequest());
             managerRepository.save(manager);
         }
         return mapLeaveRequestReturnDto(leaveRequest);

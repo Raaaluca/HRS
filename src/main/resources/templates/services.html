@@ -1,7 +1,6 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org"
-      lang="en"
-      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml"
+      lang="en">
 
 <head>
     <meta charset="utf-8">
@@ -79,7 +78,7 @@
 
 
 
-                <div class="col-lg-6" data-aos="fade-up" data-aos-delay="200">
+                <div sec:authorize="hasAuthority('MANAGER')" class="col-lg-6" data-aos="fade-up" data-aos-delay="200">
                     <div class="service-item item-orange position-relative">
                         <i class="bi bi-bounding-box-circles icon"></i>
                         <div>
@@ -89,7 +88,7 @@
                     </div>
                 </div><!-- End Service Item -->
 
-                <div class="col-lg-6" data-aos="fade-up" data-aos-delay="300">
+                <div sec:authorize="hasAuthority('MANAGER')" class="col-lg-6" data-aos="fade-up" data-aos-delay="300">
                     <div class="service-item item-teal position-relative">
                         <i class="bi bi-easel icon"></i>
                         <div>
