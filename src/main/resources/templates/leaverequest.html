@@ -95,13 +95,14 @@
                     <table><tr><td><strong> Total Remaining Days: </strong> </td><td th:text="${managerRemainingDays}"></td></tr></table>
                     <p> </p>
                     <p> </p>
-                    <form ACTION="#" th:action="@{/managers/leaverequest/create}" th:modelAttribute="leaverequestCreateDto" method="POST">
+                    <form ACTION="#" th:action="@{/managers/leaverequest/create}" th:modelAttribute="leaveRequestCreateDto" method="POST">
                         <p><strong> Type of Leave Request </strong></p>
-                        <input th:value="${leaverequestCreateDto.typeOfLeaveRequest}" name="leaverequestCreateDto"/>
+                        <input th:value="${leaveRequestCreateDto.typeOfLeaveRequest}" name="typeOfLeaveRequest"/>
+                        <p class="error" th:if="${#fields.hasErrors('leaveRequestCreateDto.typeOfLeaveRequest')}" th:errors="${leaveRequestCreateDto.typeOfLeaveRequest}"/>
                         <p> </p>
                         <p><strong> Number of Days </strong></p>
-                        <input th:value="${leaverequestCreateDto.numberOfDaysForLeaveRequest}" name="numberOfDaysForLeaveRequest"/>
-                        <p class="error" th:if="${#fields.hasErrors('leaverequestCreateDto.numberOfDaysForLeaveRequest')}" th:errors="${leaverequestCreateDto.numberOfDaysForLeaveRequest}"/>
+                        <input th:value="${leaveRequestCreateDto.numberOfDaysForLeaveRequest}" name="numberOfDaysForLeaveRequest"/>
+                        <p class="error" th:if="${#fields.hasErrors('leaveRequestCreateDto.numberOfDaysForLeaveRequest')}" th:errors="${leaveRequestCreateDto.numberOfDaysForLeaveRequest}"/>
 
                         <!-- ADD ALL THE OTHER FIELDS THAT ARE PART OF THE OBJECT -->
                         <p> </p>
@@ -133,14 +134,14 @@
                     <table><tr><td><strong> Total Remaining Days: </strong> </td><td th:text="${employeeRemainingDays}"></td></tr></table>
                     <p> </p>
                     <p> </p>
-                    <form ACTION="#" th:action="@{/employees/leaverequest/create}" th:modelAttribute="leaverequestCreateDto" method="POST">
+                    <form ACTION="#" th:action="@{/employees/leaverequest/create}" th:modelAttribute="leaveRequestCreateDto" method="POST">
                         <p><strong> Type of Leave Request </strong></p>
-                        <input th:value="${leaverequestCreateDto.typeOfLeaveRequest}" name="typeOfLeaveRequest"/>
+                        <input th:value="${leaveRequestCreateDto.typeOfLeaveRequest}" name="typeOfLeaveRequest"/>
+                        <p class="error" th:if="${#fields.hasErrors('leaveRequestCreateDto.typeOfLeaveRequest')}" th:errors="${leaveRequestCreateDto.typeOfLeaveRequest}"/>
                         <p> </p>
                         <p><strong> Number of Days </strong></p>
-                        <input th:value="${leaverequestCreateDto.numberOfDaysForLeaveRequest}" name="numberOfDaysForLeaveRequest"/>
-                        <p class="error" th:if="${#fields.hasErrors('leaverequestCreateDto.numberOfDaysForLeaveRequest')}" th:errors="${leaverequestCreateDto.numberOfDaysForLeaveRequest}"/>
-
+                        <input th:value="${leaveRequestCreateDto.numberOfDaysForLeaveRequest}" name="numberOfDaysForLeaveRequest"/>
+                        <p class="error" th:if="${#fields.hasErrors('leaveRequestCreateDto.numberOfDaysForLeaveRequest')}" th:errors="${leaveRequestCreateDto.numberOfDaysForLeaveRequest}"/>
 
                         <!-- ADD ALL THE OTHER FIELDS THAT ARE PART OF THE OBJECT -->
                         <p> </p>

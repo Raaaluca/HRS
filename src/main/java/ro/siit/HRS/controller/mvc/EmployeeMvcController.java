@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import ro.siit.HRS.dto.create.LeaveRequestCreateDto;
 import ro.siit.HRS.dto.update.EmployeeUpdateDto;
-import ro.siit.HRS.dto.update.ManagerUpdateDto;
 import ro.siit.HRS.service.EmployeeService;
 import ro.siit.HRS.service.HrsUserDetails;
 import ro.siit.HRS.service.LeaveRequestService;
@@ -66,7 +65,7 @@ public class EmployeeMvcController {
     @GetMapping(path = "/myleaverequests")
     public String getLeaveRequest(@AuthenticationPrincipal HrsUserDetails user, Model model) {
 
-        model.addAttribute("leaverequestCreateDto", new LeaveRequestCreateDto());
+        model.addAttribute("leaveRequestCreateDto", new LeaveRequestCreateDto());
         model.addAttribute("authenticationDetails", employeeService
                 .getAuthenticationDetails(user.getUsername()));
         model.addAttribute("myLeaveRequests", employeeService.myLeaveRequests(user.getUsername()));
@@ -77,12 +76,19 @@ public class EmployeeMvcController {
 
     @PostMapping(path = "/leaverequest/create")
     public String createLeaveRequest(@AuthenticationPrincipal HrsUserDetails user,
-                                     @ModelAttribute @Valid LeaveRequestCreateDto leaverequest,
-                                     BindingResult bindingResult) {
+                                     @Valid @ModelAttribute LeaveRequestCreateDto leaverequest,
+                                     BindingResult bindingResult,
+                                     Model model) {
 
         if (!bindingResult.hasErrors()) {
             leaveRequestService.createEmployeeLeaveRequestByUsername(leaverequest, user.getUsername());
+            return "redirect:/employees/myleaverequests";
         }
+        model.addAttribute("leaveRequestCreateDto", leaverequest);
+        model.addAttribute("authenticationDetails", employeeService.getAuthenticationDetails(user.getUsername()));
+        model.addAttribute("myLeaveRequests", employeeService.myLeaveRequests(user.getUsername()));
+        model.addAttribute("employeeRemainingDays", employeeService.getEmployeeRemainingDays(user.getUsername()));
+
         return "leaverequest";
     }
 

@@ -69,7 +69,7 @@ public class ManagerMvcController {
     @GetMapping(path = "/myleaverequests")
     public String getLeaveRequest(@AuthenticationPrincipal HrsUserDetails user, Model model) {
 
-        model.addAttribute("leaverequest", new LeaveRequestCreateDto());
+        model.addAttribute("leaveRequestCreateDto", new LeaveRequestCreateDto());
         model.addAttribute("authenticationDetails", managerService
                 .getAuthenticationDetails(user.getUsername()));
         model.addAttribute("myLeaveRequests", managerService.myLeaveRequests(user.getUsername()));
@@ -80,16 +80,20 @@ public class ManagerMvcController {
 
     @PostMapping(path = "/leaverequest/create")
     public String createLeaveRequest(@AuthenticationPrincipal HrsUserDetails user,
-                                     @ModelAttribute("leaverequest") @Valid LeaveRequestCreateDto leaverequest,
+                                     @Valid @ModelAttribute LeaveRequestCreateDto leaverequest,
                                      BindingResult bindingResult,
                                      Model model) {
 
-        leaveRequestService.createLeaveRequestByUsername(leaverequest, user.getUsername());
-        model.addAttribute("leaverequest", new LeaveRequestCreateDto());
+        if (!bindingResult.hasErrors()) {
+            leaveRequestService.createLeaveRequestByUsername(leaverequest, user.getUsername());
+            return "redirect:/managers/myleaverequests";
+        }
+        model.addAttribute("leaveRequestCreateDto", leaverequest);
         model.addAttribute("authenticationDetails", managerService
                 .getAuthenticationDetails(user.getUsername()));
         model.addAttribute("myLeaveRequests", managerService.myLeaveRequests(user.getUsername()));
         model.addAttribute("managerRemainingDays", managerService.getManagerRemainingDays(user.getUsername()));
+
         return "leaverequest";
     }
 
