@@ -125,6 +125,30 @@
                     </form>
                 </div><!-- End Service Item -->
 
+                <div sec:authorize="hasAuthority('ADMIN')" data-aos="fade-up" data-aos-delay="100">
+                    <form ACTION="#" th:action="@{/employees/personaldetails/update}" th:modelAttribute="employeeUpdateDto" method="POST">
+                        <input type="hidden" th:value="${employeeUpdateDto.id}" name="id"/>
+                        <p><strong> Name </strong></p>
+                        <input th:value="${employeeUpdateDto.name}" name="name"/>
+                        <p class="error" th:if="${#fields.hasErrors('employeeUpdateDto.name')}" th:errors="${employeeUpdateDto.name}"/>
+                        <p></p>
+                        <p><strong> City </strong></p>
+                        <input th:value="${employeeUpdateDto.city}" name="city"/>
+                        <p></p>
+                        <p><strong> Phone </strong></p>
+                        <input th:value="${employeeUpdateDto.phoneNumber}" name="phoneNumber"/>
+                        <p class="error" th:if="${#fields.hasErrors('employeeUpdateDto.phoneNumber')}" th:errors="${employeeUpdateDto.phoneNumber}"/>
+                        <p></p>
+                        <p><strong> Address </strong></p>
+                        <input th:value="${employeeUpdateDto.address}" name="address"/>
+                        <!-- ADD ALL THE OTHER FIELDS THAT ARE PART OF THE OBJECT -->
+                        <p></p>
+                        <p></p>
+                        <p></p>
+                        <button type="submit" class="btn btn-outline-success"> Update details </button>
+                    </form>
+                </div><!-- End Service Item -->
+
 <!--                <div class="col-lg-6" data-aos="fade-up" data-aos-delay="400">-->
 <!--                    <div class="service-item item-red position-relative">-->
 <!--                        <i class="bi bi-bounding-box-circles icon"></i>-->

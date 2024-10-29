@@ -95,6 +95,16 @@
                     </div>
                 </div><!-- End Service Item -->
 
+                <div sec:authorize="hasAuthority('ADMIN')" class="col-lg-6" data-aos="fade-up" data-aos-delay="100">
+                    <div class="service-item item-cyan position-relative">
+                        <i class="bi bi-chat-square-text icon"></i>
+                        <div>
+                            <a href="/employees/personaldetails"> <h3>My personal details</h3> </a>
+                            <p>Edit personal details</p>
+                        </div>
+                    </div>
+                </div><!-- End Service Item -->
+
                 <div sec:authorize="hasAuthority('MANAGER')" class="col-lg-6" data-aos="fade-up" data-aos-delay="200">
                     <div class="service-item item-orange position-relative">
                         <i class="bi bi-bounding-box-circles icon"></i>
@@ -106,6 +116,16 @@
                 </div><!-- End Service Item -->
 
                 <div sec:authorize="hasAuthority('EMPLOYEE')" class="col-lg-6" data-aos="fade-up" data-aos-delay="200">
+                    <div class="service-item item-orange position-relative">
+                        <i class="bi bi-bounding-box-circles icon"></i>
+                        <div>
+                            <a href="/employees/myleaverequests"> <h3>My Leave Requests</h3> </a>
+                            <p>Create leave request</p>
+                        </div>
+                    </div>
+                </div><!-- End Service Item -->
+
+                <div sec:authorize="hasAuthority('ADMIN')" class="col-lg-6" data-aos="fade-up" data-aos-delay="200">
                     <div class="service-item item-orange position-relative">
                         <i class="bi bi-bounding-box-circles icon"></i>
                         <div>

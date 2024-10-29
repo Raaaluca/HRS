@@ -150,6 +150,44 @@
                     </form>
                 </div><!-- End Service Item -->
 
+                <div sec:authorize="hasAuthority('ADMIN')" class="col-lg-6" data-aos="fade-up" data-aos-delay="100">
+
+                    <table class="table table-striped" style="width:70%">
+                        <thead>
+                        <tr>
+                            <th scope="col">Request Type</th>
+                            <th scope="col">Used Days</th>
+                            <th scope="col">Approval Manager</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="leaverequest : ${myLeaveRequests}">
+                            <td><span th:text="${leaverequest.typeOfLeaveRequest}"> Request Type </span></td>
+                            <td><span th:text="${leaverequest.numberOfDaysForLeaveRequest}"> Used Days </span></td>
+                            <td><span th:text="${leaverequest.superiorName}"> Approval Manager </span></td>
+                        </tr>
+                        </tbody>
+                    </table>
+
+                    <table><tr><td><strong> Total Remaining Days: </strong> </td><td th:text="${employeeRemainingDays}"></td></tr></table>
+                    <p> </p>
+                    <p> </p>
+                    <form ACTION="#" th:action="@{/employees/leaverequest/create}" th:modelAttribute="leaveRequestCreateDto" method="POST">
+                        <p><strong> Type of Leave Request </strong></p>
+                        <input th:value="${leaveRequestCreateDto.typeOfLeaveRequest}" name="typeOfLeaveRequest"/>
+                        <p class="error" th:if="${#fields.hasErrors('leaveRequestCreateDto.typeOfLeaveRequest')}" th:errors="${leaveRequestCreateDto.typeOfLeaveRequest}"/>
+                        <p> </p>
+                        <p><strong> Number of Days </strong></p>
+                        <input th:value="${leaveRequestCreateDto.numberOfDaysForLeaveRequest}" name="numberOfDaysForLeaveRequest"/>
+                        <p class="error" th:if="${#fields.hasErrors('leaveRequestCreateDto.numberOfDaysForLeaveRequest')}" th:errors="${leaveRequestCreateDto.numberOfDaysForLeaveRequest}"/>
+
+                        <!-- ADD ALL THE OTHER FIELDS THAT ARE PART OF THE OBJECT -->
+                        <p> </p>
+                        <p> </p>
+                        <button type="submit" class="btn btn-outline-success">Create request</button>
+                    </form>
+                </div><!-- End Service Item -->
+
 <!--                <div class="col-lg-6" data-aos="fade-up" data-aos-delay="400">-->
 <!--                    <div class="service-item item-red position-relative">-->
 <!--                        <i class="bi bi-bounding-box-circles icon"></i>-->
