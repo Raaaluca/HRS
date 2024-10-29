@@ -8,6 +8,7 @@ import ro.siit.HRS.dto.rturn.EmployeeReturnDto;
 import ro.siit.HRS.dto.rturn.LeaveRequestReturnDto;
 import ro.siit.HRS.dto.rturn.ManagerReturnDto;
 import ro.siit.HRS.dto.update.EmployeeUpdateDto;
+import ro.siit.HRS.dto.update.ManagerUpdateDto;
 import ro.siit.HRS.exceptions.DepartmentNotFoundException;
 import ro.siit.HRS.exceptions.EmployeeNotFoundException;
 import ro.siit.HRS.exceptions.ManagerNotFoundException;
@@ -226,5 +227,32 @@ public class EmployeeService {
         Employee employee = employeeRepository.findByUser(user).orElseThrow();
 
         return employee.getAnnualLeaveDays();
+    }
+    public void updateEmployeeDto(EmployeeUpdateDto employeeUpdateDto) {
+
+        Employee employee = employeeRepository.findById(employeeUpdateDto.getId())
+                .orElseThrow(() -> new EmployeeNotFoundException(
+                        "This employee id " + employeeUpdateDto.getId() + "can not be found!!"));
+        if (employeeUpdateDto.getAddress() != null) {
+            employee.setAddress(employeeUpdateDto.getAddress());
+        }
+        if (employeeUpdateDto.getName() != null) {
+            employee.setName(employeeUpdateDto.getName());
+        }
+        if (employeeUpdateDto.getCity() != null) {
+            employee.setCity(employeeUpdateDto.getCity());
+        }
+        if (employeeUpdateDto.getEmail() != null) {
+            employee.setEmail(employeeUpdateDto.getEmail());
+            employee.getUser().setUsername(employee.getEmail());
+        }
+        if (employeeUpdateDto.getEndDate() != null) {
+            employee.setEndDate(employeeUpdateDto.getEndDate());
+        }
+        if (employeeUpdateDto.getPhoneNumber() != null) {
+            employee.setPhoneNumber(employeeUpdateDto.getPhoneNumber());
+        }
+        employeeRepository.save(employee);
+
     }
 }

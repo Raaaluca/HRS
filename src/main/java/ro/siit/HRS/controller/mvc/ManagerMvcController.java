@@ -1,5 +1,6 @@
 package ro.siit.HRS.controller.mvc;
 
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -14,6 +15,7 @@ import ro.siit.HRS.dto.create.LeaveRequestCreateDto;
 import ro.siit.HRS.dto.rturn.ManagerReturnDto;
 import ro.siit.HRS.dto.update.ManagerUpdateDto;
 import ro.siit.HRS.model.LeaveRequest;
+import ro.siit.HRS.model.Manager;
 import ro.siit.HRS.service.HrsUserDetails;
 import ro.siit.HRS.service.LeaveRequestService;
 import ro.siit.HRS.service.ManagerService;
@@ -40,7 +42,7 @@ public class ManagerMvcController {
     @GetMapping(path = "/personaldetails")
     public String getPersonalDetails(@AuthenticationPrincipal HrsUserDetails user, Model model) {
 
-        model.addAttribute("manager",
+        model.addAttribute("managerUpdateDto",
                 managerService.getUpdatePersonalDetails(user.getUsername()));
         model.addAttribute("authenticationDetails",
                 managerService.getAuthenticationDetails(user.getUsername()));
@@ -49,15 +51,19 @@ public class ManagerMvcController {
     }
 
     @PostMapping(path = "/personaldetails/update")
-    public String updatePersonalDetails(@AuthenticationPrincipal HrsUserDetails user,
-                                        @ModelAttribute ManagerUpdateDto manager, Model model) {
+    public String updatePersonalDetails(@Valid @ModelAttribute ManagerUpdateDto manager,
+                                        BindingResult result,
+                                        @AuthenticationPrincipal HrsUserDetails user,
+                                        Model model) {
 
-        model.addAttribute("manager",
-                managerService.updateManager(manager));
+        if (!result.hasErrors()) {
+            managerService.updateManagerDto(manager);
+            return "redirect:/managers/personaldetails";
+        }
         model.addAttribute("authenticationDetails",
                 managerService.getAuthenticationDetails(user.getUsername()));
+        return "personaldetails";
 
-        return "/personaldetails";
     }
 
     @GetMapping(path = "/myleaverequests")
@@ -66,7 +72,7 @@ public class ManagerMvcController {
         model.addAttribute("leaverequest", new LeaveRequestCreateDto());
         model.addAttribute("authenticationDetails", managerService
                 .getAuthenticationDetails(user.getUsername()));
-        model.addAttribute("myLeaveRequests",managerService.myLeaveRequests(user.getUsername()));
+        model.addAttribute("myLeaveRequests", managerService.myLeaveRequests(user.getUsername()));
         model.addAttribute("managerRemainingDays", managerService.getManagerRemainingDays(user.getUsername()));
 
         return "leaverequest";
@@ -74,7 +80,7 @@ public class ManagerMvcController {
 
     @PostMapping(path = "/leaverequest/create")
     public String createLeaveRequest(@AuthenticationPrincipal HrsUserDetails user,
-                                     @ModelAttribute("leaverequest") LeaveRequestCreateDto leaverequest,
+                                     @ModelAttribute("leaverequest") @Valid LeaveRequestCreateDto leaverequest,
                                      BindingResult bindingResult,
                                      Model model) {
 
@@ -82,7 +88,7 @@ public class ManagerMvcController {
         model.addAttribute("leaverequest", new LeaveRequestCreateDto());
         model.addAttribute("authenticationDetails", managerService
                 .getAuthenticationDetails(user.getUsername()));
-        model.addAttribute("myLeaveRequests",managerService.myLeaveRequests(user.getUsername()));
+        model.addAttribute("myLeaveRequests", managerService.myLeaveRequests(user.getUsername()));
         model.addAttribute("managerRemainingDays", managerService.getManagerRemainingDays(user.getUsername()));
         return "leaverequest";
     }
@@ -118,6 +124,7 @@ public class ManagerMvcController {
 
         return "redirect:requestsForApproval";
     }
+
     @GetMapping(path = "/services")
     public String services(@AuthenticationPrincipal UserDetails user, Model model) {
 

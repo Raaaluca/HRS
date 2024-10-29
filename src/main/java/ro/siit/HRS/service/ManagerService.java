@@ -46,6 +46,21 @@ public class ManagerService {
         return managerReturnDto;
     }
 
+    public ManagerUpdateDto mapManagerUpdate(Manager manager) {
+
+        ManagerUpdateDto managerUpdateDto = new ManagerUpdateDto();
+        managerUpdateDto.setId(manager.getId());
+        managerUpdateDto.setAddress(manager.getAddress());
+        managerUpdateDto.setCity(manager.getCity());
+        managerUpdateDto.setEmail(manager.getEmail());
+        managerUpdateDto.setName(manager.getName());
+        managerUpdateDto.setPhoneNumber(manager.getPhoneNumber());
+        managerUpdateDto.setEndDate(manager.getEndDate());
+        managerUpdateDto.setAnnualLeaveDays(manager.getAnnualLeaveDays());
+
+        return managerUpdateDto;
+    }
+
     public ManagerReturnDto findById(Long id) {
 
         return mapManager(managerRepository.findById(id)
@@ -75,6 +90,34 @@ public class ManagerService {
         manager.setPhoneNumber(managerCreateDto.getPhoneNumber());
         manager = managerRepository.save(manager);
         return mapManager(manager);
+    }
+
+    public void updateManagerDto(ManagerUpdateDto managerUpdateDto) {
+
+        Manager manager = managerRepository.findById(managerUpdateDto.getId())
+                .orElseThrow(() -> new ManagerNotFoundException(
+                        "This manager id " + managerUpdateDto.getId() + "can not be found!!"));
+        if (managerUpdateDto.getAddress() != null) {
+            manager.setAddress(managerUpdateDto.getAddress());
+        }
+        if (managerUpdateDto.getName() != null) {
+            manager.setName(managerUpdateDto.getName());
+        }
+        if (managerUpdateDto.getCity() != null) {
+            manager.setCity(managerUpdateDto.getCity());
+        }
+        if (managerUpdateDto.getEmail() != null) {
+            manager.setEmail(managerUpdateDto.getEmail());
+            manager.getUser().setUsername(manager.getEmail());
+        }
+        if (managerUpdateDto.getEndDate() != null) {
+            manager.setEndDate(managerUpdateDto.getEndDate());
+        }
+        if (managerUpdateDto.getPhoneNumber() != null) {
+            manager.setPhoneNumber(managerUpdateDto.getPhoneNumber());
+        }
+       managerRepository.save(manager);
+
     }
 
     public ManagerReturnDto updateManager(ManagerUpdateDto managerUpdateDto) {
@@ -108,8 +151,8 @@ public class ManagerService {
 
     public ManagerReturnDto assignEmployeeToManager(Long employeeId, Long managerId) {
 
-        Employee employee = employeeRepository.findById(employeeId).get();
-        Manager manager = managerRepository.findById(managerId).get();
+        Employee employee = employeeRepository.findById(employeeId).orElseThrow();
+        Manager manager = managerRepository.findById(managerId).orElseThrow();
         manager.getEmployees().add(employee);
         manager = managerRepository.save(manager);
         return mapManager(manager);
@@ -172,12 +215,12 @@ public class ManagerService {
         leaveRequestRepository.save(leaveRequest);
     }
 
-    public ManagerReturnDto getUpdatePersonalDetails(String username) {
+    public ManagerUpdateDto getUpdatePersonalDetails(String username) {
 
         User user = userRepository.findByUsername(username).orElseThrow();
         Manager manager = managerRepository.findByUser(user).orElseThrow();
 
-        return mapManager(manager);
+        return mapManagerUpdate(manager);
     }
 
     public Integer getManagerRemainingDays(String username) {

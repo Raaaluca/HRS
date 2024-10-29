@@ -99,6 +99,10 @@ h6 {
   font-weight: 600;
 }
 
+.error {
+  color:red;
+}
+
 .php-email-form .sent-message {
   display: none;
   color: #ffffff;
