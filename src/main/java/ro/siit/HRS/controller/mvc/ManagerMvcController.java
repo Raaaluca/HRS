@@ -97,17 +97,6 @@ public class ManagerMvcController {
         return "leaverequest";
     }
 
-    @GetMapping(path = "/employees")
-    public String getEmployees(@AuthenticationPrincipal HrsUserDetails user, Model model) {
-
-        model.addAttribute("employees", managerService
-                .getManagerEmployees(user.getUsername()));
-        model.addAttribute("authenticationDetails", managerService
-                .getAuthenticationDetails(user.getUsername()));
-
-        return "/employees";
-    }
-
     @GetMapping(path = "/requestsForApproval")
     public String getPendingLeaveRequests(@AuthenticationPrincipal HrsUserDetails user, Model model) {
 

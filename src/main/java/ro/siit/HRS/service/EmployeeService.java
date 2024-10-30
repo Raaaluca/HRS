@@ -65,6 +65,23 @@ public class EmployeeService {
         return employeeReturnDto;
     }
 
+    public EmployeeReturnDto mapManagerToEmployeeReturnDto(Manager manager) {
+
+        EmployeeReturnDto employeeReturnDto = new EmployeeReturnDto();
+        employeeReturnDto.setId(manager.getId());
+        employeeReturnDto.setGender(manager.getGender());
+        employeeReturnDto.setName(manager.getName());
+        employeeReturnDto.setPhoneNumber(manager.getPhoneNumber());
+        employeeReturnDto.setAddress(manager.getAddress());
+        employeeReturnDto.setCity(manager.getCity());
+        employeeReturnDto.setEmail(manager.getEmail());
+        employeeReturnDto.setStartDate(manager.getStartDate());
+        employeeReturnDto.setEndDate(manager.getEndDate());
+        employeeReturnDto.setAnnualLeaveDays(manager.getAnnualLeaveDays());
+
+        return employeeReturnDto;
+    }
+
     public EmployeeReturnDto findById(Long id) {
 
         Employee employee = employeeRepository.findById(id)
