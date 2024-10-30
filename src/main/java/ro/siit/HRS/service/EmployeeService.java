@@ -113,6 +113,7 @@ public class EmployeeService {
         employee.setNationalId(employeeCreateDto.getNationalId());
         employee.setPhoneNumber(employeeCreateDto.getPhoneNumber());
         employee.setJobTitle(employeeCreateDto.getJobTitle());
+        employee.setAnnualLeaveDays(21);
         employee = employeeRepository.save(employee);
 
         Employee finalEmployee = employee;

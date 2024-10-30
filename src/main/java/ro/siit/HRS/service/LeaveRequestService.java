@@ -18,6 +18,7 @@ import ro.siit.HRS.repository.UserRepository;
 
 @Service
 public class LeaveRequestService {
+
     @Autowired
     private LeaveRequestRepository leaveRequestRepository;
     @Autowired

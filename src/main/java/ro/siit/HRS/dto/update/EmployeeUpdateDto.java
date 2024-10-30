@@ -21,7 +21,7 @@ public class EmployeeUpdateDto {
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate endDate;
     private String jobTitle;
-    @Min(value = 1, message = "At least 1 day is needed")
-    @Max(value = 21, message = "Maximum 21 days are allowed")
+    @Min(value = 1, message = "At least 1 day is needed!")
+    @Max(value = 21, message = "Maximum 21 days are allowed!")
     private Integer annualLeaveDays;
 }

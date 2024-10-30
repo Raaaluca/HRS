@@ -169,14 +169,6 @@ public class ManagerService {
         return "This manager has been deleted!";
     }
 
-    public List<Employee> getManagerEmployees(String username) {
-
-        User user = userRepository.findByUsername(username).orElseThrow();
-        Manager manager = managerRepository.findByUser(user).orElseThrow();
-
-        return manager.getEmployees();
-    }
-
     public List<LeaveRequestReturnDto> getManagerPendingLeaveRequests(String username) {
 
         User user = userRepository.findByUsername(username).orElseThrow();
