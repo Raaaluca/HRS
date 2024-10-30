@@ -34,7 +34,6 @@ public class DepartmentService {
         Department department = new Department();
         department.setDepartmentName(departmentCreateDto.getDepartmentName());
         department.setManagerId(departmentCreateDto.getManagerId());
-        department.setEmployees(new ArrayList<>());
         department = departmentRepository.save(department);
 
         return mapDepartment(department);

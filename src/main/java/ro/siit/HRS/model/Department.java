@@ -11,12 +11,10 @@ import java.util.List;
 @Setter
 @Table(name = "departments")
 public class Department {
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     private String departmentName;
     private Long managerId;
-    @OneToMany
-    private List<Employee> employees;
-
 }

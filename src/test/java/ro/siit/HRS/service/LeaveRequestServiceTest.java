@@ -55,7 +55,6 @@ class LeaveRequestServiceTest {
 
         String resultedEmployeeNameById = leaveRequestService.getEmployeeNameById(EmployeeNameByIdParameter);
         assertEquals(expectedEmployeeNameById, resultedEmployeeNameById);
-
     }
 
     @Test
@@ -95,7 +94,6 @@ class LeaveRequestServiceTest {
         Integer resultedAnnualLeaveDaysByEmployeeId = leaveRequestService.getAnnualLeaveDaysByEmployeeId
                 (employeeIdParameter);
         assertEquals(expectedAnnualLeaveDaysByEmployeeId, resultedAnnualLeaveDaysByEmployeeId);
-
     }
 
     @Test
@@ -112,20 +110,17 @@ class LeaveRequestServiceTest {
 
         String resultedSuperiorNameBySuperiorId = leaveRequestService.getSuperiorNameBySuperiorId(superiorIdParameter);
         assertEquals(expectedSuperiorNameBySuperiorId, resultedSuperiorNameBySuperiorId);
-
     }
 
     @Test
     void createLeaveRequest() {
 
-        //build the parameter(s) needed
         LeaveRequestCreateDto leaveRequestCreateDto = new LeaveRequestCreateDto();
         leaveRequestCreateDto.setEmployeeId(1L);
         leaveRequestCreateDto.setManagerId(1L);
         leaveRequestCreateDto.setTypeOfLeaveRequest("Holiday");
         leaveRequestCreateDto.setNumberOfDaysForLeaveRequest(12);
 
-        //build the expected result from calling the service method in test
         LeaveRequestReturnDto expectedLeaveRequestReturnDto = new LeaveRequestReturnDto();
         expectedLeaveRequestReturnDto.setAnnualLeaveDays(9);
         expectedLeaveRequestReturnDto.setTypeOfLeaveRequest("Holiday");
@@ -136,7 +131,6 @@ class LeaveRequestServiceTest {
         expectedLeaveRequestReturnDto.setSuperiorName("Ion Ion");
         expectedLeaveRequestReturnDto.setStatus("PENDING...");
 
-        //build what a result should look like from first repository call, leaveRequestRepository.save
         LeaveRequest leaveRequest = new LeaveRequest();
         leaveRequest.setId(1L);
         leaveRequest.setApproved(false);
@@ -145,7 +139,6 @@ class LeaveRequestServiceTest {
         leaveRequest.setEmployeeId(1L);
         leaveRequest.setManagerId(1L);
 
-        //build what a result should look like from second repository call, employeeRepository.findById
         Employee employee = new Employee();
         employee.setId(1L);
         employee.setName("Daiana Popescu");
@@ -154,22 +147,17 @@ class LeaveRequestServiceTest {
         employee.setLeaveRequests(new ArrayList<>());
         employee.setAnnualLeaveDays(21);
 
-        //build what a result should look like from third repository call, managerRepository.findById
         Manager manager = new Manager();
         manager.setId(1L);
         manager.setName("Ion Ion");
         manager.setLeaveRequestsToManage(new ArrayList<>());
 
-        //mock (simulate) the repository calls
         Mockito.when(leaveRequestRepository.save(any())).thenReturn(leaveRequest);
         Mockito.when(employeeRepository.findById(any())).thenReturn(Optional.of(employee));
         Mockito.when(managerRepository.findById(any())).thenReturn(Optional.of(manager));
 
-        //make the actual call of the service method in test
         LeaveRequestReturnDto resultedLeaveRequestDto = leaveRequestService.createLeaveRequest(leaveRequestCreateDto);
 
-        //verify the result against what was expected
         assertEquals(expectedLeaveRequestReturnDto, resultedLeaveRequestDto);
     }
-
 }

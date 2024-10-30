@@ -77,8 +77,6 @@ class ManagerServiceTest {
 
         ManagerReturnDto resultedManagerReturnDto = managerService.createManager(managerCreateDto);
         assertEquals(expectedManagerReturnDto, resultedManagerReturnDto);
-
-
     }
 
     @Test

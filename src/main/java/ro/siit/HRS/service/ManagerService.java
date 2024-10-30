@@ -1,6 +1,7 @@
 package ro.siit.HRS.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import ro.siit.HRS.dto.create.ManagerCreateDto;
 import ro.siit.HRS.dto.rturn.LeaveRequestReturnDto;
@@ -15,6 +16,8 @@ import java.util.stream.Collectors;
 
 @Service
 public class ManagerService {
+    @Autowired
+    private PasswordEncoder passwordEncoder;
     @Autowired
     private LeaveRequestService leaveRequestService;
     @Autowired
@@ -75,7 +78,7 @@ public class ManagerService {
         User user = new User();
         user.setRole("MANAGER");
         user.setUsername(managerCreateDto.getEmail());
-        user.setPassword(managerCreateDto.getNationalId()); // to be encripted
+        user.setPassword(passwordEncoder.encode(managerCreateDto.getNationalId()));
         user = userRepository.save(user);
 
         manager.setUser(user);

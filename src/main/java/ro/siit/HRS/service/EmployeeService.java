@@ -77,6 +77,7 @@ public class EmployeeService {
         employeeReturnDto.setEmail(manager.getEmail());
         employeeReturnDto.setStartDate(manager.getStartDate());
         employeeReturnDto.setEndDate(manager.getEndDate());
+        employeeReturnDto.setJobTitle(manager.getJobTitle());
         employeeReturnDto.setAnnualLeaveDays(manager.getAnnualLeaveDays());
 
         return employeeReturnDto;

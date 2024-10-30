@@ -31,6 +31,7 @@ public class Manager {
     private String address;
     private LocalDate startDate;
     private LocalDate endDate;
+    private String jobTitle;
     private Integer annualLeaveDays;
     @OneToMany
     private List<LeaveRequest> leaveRequests;
