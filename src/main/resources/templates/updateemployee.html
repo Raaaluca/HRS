@@ -63,53 +63,49 @@
     </div>
 </header>
 
-<main class="main" sec:authorize="hasAuthority('ADMIN')">
+<main class="main">
+
+    <!-- Services Section -->
     <section id="services" class="services section light-background">
-    <table class="table table-striped" style="width:70%">
-        <thead>
-        <tr>
-            <th scope="col">Name</th>
-            <th scope="col">Job Title</th>
-            <th scope="col">Superior Name</th>
-            <th scope="col">Gender</th>
-            <th scope="col">Email</th>
-            <th scope="col">Phone Number</th>
-            <th scope="col">Contract Start Date</th>
-            <th scope="col">Contract End Date</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr th:each="employee : ${employees}">
-            <td><span th:text="${employee.name}"> Name </span></td>
-            <td><span th:text="${employee.jobTitle}"> Job Title </span></td>
-            <td><span th:text="${employee.superiorName}"> Job Title </span></td>
-            <td><span th:text="${employee.gender}"> Gender </span></td>
-            <td><span th:text="${employee.email}"> Email </span></td>
-            <td><span th:text="${employee.phoneNumber}"> Phone Number </span></td>
-            <td><span th:text="${employee.startDate}"> Contract Start Date </span></td>
-            <td><span th:text="${employee.endDate}"> Contract End Date </span></td>
-            <td>
-                <form ACTION="#" th:action="@{/admin/employeeupdate}" th:modelAttribute="employeeUpdateDto" method="POST">
-                    <input type="hidden" th:value="${employee.email}" name="email"/>
-                    <input type="hidden" th:value="${employee.jobTitle}" name="jobTitle"/>
-                    <span><button type="submit" class="btn btn-outline-success">
-                Update
-            </button>
-                </span>
-                </form>
-            </td>
-            <td>
-                <form ACTION="#" th:action="@{/admin/delete}" th:modelAttribute="employee" method="POST">
-               <span><button th:disabled="${'HR Admin'.equals(employee.jobTitle) || 'HR Manager'.equals(employee.jobTitle) || 'IT Manager'.equals(employee.jobTitle) || 'SALES Manager'.equals(employee.jobTitle)}" type="submit" class="btn btn-outline-danger">
-                Delete
-            </button>
-                </span>
-                </form>
-            </td>
-        </tr>
-        </tbody>
-    </table>
-    </section>
+
+        <!-- Section Title -->
+        <div class="container section-title" data-aos="fade-up">
+        </div><!-- End Section Title -->
+
+        <div class="container">
+
+            <div class="row g-5">
+
+                <div sec:authorize="hasAuthority('ADMIN')" data-aos="fade-up" data-aos-delay="100">
+                    <form ACTION="#" th:action="@{/admin/update}" th:modelAttribute="employeeUpdateDto" method="POST">
+                        <input type="hidden" th:value="${employeeUpdateDto.id}" name="id"/>
+                        <input type="hidden" th:value="${employeeUpdateDto.jobTitle}" name="jobTitle"/>
+                        <p><strong> Name </strong></p>
+                        <input th:value="${employeeUpdateDto.name}" name="name"/>
+                        <p class="error" th:if="${#fields.hasErrors('employeeUpdateDto.name')}" th:errors="${employeeUpdateDto.name}"/>
+                        <p></p>
+                        <p><strong> City </strong></p>
+                        <input th:value="${employeeUpdateDto.city}" name="city"/>
+                        <p></p>
+                        <p><strong> Phone </strong></p>
+                        <input th:value="${employeeUpdateDto.phoneNumber}" name="phoneNumber"/>
+                        <p class="error" th:if="${#fields.hasErrors('employeeUpdateDto.phoneNumber')}" th:errors="${employeeUpdateDto.phoneNumber}"/>
+                        <p></p>
+                        <p><strong> Address </strong></p>
+                        <input th:value="${employeeUpdateDto.address}" name="address"/>
+                        <!-- ADD ALL THE OTHER FIELDS THAT ARE PART OF THE OBJECT -->
+                        <p></p>
+                        <p></p>
+                        <p></p>
+                        <button type="submit" class="btn btn-outline-success"> Update details </button>
+                    </form>
+                </div><!-- End Service Item -->
+            </div>
+
+        </div>
+
+    </section><!-- /Services Section -->
+
 </main>
 
 <!-- Scroll Top -->

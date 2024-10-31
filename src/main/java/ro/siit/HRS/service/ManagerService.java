@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import ro.siit.HRS.dto.create.ManagerCreateDto;
 import ro.siit.HRS.dto.rturn.LeaveRequestReturnDto;
 import ro.siit.HRS.dto.rturn.ManagerReturnDto;
+import ro.siit.HRS.dto.update.EmployeeUpdateDto;
 import ro.siit.HRS.dto.update.ManagerUpdateDto;
 import ro.siit.HRS.exceptions.ManagerNotFoundException;
 import ro.siit.HRS.model.*;
@@ -60,6 +61,7 @@ public class ManagerService {
         managerUpdateDto.setPhoneNumber(manager.getPhoneNumber());
         managerUpdateDto.setEndDate(manager.getEndDate());
         managerUpdateDto.setAnnualLeaveDays(manager.getAnnualLeaveDays());
+        managerUpdateDto.setJobTitle(manager.getJobTitle());
 
         return managerUpdateDto;
     }
@@ -93,6 +95,33 @@ public class ManagerService {
         manager.setPhoneNumber(managerCreateDto.getPhoneNumber());
         manager = managerRepository.save(manager);
         return mapManager(manager);
+    }
+
+    public void updateManagerFromEmployeeDto(EmployeeUpdateDto employeeUpdateDto) {
+
+            Manager manager = managerRepository.findById(employeeUpdateDto.getId())
+                    .orElseThrow(() -> new ManagerNotFoundException(
+                            "This manager id " + employeeUpdateDto.getId() + "can not be found!!"));
+            if (employeeUpdateDto.getAddress() != null) {
+                manager.setAddress(employeeUpdateDto.getAddress());
+            }
+            if (employeeUpdateDto.getName() != null) {
+                manager.setName(employeeUpdateDto.getName());
+            }
+            if (employeeUpdateDto.getCity() != null) {
+                manager.setCity(employeeUpdateDto.getCity());
+            }
+            if (employeeUpdateDto.getEmail() != null) {
+                manager.setEmail(employeeUpdateDto.getEmail());
+                manager.getUser().setUsername(manager.getEmail());
+            }
+            if (employeeUpdateDto.getEndDate() != null) {
+                manager.setEndDate(employeeUpdateDto.getEndDate());
+            }
+            if (employeeUpdateDto.getPhoneNumber() != null) {
+                manager.setPhoneNumber(employeeUpdateDto.getPhoneNumber());
+            }
+            managerRepository.save(manager);
     }
 
     public void updateManagerDto(ManagerUpdateDto managerUpdateDto) {

@@ -12,6 +12,7 @@ public class EmployeeReturnDto {
     private String phoneNumber;
     private String email;
     private Long superiorId;
+    private String superiorName;
     private String address;
     private String city;
     private String gender;

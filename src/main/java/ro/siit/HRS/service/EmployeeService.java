@@ -57,9 +57,11 @@ public class EmployeeService {
         employeeReturnDto.setCity(employee.getCity());
         employeeReturnDto.setEmail(employee.getEmail());
         employeeReturnDto.setSuperiorId(employee.getSuperiorId());
+        employeeReturnDto.setSuperiorName(leaveRequestService.getSuperiorNameBySuperiorId(employee.getSuperiorId()));
         employeeReturnDto.setStartDate(employee.getStartDate());
         employeeReturnDto.setEndDate(employee.getEndDate());
         employeeReturnDto.setJobTitle(employee.getJobTitle());
+        employeeReturnDto.setPhoneNumber(employee.getPhoneNumber());
         employeeReturnDto.setAnnualLeaveDays(employee.getAnnualLeaveDays());
 
         return employeeReturnDto;
@@ -69,6 +71,7 @@ public class EmployeeService {
 
         EmployeeReturnDto employeeReturnDto = new EmployeeReturnDto();
         employeeReturnDto.setId(manager.getId());
+        employeeReturnDto.setSuperiorName("-");
         employeeReturnDto.setGender(manager.getGender());
         employeeReturnDto.setName(manager.getName());
         employeeReturnDto.setPhoneNumber(manager.getPhoneNumber());
@@ -78,6 +81,7 @@ public class EmployeeService {
         employeeReturnDto.setStartDate(manager.getStartDate());
         employeeReturnDto.setEndDate(manager.getEndDate());
         employeeReturnDto.setJobTitle(manager.getJobTitle());
+        employeeReturnDto.setPhoneNumber(manager.getPhoneNumber());
         employeeReturnDto.setAnnualLeaveDays(manager.getAnnualLeaveDays());
 
         return employeeReturnDto;

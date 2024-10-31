@@ -1,14 +1,20 @@
 package ro.siit.HRS.controller.mvc;
 
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import ro.siit.HRS.dto.update.EmployeeUpdateDto;
 import ro.siit.HRS.service.AdminService;
 import ro.siit.HRS.service.EmployeeService;
 import ro.siit.HRS.service.HrsUserDetails;
+import ro.siit.HRS.service.ManagerService;
 
 @Controller
 @RequestMapping(path = "/admin")
@@ -18,8 +24,10 @@ public class AdminMvcController {
     private AdminService adminService;
     @Autowired
     private EmployeeService employeeService;
+    @Autowired
+    private ManagerService managerService;
 
-    @GetMapping(path = "/employees")
+    @GetMapping(path = "/allemployees")
     public String getEmployees(@AuthenticationPrincipal HrsUserDetails user, Model model) {
 
         model.addAttribute("employees", adminService.getAllEmployees());
@@ -27,6 +35,43 @@ public class AdminMvcController {
                 .getAuthenticationDetails(user.getUsername()));
 
         return "/employees";
+    }
+
+    @PostMapping(path = "/employeeupdate")
+    public String employeeUpdate(@AuthenticationPrincipal HrsUserDetails user, @ModelAttribute EmployeeUpdateDto employeeUpdateDto, Model model) {
+
+        if (employeeUpdateDto.getJobTitle().equals("HR Manager")
+                || employeeUpdateDto.getJobTitle().equals("SALES Manager")
+                || employeeUpdateDto.getJobTitle().equals("IT Manager")) {
+            model.addAttribute("employeeUpdateDto",
+                    managerService.getUpdatePersonalDetails(employeeUpdateDto.getEmail()));
+        } else {
+            model.addAttribute("employeeUpdateDto",
+                    employeeService.getUpdatePersonalDetails(employeeUpdateDto.getEmail()));
+        }
+        model.addAttribute("authenticationDetails",
+                employeeService.getAuthenticationDetails(user.getUsername()));
+        return "/updateemployee";
+    }
+
+    @PostMapping(path = "/update")
+    public String update(@AuthenticationPrincipal HrsUserDetails user, @Valid @ModelAttribute EmployeeUpdateDto employeeUpdateDto, BindingResult result, Model model) {
+
+        if (!result.hasErrors()) {
+            if (employeeUpdateDto.getJobTitle().equals("HR Manager")
+                    || employeeUpdateDto.getJobTitle().equals("SALES Manager")
+                    || employeeUpdateDto.getJobTitle().equals("IT Manager")) {
+                managerService.updateManagerFromEmployeeDto(employeeUpdateDto);
+            } else {
+                employeeService.updateEmployeeDto(employeeUpdateDto);
+            }
+            return "redirect:allemployees";
+        }
+        model.addAttribute("employeeUpdateDto", employeeUpdateDto);
+        model.addAttribute("authenticationDetails",
+                employeeService.getAuthenticationDetails(user.getUsername()));
+
+        return "/updateemployee";
     }
 
 }

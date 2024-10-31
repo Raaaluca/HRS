@@ -21,5 +21,6 @@ public class ManagerUpdateDto {
     @Min(value = 1, message = "At least 1 day is needed")
     @Max(value = 21, message = "Maximum 21 days are allowed")
     private Integer annualLeaveDays;
+    private String jobTitle;
 
 }
