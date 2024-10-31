@@ -73,12 +73,6 @@ class LeaveRequestServiceTest {
         assertEquals(expectedJobTitle, resultedJobTitle);
     }
 
-    public Integer getAnnualLeaveDaysByEmployeeId(Long employeeId) {
-
-        Employee employee = employeeRepository.findById(employeeId).orElseThrow();
-        return employee.getAnnualLeaveDays();
-    }
-
     @Test
     void getAnnualLeaveDaysByEmployeeId() {
 

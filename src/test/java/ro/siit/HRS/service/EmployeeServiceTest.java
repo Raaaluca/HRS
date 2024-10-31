@@ -11,9 +11,11 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import ro.siit.HRS.dto.create.EmployeeCreateDto;
 import ro.siit.HRS.dto.rturn.EmployeeReturnDto;
+import ro.siit.HRS.dto.update.EmployeeUpdateDto;
 import ro.siit.HRS.model.Department;
 import ro.siit.HRS.model.Employee;
 import ro.siit.HRS.model.Manager;
+import ro.siit.HRS.model.User;
 import ro.siit.HRS.repository.DepartmentRepository;
 import ro.siit.HRS.repository.EmployeeRepository;
 import ro.siit.HRS.repository.ManagerRepository;
@@ -112,35 +114,97 @@ class EmployeeServiceTest {
     @Test
     void updateEmployee() {
 
+        EmployeeUpdateDto employeeUpdateDto = new EmployeeUpdateDto();
+        employeeUpdateDto.setId(1L);
+        employeeUpdateDto.setAddress("Str. Inteligenta");
+        employeeUpdateDto.setName("Geanina Morosanu");
+        employeeUpdateDto.setCity("Bucuresti");
+        employeeUpdateDto.setPhoneNumber("0744555222");
+        employeeUpdateDto.setEndDate(LocalDate.of(2028,11,11));
+
+        EmployeeReturnDto expectedEmployeeReturnDto = new EmployeeReturnDto();
+        expectedEmployeeReturnDto.setId(1L);
+        expectedEmployeeReturnDto.setAddress("Str. Inteligenta");
+        expectedEmployeeReturnDto.setName("Geanina Morosanu");
+        expectedEmployeeReturnDto.setCity("Bucuresti");
+        expectedEmployeeReturnDto.setPhoneNumber("0744555222");
+        expectedEmployeeReturnDto.setEndDate(LocalDate.of(2028,11,11));
+
+        Employee employee = new Employee();
+        employee.setId(1L);
+        employee.setCity("Bucuresti");
+        employee.setAddress("Str. Inteligenta");
+        employee.setName("Geanina Morosanu");
+        employee.setPhoneNumber("0744555222");
+        employee.setEndDate(LocalDate.of(2028,11,11));
+
+        Mockito.when(employeeRepository.findById(any())).thenReturn(Optional.of(employee));
+        Mockito.when(employeeRepository.save(any())).thenReturn(employee);
+
+        EmployeeReturnDto resultedEmployeeReturnDto = employeeService.updateEmployee(employeeUpdateDto);
+        assertEquals(expectedEmployeeReturnDto, resultedEmployeeReturnDto);
+
     }
 
     @Test
     void getSuperiorIdByJobTitle() {
 
+        Long expectedSuperiorIdByJobTitle = 1L;
+        String jobTitle = "Sales Officer";
+
+        Department department = new Department();
+        department.setDepartmentName("SALES");
+        department.setManagerId(1L);
+
+        Mockito.when(departmentRepository.findByDepartmentName("SALES")).thenReturn(department);
+
+        Long resultedSuperiorIdByJobTitle = employeeService.getSuperiorIdByJobTitle(jobTitle);
+        assertEquals(expectedSuperiorIdByJobTitle, resultedSuperiorIdByJobTitle);
     }
 
     @Test
     void deleteEmployee() {
 
+        Long employeeId = 1L;
+        String expectedMessage = "This employee has been deleted!";
+
+        Employee employee = new Employee();
+        employee.setId(employeeId);
+        employee.setSuperiorId(1L);
+
+        Manager manager = new Manager();
+        manager.setEmployees(new ArrayList<>());
+        manager.setId(1L);
+
+        User user = new User();
+        user.setId(2L);
+        employee.setUser(user);
+
+        Mockito.when(employeeRepository.findById(employeeId)).thenReturn(Optional.of(employee));
+        Mockito.when(managerRepository.findById(any())).thenReturn(Optional.of(manager));
+        Mockito.when(userRepository.findById(any())).thenReturn(Optional.of(user));
+
+        String resultedMessage = employeeService.deleteEmployee(employeeId);
+        assertEquals(expectedMessage, resultedMessage);
     }
 
-    @Test
-    void getAuthenticationDetails() {
-
-    }
-
-    @Test
-    void getUpdatePersonalDetails() {
-
-    }
 
     @Test
     void getEmployeeRemainingDays() {
 
-    }
+        String username = "maria_u@yahoo.com";
+        Integer expectedEmployeeRemainingDays = 21;
 
-    @Test
-    void updateEmployeeDto() {
+        User user = new User();
 
+        Employee employee = new Employee();
+        employee.setAnnualLeaveDays(21);
+
+        Mockito.when(userRepository.findByUsername(username)).thenReturn(Optional.of(user));
+        Mockito.when(employeeRepository.findByUser(user)).thenReturn(Optional.of(employee));
+
+        Integer resultedEmployeeRemainingDays = employeeService.getEmployeeRemainingDays(username);
+
+        assertEquals(expectedEmployeeRemainingDays, resultedEmployeeRemainingDays);
     }
 }

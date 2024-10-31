@@ -3,12 +3,12 @@ package ro.siit.HRS.service;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.ArgumentMatchers;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import ro.siit.HRS.dto.create.ManagerCreateDto;
 import ro.siit.HRS.dto.rturn.ManagerReturnDto;
 import ro.siit.HRS.model.Manager;
@@ -19,12 +19,15 @@ import ro.siit.HRS.repository.UserRepository;
 import java.time.LocalDate;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 
 @SpringBootTest
 @ExtendWith(MockitoExtension.class)
 class ManagerServiceTest {
+
+    @Mock
+    private PasswordEncoder passwordEncoder;
     @Mock
     private UserRepository userRepository;
     @Mock
@@ -87,16 +90,19 @@ class ManagerServiceTest {
     @Test
     void deleteManager() {
 
-    }
+        Long managerId = 1L;
+        String expectedMessage = "This manager has been deleted!";
 
-    @Test
-    void getManagerEmployees() {
+        User user = new User();
 
-    }
+        Manager manager = new Manager();
+        manager.setId(1L);
+        manager.setUser(user);
 
-    @Test
-    void getManagerPendingLeaveRequests() {
+        Mockito.when(managerRepository.findById(managerId)).thenReturn(Optional.of(manager));
 
+        String resultedMessage = managerService.deleteManager(managerId);
+        assertEquals(expectedMessage,resultedMessage );
     }
 
     @Test
