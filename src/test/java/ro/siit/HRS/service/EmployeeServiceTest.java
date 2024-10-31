@@ -33,6 +33,8 @@ import static org.mockito.ArgumentMatchers.any;
 class EmployeeServiceTest {
 
     @Mock
+    private LeaveRequestService leaveRequestService;
+    @Mock
     private PasswordEncoder passwordEncoder;
     @Mock
     private UserRepository userRepository;
@@ -171,9 +173,11 @@ class EmployeeServiceTest {
         Employee employee = new Employee();
         employee.setId(employeeId);
         employee.setSuperiorId(1L);
+        employee.setLeaveRequests(new ArrayList<>());
 
         Manager manager = new Manager();
         manager.setEmployees(new ArrayList<>());
+        manager.setLeaveRequestsToManage(new ArrayList<>());
         manager.setId(1L);
 
         User user = new User();

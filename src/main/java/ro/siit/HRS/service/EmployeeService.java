@@ -13,14 +13,8 @@ import ro.siit.HRS.exceptions.DepartmentNotFoundException;
 import ro.siit.HRS.exceptions.EmployeeNotFoundException;
 import ro.siit.HRS.exceptions.ManagerNotFoundException;
 import ro.siit.HRS.exceptions.UserNotFoundException;
-import ro.siit.HRS.model.Department;
-import ro.siit.HRS.model.Employee;
-import ro.siit.HRS.model.Manager;
-import ro.siit.HRS.model.User;
-import ro.siit.HRS.repository.DepartmentRepository;
-import ro.siit.HRS.repository.EmployeeRepository;
-import ro.siit.HRS.repository.ManagerRepository;
-import ro.siit.HRS.repository.UserRepository;
+import ro.siit.HRS.model.*;
+import ro.siit.HRS.repository.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,6 +32,8 @@ public class EmployeeService {
     private ManagerRepository managerRepository;
     @Autowired
     private DepartmentRepository departmentRepository;
+    @Autowired
+    private LeaveRequestRepository leaveRequestRepository;
     @Autowired
     private PasswordEncoder passwordEncoder;
 
@@ -202,17 +198,20 @@ public class EmployeeService {
 
         Employee employee = employeeRepository.findById(employeeId)
                 .orElseThrow(() -> new EmployeeNotFoundException("The employee with id " + employeeId + "was not found!"));
-        Long managerId = employee.getSuperiorId();
 
+        employee.getLeaveRequests().clear();
+        employeeRepository.save(employee);
+
+        Long managerId = employee.getSuperiorId();
         Manager manager = managerRepository.findById(managerId)
                 .orElseThrow(() -> new ManagerNotFoundException("This manager id " + managerId + "does not exist!"));
         manager.getEmployees().remove(employee);
-
+        manager.getLeaveRequestsToManage().removeAll(manager.getLeaveRequestsToManage().stream().filter(p -> p.getEmployeeId().equals(employee.getId())).collect(Collectors.toList()));
         managerRepository.save(manager);
-        employeeRepository.delete(employee);
 
         User user = userRepository.findById(employee.getUser().getId())
                 .orElseThrow(() -> new UserNotFoundException("The user with id " + employee.getUser().getId() + "does not exist!"));
+        employeeRepository.delete(employee);
         userRepository.deleteById(user.getId());
         return "This employee has been deleted!";
     }

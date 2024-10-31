@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import ro.siit.HRS.dto.create.EmployeeCreateDto;
+import ro.siit.HRS.dto.rturn.EmployeeReturnDto;
 import ro.siit.HRS.dto.update.EmployeeUpdateDto;
 import ro.siit.HRS.service.AdminService;
 import ro.siit.HRS.service.EmployeeService;
@@ -72,6 +74,35 @@ public class AdminMvcController {
                 employeeService.getAuthenticationDetails(user.getUsername()));
 
         return "/updateemployee";
+    }
+
+    @GetMapping(path = "/createemployee")
+    public String createEmployee(@AuthenticationPrincipal HrsUserDetails user, Model model) {
+
+        model.addAttribute("employeeCreateDto", new EmployeeCreateDto());
+        model.addAttribute("authenticationDetails",
+                employeeService.getAuthenticationDetails(user.getUsername()));
+        return "/createemployee";
+    }
+
+    @PostMapping(path = "/create")
+    public String create(@AuthenticationPrincipal HrsUserDetails user, @ModelAttribute @Valid EmployeeCreateDto employeeCreateDto, BindingResult result, Model model) {
+
+        if (!result.hasErrors()) {
+            employeeService.createEmployee(employeeCreateDto);
+            return "redirect:allemployees";
+        }
+        model.addAttribute("authenticationDetails",
+                employeeService.getAuthenticationDetails(user.getUsername()));
+        model.addAttribute("employeeCreateDto", employeeCreateDto);
+        return "/createemployee";
+    }
+
+    @PostMapping(path = "/deleteemployee")
+    public String deleteEmployee(@ModelAttribute EmployeeReturnDto employeeReturnDto) {
+
+        employeeService.deleteEmployee(employeeReturnDto.getId());
+        return "redirect:allemployees";
     }
 
 }

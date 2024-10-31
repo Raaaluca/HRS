@@ -118,11 +118,20 @@
                 </div><!-- End Service Item -->
 
                 <div sec:authorize="hasAuthority('ADMIN')" class="col-lg-6" data-aos="fade-up" data-aos-delay="100">
-                    <div class="service-item item-cyan position-relative">
-                        <i class="bi bi-calendar4-week icon"></i>
+                    <div class="service-item item-orange position-relative">
+                        <i class="bi bi-card-checklist icon"></i>
                         <div>
                             <a href="/admin/allemployees"> <h3>Manage Employees</h3> </a>
                             <p> Update/Delete Employees </p>
+                        </div>
+                    </div>
+                </div><!-- End Service Item -->
+                <div sec:authorize="hasAuthority('ADMIN')" class="col-lg-6" data-aos="fade-up" data-aos-delay="100">
+                    <div class="service-item item-cyan position-relative">
+                        <i class="bi bi-camera-fill icon"></i>
+                        <div>
+                            <a href="/admin/createemployee"> <h3>Create Employee</h3> </a>
+                            <p> Create a new Employee </p>
                         </div>
                     </div>
                 </div><!-- End Service Item -->

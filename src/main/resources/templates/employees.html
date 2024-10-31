@@ -65,13 +65,14 @@
 
 <main class="main" sec:authorize="hasAuthority('ADMIN')">
     <section id="services" class="services section light-background">
-    <table class="table table-striped" style="width:70%">
+    <table class="table table-striped" style="width:75%">
         <thead>
         <tr>
             <th scope="col">Name</th>
             <th scope="col">Job Title</th>
             <th scope="col">Superior Name</th>
             <th scope="col">Gender</th>
+            <th scope="col">City</th>
             <th scope="col">Email</th>
             <th scope="col">Phone Number</th>
             <th scope="col">Contract Start Date</th>
@@ -84,6 +85,7 @@
             <td><span th:text="${employee.jobTitle}"> Job Title </span></td>
             <td><span th:text="${employee.superiorName}"> Job Title </span></td>
             <td><span th:text="${employee.gender}"> Gender </span></td>
+            <td><span th:text="${employee.city}"> City </span></td>
             <td><span th:text="${employee.email}"> Email </span></td>
             <td><span th:text="${employee.phoneNumber}"> Phone Number </span></td>
             <td><span th:text="${employee.startDate}"> Contract Start Date </span></td>
@@ -99,7 +101,8 @@
                 </form>
             </td>
             <td>
-                <form ACTION="#" th:action="@{/admin/delete}" th:modelAttribute="employee" method="POST">
+                <form ACTION="#" th:action="@{/admin/deleteemployee}" th:modelAttribute="employeeReturnDto" method="POST">
+                    <input type="hidden" th:value="${employee.id}" name="id"/>
                <span><button th:disabled="${'HR Admin'.equals(employee.jobTitle) || 'HR Manager'.equals(employee.jobTitle) || 'IT Manager'.equals(employee.jobTitle) || 'SALES Manager'.equals(employee.jobTitle)}" type="submit" class="btn btn-outline-danger">
                 Delete
             </button>
