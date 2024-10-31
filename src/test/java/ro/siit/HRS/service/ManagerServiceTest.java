@@ -11,6 +11,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import ro.siit.HRS.dto.create.ManagerCreateDto;
 import ro.siit.HRS.dto.rturn.ManagerReturnDto;
+import ro.siit.HRS.dto.update.ManagerUpdateDto;
 import ro.siit.HRS.model.Manager;
 import ro.siit.HRS.model.User;
 import ro.siit.HRS.repository.ManagerRepository;
@@ -84,6 +85,39 @@ class ManagerServiceTest {
 
     @Test
     void updateManager() {
+
+        ManagerUpdateDto managerUpdateDto = new ManagerUpdateDto();
+        managerUpdateDto.setId(1L);
+        managerUpdateDto.setPhoneNumber("0711000888");
+        managerUpdateDto.setAddress("Str. Dambovicioarei");
+        managerUpdateDto.setName("Catalin Gruia");
+        managerUpdateDto.setCity("Bucuresti");
+        managerUpdateDto.setEndDate(LocalDate.of(2029,12,1));
+
+        ManagerReturnDto expectedUpdateManager = new ManagerReturnDto();
+        expectedUpdateManager.setId(1L);
+        expectedUpdateManager.setPhoneNumber("0711000888");
+        expectedUpdateManager.setCity("Bucuresti");
+        expectedUpdateManager.setName("Catalin Gruia");
+        expectedUpdateManager.setAddress("Str. Dambovicioarei");
+        expectedUpdateManager.setEndDate(LocalDate.of(2029,12,1));
+
+        User user = new User();
+
+        Manager manager = new Manager();
+        manager.setId(1L);
+        manager.setPhoneNumber("0711000888");
+        manager.setEndDate(LocalDate.of(2029,12,1));
+        manager.setCity("Bucuresti");
+        manager.setName("Catalin Gruia");
+        manager.setAddress("Str. Dambovicioarei");
+        manager.setUser(user);
+
+        Mockito.when(managerRepository.findById(any())).thenReturn(Optional.of(manager));
+        Mockito.when(managerRepository.save(any())).thenReturn(manager);
+
+        ManagerReturnDto resultedManagerReturnDto = managerService.updateManager(managerUpdateDto);
+        assertEquals(expectedUpdateManager, resultedManagerReturnDto);
 
     }
 

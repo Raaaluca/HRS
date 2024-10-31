@@ -9,7 +9,7 @@ import lombok.Data;
 public class LeaveRequestCreateDto {
 
     private Long id;
-    @NotEmpty(message = "Please enter a leave request type!")
+    @NotEmpty(message = "Please select the leave request type!")
     private String typeOfLeaveRequest;
     @Min(value = 1, message = "At least 1 day is needed!")
     @Max(value = 21, message = "Maximum 21 days are allowed!")
