@@ -13,6 +13,7 @@ public class EmployeeCreateDto {
     @Size(min = 4, max = 35, message = "Name should be at least 4 characters and maximum 35!")
     private String name;
     @Email(message = "Please enter a valid email address!")
+    @NotEmpty(message = "Email should not be empty")
     private String email;
     @NotEmpty(message = "City should not be empty")
     private String city;
