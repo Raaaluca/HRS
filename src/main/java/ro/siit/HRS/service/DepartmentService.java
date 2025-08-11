@@ -1,5 +1,6 @@
 package ro.siit.HRS.service;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ro.siit.HRS.dto.create.DepartmentCreateDto;
@@ -10,14 +11,14 @@ import ro.siit.HRS.repository.DepartmentRepository;
 import java.util.ArrayList;
 
 @Service
+@RequiredArgsConstructor
 public class DepartmentService {
-    @Autowired
-    private DepartmentRepository departmentRepository;
+
+    private final DepartmentRepository departmentRepository;
 
     public Department findById(Long id) {
 
-        return departmentRepository.findById(id)
-                .orElseThrow();
+        return departmentRepository.findById(id).orElseThrow();
     }
 
     public DepartmentReturnDto mapDepartment(Department department) {
@@ -37,6 +38,5 @@ public class DepartmentService {
         department = departmentRepository.save(department);
 
         return mapDepartment(department);
-
     }
 }

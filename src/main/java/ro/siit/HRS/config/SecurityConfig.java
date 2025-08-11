@@ -38,7 +38,6 @@ public class SecurityConfig {
                         .requestMatchers("/employees**").hasRole("EMPLOYEE")
                         .anyRequest()
                         .authenticated()
-
                 )
                 .httpBasic(Customizer.withDefaults())
                 .formLogin(Customizer.withDefaults());

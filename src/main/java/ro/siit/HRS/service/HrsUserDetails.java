@@ -1,12 +1,9 @@
 package ro.siit.HRS.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import ro.siit.HRS.model.User;
-import ro.siit.HRS.repository.EmployeeRepository;
-import ro.siit.HRS.repository.ManagerRepository;
 
 import java.util.Collection;
 import java.util.List;
@@ -24,7 +21,6 @@ public class HrsUserDetails implements UserDetails {
     public Collection<? extends GrantedAuthority> getAuthorities() {
 
         return List.of(new SimpleGrantedAuthority(user.getRole()));
-
     }
 
     @Override

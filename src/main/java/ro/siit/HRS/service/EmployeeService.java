@@ -1,14 +1,13 @@
 package ro.siit.HRS.service;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import ro.siit.HRS.dto.create.EmployeeCreateDto;
 import ro.siit.HRS.dto.rturn.EmployeeReturnDto;
 import ro.siit.HRS.dto.rturn.LeaveRequestReturnDto;
-import ro.siit.HRS.dto.rturn.ManagerReturnDto;
 import ro.siit.HRS.dto.update.EmployeeUpdateDto;
-import ro.siit.HRS.dto.update.ManagerUpdateDto;
 import ro.siit.HRS.exceptions.DepartmentNotFoundException;
 import ro.siit.HRS.exceptions.EmployeeNotFoundException;
 import ro.siit.HRS.exceptions.ManagerNotFoundException;
@@ -85,20 +84,20 @@ public class EmployeeService {
 
     public EmployeeReturnDto findById(Long id) {
 
-        Employee employee = employeeRepository.findById(id)
-                .orElseThrow(() -> new EmployeeNotFoundException("This employee id " + id + "does not exist!"));
+        Employee employee = employeeRepository.findById(id).orElseThrow(()
+                -> new EmployeeNotFoundException("This employee id " + id + "does not exist!"));
+
         return mapEmployee(employee);
     }
 
-
     public EmployeeReturnDto createEmployee(EmployeeCreateDto employeeCreateDto) {
-
-        Employee employee = new Employee();
 
         User user = new User();
         user.setRole("EMPLOYEE");
         user.setUsername(employeeCreateDto.getEmail());
-        user.setPassword(passwordEncoder.encode(employeeCreateDto.getNationalId()));
+        user.setPassword(passwordEncoder.encode(employeeCreateDto.getNationalId())); // SECURITY !!!
+
+        Employee employee = new Employee();
         employee.setUser(user);
         userRepository.save(user);
 
@@ -115,11 +114,12 @@ public class EmployeeService {
         employee.setPhoneNumber(employeeCreateDto.getPhoneNumber());
         employee.setJobTitle(employeeCreateDto.getJobTitle());
         employee.setAnnualLeaveDays(21);
-        employee = employeeRepository.save(employee);
 
+        employee = employeeRepository.save(employee);
         Employee finalEmployee = employee;
-        Manager manager = managerRepository.findById(employee.getSuperiorId())
-                .orElseThrow(() -> new ManagerNotFoundException("This manager id" + finalEmployee.getSuperiorId() + "does not exist"));
+
+        Manager manager = managerRepository.findById(employee.getSuperiorId()).orElseThrow(()
+                -> new ManagerNotFoundException("This manager id " + finalEmployee.getSuperiorId() + "does not exist"));
         manager.getEmployees().add(employee);
         managerRepository.save(manager);
 
@@ -128,8 +128,8 @@ public class EmployeeService {
 
     public EmployeeReturnDto updateEmployee(EmployeeUpdateDto employeeUpdateDto) {
 
-        Employee employee = employeeRepository.findById(employeeUpdateDto.getId())
-                .orElseThrow(() -> new EmployeeNotFoundException("This employee id " + employeeUpdateDto.getId() + "can not be found!!"));
+        Employee employee = employeeRepository.findById(employeeUpdateDto.getId()).orElseThrow(()
+                -> new EmployeeNotFoundException("This employee id " + employeeUpdateDto.getId() + "can not be found!!"));
         if (employeeUpdateDto.getAddress() != null) {
             employee.setAddress(employeeUpdateDto.getAddress());
         }
@@ -143,6 +143,7 @@ public class EmployeeService {
             employee.setEmail(employeeUpdateDto.getEmail());
         }
         if (employeeUpdateDto.getJobTitle() != null) {
+
             employee.setJobTitle(employeeUpdateDto.getJobTitle());
 
             Manager oldManager = managerRepository.findById(employee.getSuperiorId()).orElseThrow();
@@ -150,6 +151,7 @@ public class EmployeeService {
             managerRepository.save(oldManager);
 
             employee.setSuperiorId(getSuperiorIdByJobTitle(employee.getJobTitle()));
+
             Manager newManager = managerRepository.findById(employee.getSuperiorId()).orElseThrow();
             newManager.getEmployees().add(employee);
             managerRepository.save(newManager);
@@ -191,28 +193,33 @@ public class EmployeeService {
             superiorId = department.getManagerId();
         }
         return superiorId;
-
     }
 
     public String deleteEmployee(Long employeeId) {
 
-        Employee employee = employeeRepository.findById(employeeId)
-                .orElseThrow(() -> new EmployeeNotFoundException("The employee with id " + employeeId + "was not found!"));
+        Employee employee = employeeRepository.findById(employeeId).orElseThrow(()
+                -> new EmployeeNotFoundException("The employee with id " + employeeId + "was not found!"));
 
         employee.getLeaveRequests().clear();
         employeeRepository.save(employee);
 
         Long managerId = employee.getSuperiorId();
-        Manager manager = managerRepository.findById(managerId)
-                .orElseThrow(() -> new ManagerNotFoundException("This manager id " + managerId + "does not exist!"));
+        Manager manager = managerRepository.findById(managerId).orElseThrow(()
+                -> new ManagerNotFoundException("This manager id " + managerId + "does not exist!"));
+
         manager.getEmployees().remove(employee);
-        manager.getLeaveRequestsToManage().removeAll(manager.getLeaveRequestsToManage().stream().filter(p -> p.getEmployeeId().equals(employee.getId())).collect(Collectors.toList()));
+        manager.getLeaveRequestsToManage()
+                .removeAll(manager.getLeaveRequestsToManage()
+                .stream()
+                .filter(p -> p.getEmployeeId().equals(employee.getId()))
+                .collect(Collectors.toList()));
         managerRepository.save(manager);
 
-        User user = userRepository.findById(employee.getUser().getId())
-                .orElseThrow(() -> new UserNotFoundException("The user with id " + employee.getUser().getId() + "does not exist!"));
+        User user = userRepository.findById(employee.getUser().getId()).orElseThrow(()
+                -> new UserNotFoundException("The user with id " + employee.getUser().getId() + "does not exist!"));
         employeeRepository.delete(employee);
         userRepository.deleteById(user.getId());
+
         return "This employee has been deleted!";
     }
 
@@ -250,11 +257,12 @@ public class EmployeeService {
 
         return employee.getAnnualLeaveDays();
     }
+
     public void updateEmployeeDto(EmployeeUpdateDto employeeUpdateDto) {
 
-        Employee employee = employeeRepository.findById(employeeUpdateDto.getId())
-                .orElseThrow(() -> new EmployeeNotFoundException(
-                        "This employee id " + employeeUpdateDto.getId() + "can not be found!!"));
+        Employee employee = employeeRepository.findById(employeeUpdateDto.getId()).orElseThrow(()
+                -> new EmployeeNotFoundException(
+                        "This employee id: " + employeeUpdateDto.getId() + ", can not be found!!"));
         if (employeeUpdateDto.getAddress() != null) {
             employee.setAddress(employeeUpdateDto.getAddress());
         }

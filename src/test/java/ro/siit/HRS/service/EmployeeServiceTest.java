@@ -32,7 +32,7 @@ import static org.mockito.ArgumentMatchers.any;
 @ExtendWith(MockitoExtension.class)
 class EmployeeServiceTest {
 
-    @Mock
+    @InjectMocks
     private LeaveRequestService leaveRequestService;
     @Mock
     private PasswordEncoder passwordEncoder;
@@ -55,6 +55,7 @@ class EmployeeServiceTest {
     @Test
     void createEmployee() {
 
+        //initial data
         EmployeeCreateDto employeeCreateDto = new EmployeeCreateDto();
         employeeCreateDto.setAddress("Str. Infratirii");
         employeeCreateDto.setName("Daniel Roibu");
@@ -68,6 +69,7 @@ class EmployeeServiceTest {
         employeeCreateDto.setEndDate(LocalDate.of(2026, 9, 4));
         employeeCreateDto.setSuperiorId(1L);
 
+        //expected result after method call
         EmployeeReturnDto expectedEmployeeReturnDto = new EmployeeReturnDto();
         expectedEmployeeReturnDto.setId(1L);
         expectedEmployeeReturnDto.setName("Daniel Roibu");
@@ -109,7 +111,10 @@ class EmployeeServiceTest {
         Mockito.when(managerRepository.findById((any()))).thenReturn(Optional.of(manager));
         Mockito.when(departmentRepository.findByDepartmentName((any()))).thenReturn(department);
 
+        //actual result after method call
         EmployeeReturnDto resultedEmployeeReturnDto = employeeService.createEmployee(employeeCreateDto);
+
+        //compare expected vs actual result
         assertEquals(expectedEmployeeReturnDto, resultedEmployeeReturnDto);
     }
 

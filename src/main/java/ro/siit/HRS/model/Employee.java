@@ -15,9 +15,8 @@ public class Employee {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+
     private String name;
-    @OneToOne
-    private User user;
     private String email;
     private String phoneNumber;
     private String city;
@@ -29,7 +28,11 @@ public class Employee {
     private LocalDate endDate;
     private String jobTitle;
     private Integer annualLeaveDays;
+
+    @OneToOne
+    private User user;
     @OneToMany
     private List<LeaveRequest> leaveRequests;
+
 
 }

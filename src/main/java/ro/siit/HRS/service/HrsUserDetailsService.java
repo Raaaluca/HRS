@@ -1,5 +1,6 @@
 package ro.siit.HRS.service;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -11,18 +12,16 @@ import ro.siit.HRS.repository.ManagerRepository;
 import ro.siit.HRS.repository.UserRepository;
 
 @Service
+@RequiredArgsConstructor
 public class HrsUserDetailsService implements UserDetailsService {
 
-    @Autowired
-    private UserRepository userRepository;
-    @Autowired
-    private ManagerRepository managerRepository;
+    private final UserRepository userRepository;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 
-        User user = userRepository.findByUsername(username)
-                .orElseThrow(() -> new UserNotFoundException("This username " + username + " was not found!"));
+        User user = userRepository.findByUsername(username).orElseThrow(()
+                -> new UserNotFoundException("This username " + username + " was not found!"));
 
         return new HrsUserDetails(user);
     }

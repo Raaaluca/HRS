@@ -16,12 +16,6 @@ public class Manager {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    @OneToOne
-    private User user;
-    @OneToMany
-    private List<Employee> employees;
-    @OneToMany
-    private List<LeaveRequest> leaveRequestsToManage;
     private String name;
     private String email;
     private String city;
@@ -33,6 +27,12 @@ public class Manager {
     private LocalDate endDate;
     private String jobTitle;
     private Integer annualLeaveDays;
+    @OneToOne
+    private User user;
+    @OneToMany
+    private List<Employee> employees;
+    @OneToMany
+    private List<LeaveRequest> leaveRequestsToManage;
     @OneToMany
     private List<LeaveRequest> leaveRequests;
 }

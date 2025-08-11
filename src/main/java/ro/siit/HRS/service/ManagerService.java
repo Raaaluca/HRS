@@ -1,5 +1,6 @@
 package ro.siit.HRS.service;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -93,42 +94,42 @@ public class ManagerService {
         manager.setEndDate(managerCreateDto.getEndDate());
         manager.setNationalId(managerCreateDto.getNationalId());
         manager.setPhoneNumber(managerCreateDto.getPhoneNumber());
+        manager.setAnnualLeaveDays(21);
+        manager.setJobTitle("Head of department");
         manager = managerRepository.save(manager);
         return mapManager(manager);
     }
 
     public void updateManagerFromEmployeeDto(EmployeeUpdateDto employeeUpdateDto) {
 
-            Manager manager = managerRepository.findById(employeeUpdateDto.getId())
-                    .orElseThrow(() -> new ManagerNotFoundException(
-                            "This manager id " + employeeUpdateDto.getId() + "can not be found!!"));
-            if (employeeUpdateDto.getAddress() != null) {
-                manager.setAddress(employeeUpdateDto.getAddress());
-            }
-            if (employeeUpdateDto.getName() != null) {
-                manager.setName(employeeUpdateDto.getName());
-            }
-            if (employeeUpdateDto.getCity() != null) {
-                manager.setCity(employeeUpdateDto.getCity());
-            }
-            if (employeeUpdateDto.getEmail() != null) {
-                manager.setEmail(employeeUpdateDto.getEmail());
-                manager.getUser().setUsername(manager.getEmail());
-            }
-            if (employeeUpdateDto.getEndDate() != null) {
-                manager.setEndDate(employeeUpdateDto.getEndDate());
-            }
-            if (employeeUpdateDto.getPhoneNumber() != null) {
-                manager.setPhoneNumber(employeeUpdateDto.getPhoneNumber());
-            }
-            managerRepository.save(manager);
+        Manager manager = managerRepository.findById(employeeUpdateDto.getId()).orElseThrow(()
+                -> new ManagerNotFoundException("This manager id " + employeeUpdateDto.getId() + "can not be found!!"));
+        if (employeeUpdateDto.getAddress() != null) {
+            manager.setAddress(employeeUpdateDto.getAddress());
+        }
+        if (employeeUpdateDto.getName() != null) {
+            manager.setName(employeeUpdateDto.getName());
+        }
+        if (employeeUpdateDto.getCity() != null) {
+            manager.setCity(employeeUpdateDto.getCity());
+        }
+        if (employeeUpdateDto.getEmail() != null) {
+            manager.setEmail(employeeUpdateDto.getEmail());
+            manager.getUser().setUsername(manager.getEmail());
+        }
+        if (employeeUpdateDto.getEndDate() != null) {
+            manager.setEndDate(employeeUpdateDto.getEndDate());
+        }
+        if (employeeUpdateDto.getPhoneNumber() != null) {
+            manager.setPhoneNumber(employeeUpdateDto.getPhoneNumber());
+        }
+        managerRepository.save(manager);
     }
 
     public void updateManagerDto(ManagerUpdateDto managerUpdateDto) {
 
-        Manager manager = managerRepository.findById(managerUpdateDto.getId())
-                .orElseThrow(() -> new ManagerNotFoundException(
-                        "This manager id " + managerUpdateDto.getId() + "can not be found!!"));
+        Manager manager = managerRepository.findById(managerUpdateDto.getId()).orElseThrow(()
+                -> new ManagerNotFoundException("This manager id " + managerUpdateDto.getId() + "can not be found!!"));
         if (managerUpdateDto.getAddress() != null) {
             manager.setAddress(managerUpdateDto.getAddress());
         }
@@ -148,15 +149,13 @@ public class ManagerService {
         if (managerUpdateDto.getPhoneNumber() != null) {
             manager.setPhoneNumber(managerUpdateDto.getPhoneNumber());
         }
-       managerRepository.save(manager);
-
+        managerRepository.save(manager);
     }
 
     public ManagerReturnDto updateManager(ManagerUpdateDto managerUpdateDto) {
 
-        Manager manager = managerRepository.findById(managerUpdateDto.getId())
-                .orElseThrow(() -> new ManagerNotFoundException(
-                        "This manager id " + managerUpdateDto.getId() + "can not be found!!"));
+        Manager manager = managerRepository.findById(managerUpdateDto.getId()).orElseThrow(()
+                -> new ManagerNotFoundException("This manager id " + managerUpdateDto.getId() + "can not be found!!"));
         if (managerUpdateDto.getAddress() != null) {
             manager.setAddress(managerUpdateDto.getAddress());
         }
@@ -192,9 +191,8 @@ public class ManagerService {
 
     public String deleteManager(Long managerId) {
 
-        Manager manager = managerRepository.findById(managerId)
-                .orElseThrow(() ->
-                        new ManagerNotFoundException("This manager id " + managerId + "was not found!"));
+        Manager manager = managerRepository.findById(managerId).orElseThrow(()
+                -> new ManagerNotFoundException("This manager id " + managerId + "was not found!"));
 
         managerRepository.deleteById(managerId);
         userRepository.deleteById(manager.getUser().getId());
@@ -206,7 +204,8 @@ public class ManagerService {
         User user = userRepository.findByUsername(username).orElseThrow();
         Manager manager = managerRepository.findByUser(user).orElseThrow();
 
-        return manager.getLeaveRequestsToManage()
+        return manager
+                .getLeaveRequestsToManage()
                 .stream()
                 .map(p -> leaveRequestService.mapLeaveRequestReturnDto(p))
                 .collect(Collectors.toList());
@@ -217,7 +216,8 @@ public class ManagerService {
         User user = userRepository.findByUsername(username).orElseThrow();
         Manager manager = managerRepository.findByUser(user).orElseThrow();
 
-        return manager.getLeaveRequests()
+        return manager
+                .getLeaveRequests()
                 .stream()
                 .map(p -> leaveRequestService.mapLeaveRequestReturnDto(p))
                 .collect(Collectors.toList());

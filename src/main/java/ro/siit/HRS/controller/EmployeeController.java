@@ -1,5 +1,6 @@
 package ro.siit.HRS.controller;
 
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import ro.siit.HRS.dto.create.EmployeeCreateDto;
@@ -20,7 +21,7 @@ public class EmployeeController {
     }
 
     @PostMapping(path = "/create")
-    public EmployeeReturnDto createEmployee(@RequestBody EmployeeCreateDto employeeCreateDto) {
+    public EmployeeReturnDto createEmployee(@RequestBody @Valid EmployeeCreateDto employeeCreateDto) {
 
         return employeeService.createEmployee(employeeCreateDto);
     }
@@ -36,5 +37,4 @@ public class EmployeeController {
 
         return employeeService.updateEmployee(employeeUpdateDto);
     }
-
 }

@@ -6,8 +6,10 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
+import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import ro.siit.HRS.dto.create.ManagerCreateDto;
 import ro.siit.HRS.dto.rturn.ManagerReturnDto;
@@ -66,6 +68,11 @@ class ManagerServiceTest {
         expectedManagerReturnDto.setNationalId("112211");
         expectedManagerReturnDto.setPhoneNumber("0733222111");
 
+        User user = new User();
+        user.setRole("MANAGER");
+        user.setUsername(managerCreateDto.getEmail());
+        user.setPassword(passwordEncoder.encode(managerCreateDto.getNationalId()));
+
         Manager manager = new Manager();
         manager.setAddress("Str. Domnica");
         manager.setEmail("tudor_d@yahoo.com");
@@ -77,7 +84,8 @@ class ManagerServiceTest {
         manager.setNationalId("112211");
         manager.setPhoneNumber("0733222111");
 
-        Mockito.when(managerRepository.save(any())).thenReturn(manager);
+        Mockito.when(userRepository.save(any(User.class))).thenReturn(user);
+        Mockito.when(managerRepository.save(any(Manager.class))).thenReturn(manager);
 
         ManagerReturnDto resultedManagerReturnDto = managerService.createManager(managerCreateDto);
         assertEquals(expectedManagerReturnDto, resultedManagerReturnDto);

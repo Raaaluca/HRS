@@ -57,7 +57,10 @@ public class AdminMvcController {
     }
 
     @PostMapping(path = "/update")
-    public String update(@AuthenticationPrincipal HrsUserDetails user, @Valid @ModelAttribute EmployeeUpdateDto employeeUpdateDto, BindingResult result, Model model) {
+    public String update(@AuthenticationPrincipal HrsUserDetails user,
+                         @Valid @ModelAttribute EmployeeUpdateDto employeeUpdateDto,
+                         BindingResult result,
+                         Model model) {
 
         if (!result.hasErrors()) {
             if (employeeUpdateDto.getJobTitle().equals("HR Manager")
@@ -86,7 +89,10 @@ public class AdminMvcController {
     }
 
     @PostMapping(path = "/create")
-    public String create(@AuthenticationPrincipal HrsUserDetails user, @ModelAttribute @Valid EmployeeCreateDto employeeCreateDto, BindingResult result, Model model) {
+    public String create(@AuthenticationPrincipal HrsUserDetails user,
+                         @ModelAttribute @Valid EmployeeCreateDto employeeCreateDto,
+                         BindingResult result,
+                         Model model) {
 
         if (!result.hasErrors()) {
             employeeService.createEmployee(employeeCreateDto);

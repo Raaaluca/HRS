@@ -1,5 +1,6 @@
 package ro.siit.HRS.service;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ro.siit.HRS.dto.rturn.EmployeeReturnDto;
@@ -13,15 +14,14 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
+@RequiredArgsConstructor
 public class AdminService {
-    @Autowired
-    private EmployeeRepository employeeRepository;
-    @Autowired
-    private ManagerRepository managerRepository;
-    @Autowired
-    private EmployeeService employeeService;
 
-    public List<EmployeeReturnDto> getAllEmployees(){
+    private final EmployeeRepository employeeRepository;
+    private final ManagerRepository managerRepository;
+    private final EmployeeService employeeService;
+
+    public List<EmployeeReturnDto> getAllEmployees() {
 
         List<EmployeeReturnDto> allEmployees = new ArrayList<>();
 
@@ -40,6 +40,5 @@ public class AdminService {
         allEmployees.addAll(employeeReturnDtoListFromManager);
 
         return allEmployees;
-
     }
 }
