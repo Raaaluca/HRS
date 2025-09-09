@@ -1,6 +1,5 @@
 package ro.siit.HRS.service;
 
-import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -12,6 +11,7 @@ import ro.siit.HRS.dto.update.ManagerUpdateDto;
 import ro.siit.HRS.exceptions.ManagerNotFoundException;
 import ro.siit.HRS.model.*;
 import ro.siit.HRS.repository.*;
+import ro.siit.HRS.util.MapperUtil;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -20,8 +20,6 @@ import java.util.stream.Collectors;
 public class ManagerService {
     @Autowired
     private PasswordEncoder passwordEncoder;
-    @Autowired
-    private LeaveRequestService leaveRequestService;
     @Autowired
     private LeaveRequestRepository leaveRequestRepository;
     @Autowired
@@ -32,44 +30,12 @@ public class ManagerService {
     private EmployeeRepository employeeRepository;
     @Autowired
     private DepartmentRepository departmentRepository;
-
-    public ManagerReturnDto mapManager(Manager manager) {
-
-        ManagerReturnDto managerReturnDto = new ManagerReturnDto();
-        managerReturnDto.setId(manager.getId());
-        managerReturnDto.setAddress(manager.getAddress());
-        managerReturnDto.setCity(manager.getCity());
-        managerReturnDto.setEmail(manager.getEmail());
-        managerReturnDto.setName(manager.getName());
-        managerReturnDto.setGender(manager.getGender());
-        managerReturnDto.setNationalId(manager.getNationalId());
-        managerReturnDto.setPhoneNumber(manager.getPhoneNumber());
-        managerReturnDto.setStartDate(manager.getStartDate());
-        managerReturnDto.setEndDate(manager.getEndDate());
-        managerReturnDto.setAnnualLeaveDays(manager.getAnnualLeaveDays());
-
-        return managerReturnDto;
-    }
-
-    public ManagerUpdateDto mapManagerUpdate(Manager manager) {
-
-        ManagerUpdateDto managerUpdateDto = new ManagerUpdateDto();
-        managerUpdateDto.setId(manager.getId());
-        managerUpdateDto.setAddress(manager.getAddress());
-        managerUpdateDto.setCity(manager.getCity());
-        managerUpdateDto.setEmail(manager.getEmail());
-        managerUpdateDto.setName(manager.getName());
-        managerUpdateDto.setPhoneNumber(manager.getPhoneNumber());
-        managerUpdateDto.setEndDate(manager.getEndDate());
-        managerUpdateDto.setAnnualLeaveDays(manager.getAnnualLeaveDays());
-        managerUpdateDto.setJobTitle(manager.getJobTitle());
-
-        return managerUpdateDto;
-    }
+    @Autowired
+    private MapperUtil mapperUtil;
 
     public ManagerReturnDto findById(Long id) {
 
-        return mapManager(managerRepository.findById(id)
+        return mapperUtil.mapManager(managerRepository.findById(id)
                 .orElseThrow(() -> new ManagerNotFoundException(
                         "This manager id " + id + "does not exist!")));
     }
@@ -97,7 +63,7 @@ public class ManagerService {
         manager.setAnnualLeaveDays(21);
         manager.setJobTitle("Head of department");
         manager = managerRepository.save(manager);
-        return mapManager(manager);
+        return mapperUtil.mapManager(manager);
     }
 
     public void updateManagerFromEmployeeDto(EmployeeUpdateDto employeeUpdateDto) {
@@ -177,7 +143,7 @@ public class ManagerService {
         }
         manager = managerRepository.save(manager);
 
-        return mapManager(manager);
+        return mapperUtil.mapManager(manager);
     }
 
     public ManagerReturnDto assignEmployeeToManager(Long employeeId, Long managerId) {
@@ -186,7 +152,7 @@ public class ManagerService {
         Manager manager = managerRepository.findById(managerId).orElseThrow();
         manager.getEmployees().add(employee);
         manager = managerRepository.save(manager);
-        return mapManager(manager);
+        return mapperUtil.mapManager(manager);
     }
 
     public String deleteManager(Long managerId) {
@@ -207,7 +173,7 @@ public class ManagerService {
         return manager
                 .getLeaveRequestsToManage()
                 .stream()
-                .map(p -> leaveRequestService.mapLeaveRequestReturnDto(p))
+                .map(p -> mapperUtil.mapLeaveRequestReturnDto(p))
                 .collect(Collectors.toList());
     }
 
@@ -219,7 +185,7 @@ public class ManagerService {
         return manager
                 .getLeaveRequests()
                 .stream()
-                .map(p -> leaveRequestService.mapLeaveRequestReturnDto(p))
+                .map(p -> mapperUtil.mapLeaveRequestReturnDto(p))
                 .collect(Collectors.toList());
     }
 
@@ -244,7 +210,7 @@ public class ManagerService {
         User user = userRepository.findByUsername(username).orElseThrow();
         Manager manager = managerRepository.findByUser(user).orElseThrow();
 
-        return mapManagerUpdate(manager);
+        return mapperUtil.mapManagerUpdate(manager);
     }
 
     public Integer getManagerRemainingDays(String username) {

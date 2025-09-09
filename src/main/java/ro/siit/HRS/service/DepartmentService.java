@@ -1,34 +1,19 @@
 package ro.siit.HRS.service;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ro.siit.HRS.dto.create.DepartmentCreateDto;
 import ro.siit.HRS.dto.rturn.DepartmentReturnDto;
 import ro.siit.HRS.model.Department;
 import ro.siit.HRS.repository.DepartmentRepository;
-
-import java.util.ArrayList;
+import ro.siit.HRS.util.MapperUtil;
 
 @Service
 @RequiredArgsConstructor
 public class DepartmentService {
 
     private final DepartmentRepository departmentRepository;
-
-    public Department findById(Long id) {
-
-        return departmentRepository.findById(id).orElseThrow();
-    }
-
-    public DepartmentReturnDto mapDepartment(Department department) {
-
-        DepartmentReturnDto departmentReturnDto = new DepartmentReturnDto();
-        departmentReturnDto.setDepartmentName(department.getDepartmentName());
-        departmentReturnDto.setManagerId(department.getManagerId());
-
-        return departmentReturnDto;
-    }
+    private final MapperUtil mapperUtil;
 
     public DepartmentReturnDto createDepartment(DepartmentCreateDto departmentCreateDto) {
 
@@ -37,6 +22,6 @@ public class DepartmentService {
         department.setManagerId(departmentCreateDto.getManagerId());
         department = departmentRepository.save(department);
 
-        return mapDepartment(department);
+        return mapperUtil.mapDepartment(department);
     }
 }

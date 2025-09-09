@@ -1,12 +1,10 @@
 package ro.siit.HRS.service;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ro.siit.HRS.dto.create.LeaveRequestCreateDto;
 import ro.siit.HRS.dto.rturn.LeaveRequestReturnDto;
 import ro.siit.HRS.exceptions.EmployeeNotFoundException;
-import ro.siit.HRS.exceptions.LeaveRequestNotFoundException;
 import ro.siit.HRS.exceptions.ManagerNotFoundException;
 import ro.siit.HRS.model.Employee;
 import ro.siit.HRS.model.LeaveRequest;
@@ -16,6 +14,7 @@ import ro.siit.HRS.repository.EmployeeRepository;
 import ro.siit.HRS.repository.LeaveRequestRepository;
 import ro.siit.HRS.repository.ManagerRepository;
 import ro.siit.HRS.repository.UserRepository;
+import ro.siit.HRS.util.MapperUtil;
 
 @Service
 @RequiredArgsConstructor
@@ -25,6 +24,7 @@ public class LeaveRequestService {
     private final EmployeeRepository employeeRepository;
     private final ManagerRepository managerRepository;
     private final UserRepository userRepository;
+    private final MapperUtil mapperUtil;
 
     public String getEmployeeNameById(Long employeeId) {
 
@@ -44,26 +44,6 @@ public class LeaveRequestService {
         return employee.getAnnualLeaveDays();
     }
 
-    public LeaveRequestReturnDto mapLeaveRequestReturnDto(LeaveRequest leaveRequest) {
-
-        LeaveRequestReturnDto leaveRequestReturnDto = new LeaveRequestReturnDto();
-        leaveRequestReturnDto.setId(leaveRequest.getId());
-        leaveRequestReturnDto.setNumberOfDaysForLeaveRequest(leaveRequest.getNumberOfDays());
-        leaveRequestReturnDto.setTypeOfLeaveRequest(leaveRequest.getType());
-        if (leaveRequest.getEmployeeId() != null) {
-            leaveRequestReturnDto.setEmployeeName(getEmployeeNameById(leaveRequest.getEmployeeId()));
-            leaveRequestReturnDto.setJobTitle(getJobTitle(leaveRequest.getEmployeeId()));
-            leaveRequestReturnDto.setAnnualLeaveDays(getAnnualLeaveDaysByEmployeeId(leaveRequest.getEmployeeId()));
-            leaveRequestReturnDto.setSuperiorName(getSuperiorNameBySuperiorId(leaveRequest.getManagerId()));
-        }
-        if (leaveRequest.isApproved()) {
-            leaveRequestReturnDto.setStatus("APPROVED");
-        } else {
-            leaveRequestReturnDto.setStatus("PENDING...");
-        }
-
-        return leaveRequestReturnDto;
-    }
     public String getSuperiorNameBySuperiorId(Long superiorId){
 
         Manager manager = managerRepository.findById(superiorId).orElseThrow();
@@ -116,6 +96,6 @@ public class LeaveRequestService {
             manager.setAnnualLeaveDays(manager.getAnnualLeaveDays() - leaveRequestCreateDto.getNumberOfDaysForLeaveRequest());
             managerRepository.save(manager);
         }
-        return mapLeaveRequestReturnDto(leaveRequest);
+        return mapperUtil.mapLeaveRequestReturnDto(leaveRequest);
     }
 }

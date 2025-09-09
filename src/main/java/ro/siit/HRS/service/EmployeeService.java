@@ -1,6 +1,5 @@
 package ro.siit.HRS.service;
 
-import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -14,6 +13,7 @@ import ro.siit.HRS.exceptions.ManagerNotFoundException;
 import ro.siit.HRS.exceptions.UserNotFoundException;
 import ro.siit.HRS.model.*;
 import ro.siit.HRS.repository.*;
+import ro.siit.HRS.util.MapperUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,8 +21,7 @@ import java.util.stream.Collectors;
 
 @Service
 public class EmployeeService {
-    @Autowired
-    private LeaveRequestService leaveRequestService;
+
     @Autowired
     private EmployeeRepository employeeRepository;
     @Autowired
@@ -32,62 +31,20 @@ public class EmployeeService {
     @Autowired
     private DepartmentRepository departmentRepository;
     @Autowired
-    private LeaveRequestRepository leaveRequestRepository;
-    @Autowired
     private PasswordEncoder passwordEncoder;
+    @Autowired
+    private MapperUtil mapperUtil;
 
     public static final List<String> IT_DEPARTMENT_JOB_TITLES = List.of("IT Engineer", "Tester", "UI/UX Designer");
     public static final List<String> SALES_DEPARTMENT_JOB_TITLES = List.of("Sales Officer", "Associate Officer");
     public static final List<String> HR_DEPARTMENT_JOB_TITLES = List.of("HR Admin", "Payroll Admin");
-
-
-    public EmployeeReturnDto mapEmployee(Employee employee) {
-
-        EmployeeReturnDto employeeReturnDto = new EmployeeReturnDto();
-        employeeReturnDto.setId(employee.getId());
-        employeeReturnDto.setGender(employee.getGender());
-        employeeReturnDto.setName(employee.getName());
-        employeeReturnDto.setPhoneNumber(employee.getPhoneNumber());
-        employeeReturnDto.setAddress(employee.getAddress());
-        employeeReturnDto.setCity(employee.getCity());
-        employeeReturnDto.setEmail(employee.getEmail());
-        employeeReturnDto.setSuperiorId(employee.getSuperiorId());
-        employeeReturnDto.setSuperiorName(leaveRequestService.getSuperiorNameBySuperiorId(employee.getSuperiorId()));
-        employeeReturnDto.setStartDate(employee.getStartDate());
-        employeeReturnDto.setEndDate(employee.getEndDate());
-        employeeReturnDto.setJobTitle(employee.getJobTitle());
-        employeeReturnDto.setPhoneNumber(employee.getPhoneNumber());
-        employeeReturnDto.setAnnualLeaveDays(employee.getAnnualLeaveDays());
-
-        return employeeReturnDto;
-    }
-
-    public EmployeeReturnDto mapManagerToEmployeeReturnDto(Manager manager) {
-
-        EmployeeReturnDto employeeReturnDto = new EmployeeReturnDto();
-        employeeReturnDto.setId(manager.getId());
-        employeeReturnDto.setSuperiorName("-");
-        employeeReturnDto.setGender(manager.getGender());
-        employeeReturnDto.setName(manager.getName());
-        employeeReturnDto.setPhoneNumber(manager.getPhoneNumber());
-        employeeReturnDto.setAddress(manager.getAddress());
-        employeeReturnDto.setCity(manager.getCity());
-        employeeReturnDto.setEmail(manager.getEmail());
-        employeeReturnDto.setStartDate(manager.getStartDate());
-        employeeReturnDto.setEndDate(manager.getEndDate());
-        employeeReturnDto.setJobTitle(manager.getJobTitle());
-        employeeReturnDto.setPhoneNumber(manager.getPhoneNumber());
-        employeeReturnDto.setAnnualLeaveDays(manager.getAnnualLeaveDays());
-
-        return employeeReturnDto;
-    }
 
     public EmployeeReturnDto findById(Long id) {
 
         Employee employee = employeeRepository.findById(id).orElseThrow(()
                 -> new EmployeeNotFoundException("This employee id " + id + "does not exist!"));
 
-        return mapEmployee(employee);
+        return mapperUtil.mapEmployee(employee);
     }
 
     public EmployeeReturnDto createEmployee(EmployeeCreateDto employeeCreateDto) {
@@ -123,7 +80,7 @@ public class EmployeeService {
         manager.getEmployees().add(employee);
         managerRepository.save(manager);
 
-        return mapEmployee(employee);
+        return mapperUtil.mapEmployee(employee);
     }
 
     public EmployeeReturnDto updateEmployee(EmployeeUpdateDto employeeUpdateDto) {
@@ -165,7 +122,7 @@ public class EmployeeService {
 
         employee = employeeRepository.save(employee);
 
-        return mapEmployee(employee);
+        return mapperUtil.mapEmployee(employee);
     }
 
     public Long getSuperiorIdByJobTitle(String jobTitle) {
@@ -212,7 +169,7 @@ public class EmployeeService {
                 .removeAll(manager.getLeaveRequestsToManage()
                 .stream()
                 .filter(p -> p.getEmployeeId().equals(employee.getId()))
-                .collect(Collectors.toList()));
+                .toList());
         managerRepository.save(manager);
 
         User user = userRepository.findById(employee.getUser().getId()).orElseThrow(()
@@ -236,7 +193,7 @@ public class EmployeeService {
         User user = userRepository.findByUsername(username).orElseThrow();
         Employee employee = employeeRepository.findByUser(user).orElseThrow();
 
-        return mapEmployee(employee);
+        return mapperUtil.mapEmployee(employee);
     }
 
     public List<LeaveRequestReturnDto> myLeaveRequests(String username) {
@@ -246,7 +203,7 @@ public class EmployeeService {
 
         return employee.getLeaveRequests()
                 .stream()
-                .map(p -> leaveRequestService.mapLeaveRequestReturnDto(p))
+                .map(p -> mapperUtil.mapLeaveRequestReturnDto(p))
                 .collect(Collectors.toList());
     }
 
