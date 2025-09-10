@@ -6,10 +6,8 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import ro.siit.HRS.dto.create.ManagerCreateDto;
 import ro.siit.HRS.dto.rturn.ManagerReturnDto;
@@ -18,6 +16,7 @@ import ro.siit.HRS.model.Manager;
 import ro.siit.HRS.model.User;
 import ro.siit.HRS.repository.ManagerRepository;
 import ro.siit.HRS.repository.UserRepository;
+import ro.siit.HRS.service.impl.ManagerServiceImpl;
 
 import java.time.LocalDate;
 import java.util.Optional;
@@ -36,7 +35,7 @@ class ManagerServiceTest {
     @Mock
     private ManagerRepository managerRepository;
     @InjectMocks
-    private ManagerService managerService;
+    private ManagerServiceImpl managerService;
 
     @BeforeEach
     void setUp() {

@@ -1,4 +1,4 @@
-package ro.siit.HRS.service;
+package ro.siit.HRS.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -14,7 +14,7 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class AdminService {
+public class AdminServiceImpl {
 
     private final EmployeeRepository employeeRepository;
     private final ManagerRepository managerRepository;

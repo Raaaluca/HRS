@@ -1,4 +1,4 @@
-package ro.siit.HRS.service;
+package ro.siit.HRS.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -17,7 +17,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-public class ManagerService {
+public class ManagerServiceImpl {
     @Autowired
     private PasswordEncoder passwordEncoder;
     @Autowired

@@ -1,4 +1,4 @@
-package ro.siit.HRS.service;
+package ro.siit.HRS.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -18,7 +18,7 @@ import ro.siit.HRS.util.MapperUtil;
 
 @Service
 @RequiredArgsConstructor
-public class LeaveRequestService {
+public class LeaveRequestServiceImpl {
 
     private final LeaveRequestRepository leaveRequestRepository;
     private final EmployeeRepository employeeRepository;

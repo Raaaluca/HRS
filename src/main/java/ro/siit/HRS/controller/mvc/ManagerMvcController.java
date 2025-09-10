@@ -15,17 +15,17 @@ import ro.siit.HRS.dto.create.LeaveRequestCreateDto;
 import ro.siit.HRS.dto.update.ManagerUpdateDto;
 import ro.siit.HRS.model.LeaveRequest;
 import ro.siit.HRS.service.HrsUserDetails;
-import ro.siit.HRS.service.LeaveRequestService;
-import ro.siit.HRS.service.ManagerService;
+import ro.siit.HRS.service.impl.LeaveRequestServiceImpl;
+import ro.siit.HRS.service.impl.ManagerServiceImpl;
 
 @Controller
 @RequestMapping(path = "/managers")
 public class ManagerMvcController {
 
     @Autowired
-    private ManagerService managerService;
+    private ManagerServiceImpl managerService;
     @Autowired
-    private LeaveRequestService leaveRequestService;
+    private LeaveRequestServiceImpl leaveRequestService;
 
     @GetMapping(path = "/selfservice")
     public String selfService(@AuthenticationPrincipal HrsUserDetails user, Model model) {

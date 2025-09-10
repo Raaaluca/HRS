@@ -1,4 +1,4 @@
-package ro.siit.HRS.service;
+package ro.siit.HRS.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -10,7 +10,7 @@ import ro.siit.HRS.util.MapperUtil;
 
 @Service
 @RequiredArgsConstructor
-public class DepartmentService {
+public class DepartmentServiceImpl {
 
     private final DepartmentRepository departmentRepository;
     private final MapperUtil mapperUtil;
