@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import ro.siit.HRS.dto.create.LeaveRequestCreateDto;
 import ro.siit.HRS.dto.update.ManagerUpdateDto;
 import ro.siit.HRS.model.LeaveRequest;
-import ro.siit.HRS.service.HrsUserDetails;
+import ro.siit.HRS.config.HrsUserDetails;
 import ro.siit.HRS.service.impl.LeaveRequestServiceImpl;
 import ro.siit.HRS.service.impl.ManagerServiceImpl;
 

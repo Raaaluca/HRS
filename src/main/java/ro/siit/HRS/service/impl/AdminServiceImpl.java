@@ -7,6 +7,7 @@ import ro.siit.HRS.model.Employee;
 import ro.siit.HRS.model.Manager;
 import ro.siit.HRS.repository.EmployeeRepository;
 import ro.siit.HRS.repository.ManagerRepository;
+import ro.siit.HRS.service.AdminService;
 import ro.siit.HRS.util.MapperUtil;
 
 import java.util.ArrayList;
@@ -14,7 +15,7 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class AdminServiceImpl {
+public class AdminServiceImpl implements AdminService {
 
     private final EmployeeRepository employeeRepository;
     private final ManagerRepository managerRepository;

@@ -11,13 +11,14 @@ import ro.siit.HRS.dto.update.ManagerUpdateDto;
 import ro.siit.HRS.exceptions.ManagerNotFoundException;
 import ro.siit.HRS.model.*;
 import ro.siit.HRS.repository.*;
+import ro.siit.HRS.service.ManagerService;
 import ro.siit.HRS.util.MapperUtil;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-public class ManagerServiceImpl {
+public class ManagerServiceImpl implements ManagerService {
     @Autowired
     private PasswordEncoder passwordEncoder;
     @Autowired

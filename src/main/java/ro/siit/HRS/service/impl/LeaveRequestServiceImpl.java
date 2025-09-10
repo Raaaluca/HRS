@@ -14,11 +14,12 @@ import ro.siit.HRS.repository.EmployeeRepository;
 import ro.siit.HRS.repository.LeaveRequestRepository;
 import ro.siit.HRS.repository.ManagerRepository;
 import ro.siit.HRS.repository.UserRepository;
+import ro.siit.HRS.service.LeaveRequestService;
 import ro.siit.HRS.util.MapperUtil;
 
 @Service
 @RequiredArgsConstructor
-public class LeaveRequestServiceImpl {
+public class LeaveRequestServiceImpl implements LeaveRequestService {
 
     private final LeaveRequestRepository leaveRequestRepository;
     private final EmployeeRepository employeeRepository;

@@ -1,4 +1,4 @@
-package ro.siit.HRS.service;
+package ro.siit.HRS.config;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;

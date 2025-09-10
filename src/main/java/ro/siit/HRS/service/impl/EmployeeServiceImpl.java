@@ -13,6 +13,7 @@ import ro.siit.HRS.exceptions.ManagerNotFoundException;
 import ro.siit.HRS.exceptions.UserNotFoundException;
 import ro.siit.HRS.model.*;
 import ro.siit.HRS.repository.*;
+import ro.siit.HRS.service.EmployeeService;
 import ro.siit.HRS.util.MapperUtil;
 
 import java.util.ArrayList;
@@ -20,7 +21,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-public class EmployeeServiceImpl {
+public class EmployeeServiceImpl implements EmployeeService {
 
     @Autowired
     private EmployeeRepository employeeRepository;
