@@ -1,5 +1,6 @@
 package ro.siit.HRS.service.impl;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -18,21 +19,16 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
+@RequiredArgsConstructor
 public class ManagerServiceImpl implements ManagerService {
-    @Autowired
-    private PasswordEncoder passwordEncoder;
-    @Autowired
-    private LeaveRequestRepository leaveRequestRepository;
-    @Autowired
-    private UserRepository userRepository;
-    @Autowired
-    private ManagerRepository managerRepository;
-    @Autowired
-    private EmployeeRepository employeeRepository;
-    @Autowired
-    private DepartmentRepository departmentRepository;
-    @Autowired
-    private MapperUtil mapperUtil;
+
+    private final PasswordEncoder passwordEncoder;
+    private final LeaveRequestRepository leaveRequestRepository;
+    private final UserRepository userRepository;
+    private final ManagerRepository managerRepository;
+    private final EmployeeRepository employeeRepository;
+    private final DepartmentRepository departmentRepository;
+    private final MapperUtil mapperUtil;
 
     public ManagerReturnDto findById(Long id) {
 
