@@ -1,4 +1,4 @@
-package ro.siit.HRS.service;
+package ro.siit.HRS.config;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;

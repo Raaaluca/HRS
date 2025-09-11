@@ -5,6 +5,7 @@ import org.springframework.web.bind.annotation.*;
 import ro.siit.HRS.dto.create.LeaveRequestCreateDto;
 import ro.siit.HRS.dto.rturn.LeaveRequestReturnDto;
 import ro.siit.HRS.service.LeaveRequestService;
+import ro.siit.HRS.service.impl.LeaveRequestServiceImpl;
 
 @RequestMapping(path = "/leaverequest")
 @RestController

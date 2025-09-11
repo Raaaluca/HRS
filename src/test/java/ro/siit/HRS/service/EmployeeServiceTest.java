@@ -20,6 +20,8 @@ import ro.siit.HRS.repository.DepartmentRepository;
 import ro.siit.HRS.repository.EmployeeRepository;
 import ro.siit.HRS.repository.ManagerRepository;
 import ro.siit.HRS.repository.UserRepository;
+import ro.siit.HRS.service.impl.EmployeeServiceImpl;
+import ro.siit.HRS.service.impl.LeaveRequestServiceImpl;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -33,7 +35,7 @@ import static org.mockito.ArgumentMatchers.any;
 class EmployeeServiceTest {
 
     @InjectMocks
-    private LeaveRequestService leaveRequestService;
+    private LeaveRequestServiceImpl leaveRequestService;
     @Mock
     private PasswordEncoder passwordEncoder;
     @Mock
@@ -45,7 +47,7 @@ class EmployeeServiceTest {
     @Mock
     private ManagerRepository managerRepository;
     @InjectMocks
-    private EmployeeService employeeService;
+    private EmployeeServiceImpl employeeService;
 
     @BeforeEach
     void setUp() {

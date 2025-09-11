@@ -16,6 +16,7 @@ import ro.siit.HRS.model.Manager;
 import ro.siit.HRS.repository.EmployeeRepository;
 import ro.siit.HRS.repository.LeaveRequestRepository;
 import ro.siit.HRS.repository.ManagerRepository;
+import ro.siit.HRS.service.impl.LeaveRequestServiceImpl;
 
 import java.util.ArrayList;
 import java.util.Optional;
@@ -34,7 +35,7 @@ class LeaveRequestServiceTest {
     @Mock
     private EmployeeRepository employeeRepository;
     @InjectMocks
-    private LeaveRequestService leaveRequestService;
+    private LeaveRequestServiceImpl leaveRequestService;
 
     @BeforeEach
     void setUp() {

@@ -1,6 +1,5 @@
 package ro.siit.HRS.util;
 
-import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
@@ -13,14 +12,14 @@ import ro.siit.HRS.model.Department;
 import ro.siit.HRS.model.Employee;
 import ro.siit.HRS.model.LeaveRequest;
 import ro.siit.HRS.model.Manager;
-import ro.siit.HRS.service.LeaveRequestService;
+import ro.siit.HRS.service.impl.LeaveRequestServiceImpl;
 
 @Component
 public class MapperUtil {
 
     @Autowired
     @Lazy
-    private LeaveRequestService leaveRequestService;
+    private LeaveRequestServiceImpl leaveRequestService;
 
     public EmployeeReturnDto mapEmployee(Employee employee) {
 

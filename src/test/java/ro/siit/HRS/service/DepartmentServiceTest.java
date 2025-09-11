@@ -12,6 +12,7 @@ import ro.siit.HRS.dto.create.DepartmentCreateDto;
 import ro.siit.HRS.dto.rturn.DepartmentReturnDto;
 import ro.siit.HRS.model.Department;
 import ro.siit.HRS.repository.DepartmentRepository;
+import ro.siit.HRS.service.impl.DepartmentServiceImpl;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
@@ -23,7 +24,7 @@ class DepartmentServiceTest {
     @Mock
     private DepartmentRepository departmentRepository;
     @InjectMocks
-    private DepartmentService departmentService;
+    private DepartmentServiceImpl departmentService;
 
     @BeforeEach
     void setUp() {

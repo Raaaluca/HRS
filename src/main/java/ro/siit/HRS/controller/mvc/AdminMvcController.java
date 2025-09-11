@@ -15,8 +15,11 @@ import ro.siit.HRS.dto.rturn.EmployeeReturnDto;
 import ro.siit.HRS.dto.update.EmployeeUpdateDto;
 import ro.siit.HRS.service.AdminService;
 import ro.siit.HRS.service.EmployeeService;
-import ro.siit.HRS.service.HrsUserDetails;
 import ro.siit.HRS.service.ManagerService;
+import ro.siit.HRS.service.impl.AdminServiceImpl;
+import ro.siit.HRS.service.impl.EmployeeServiceImpl;
+import ro.siit.HRS.config.HrsUserDetails;
+import ro.siit.HRS.service.impl.ManagerServiceImpl;
 
 @Controller
 @RequestMapping(path = "/admin")

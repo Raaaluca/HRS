@@ -1,6 +1,5 @@
 package ro.siit.HRS.controller.mvc;
 
-import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -15,8 +14,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import ro.siit.HRS.dto.create.LeaveRequestCreateDto;
 import ro.siit.HRS.dto.update.EmployeeUpdateDto;
 import ro.siit.HRS.service.EmployeeService;
-import ro.siit.HRS.service.HrsUserDetails;
 import ro.siit.HRS.service.LeaveRequestService;
+import ro.siit.HRS.service.impl.EmployeeServiceImpl;
+import ro.siit.HRS.config.HrsUserDetails;
+import ro.siit.HRS.service.impl.LeaveRequestServiceImpl;
 
 @Controller
 @RequestMapping(path = "/employees")
