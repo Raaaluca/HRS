@@ -37,11 +37,6 @@ class ManagerServiceTest {
     @InjectMocks
     private ManagerServiceImpl managerService;
 
-    @BeforeEach
-    void setUp() {
-
-    }
-
     @Test
     void createManager() {
 

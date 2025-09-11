@@ -37,11 +37,6 @@ class LeaveRequestServiceTest {
     @InjectMocks
     private LeaveRequestServiceImpl leaveRequestService;
 
-    @BeforeEach
-    void setUp() {
-
-    }
-
     @Test
     void getEmployeeNameById() {
 
