@@ -1,4 +1,22 @@
 package ro.siit.HRS.service;
 
+import ro.siit.HRS.dto.create.EmployeeCreateDto;
+import ro.siit.HRS.dto.rturn.EmployeeReturnDto;
+import ro.siit.HRS.dto.rturn.LeaveRequestReturnDto;
+import ro.siit.HRS.dto.update.EmployeeUpdateDto;
+
+import java.util.List;
+
 public interface EmployeeService {
+
+    EmployeeReturnDto findById(Long id);
+    EmployeeReturnDto createEmployee(EmployeeCreateDto employeeCreateDto);
+    String deleteEmployee(Long employeeId);
+    EmployeeReturnDto updateEmployee(EmployeeUpdateDto employeeUpdateDto);
+    String getAuthenticationDetails(String username);
+    EmployeeReturnDto getUpdatePersonalDetails(String username);
+    void updateEmployeeDto(EmployeeUpdateDto employeeUpdateDto);
+    List<LeaveRequestReturnDto> myLeaveRequests(String username);
+    Integer getEmployeeRemainingDays(String username);
+
 }

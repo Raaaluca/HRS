@@ -6,13 +6,14 @@ import org.springframework.web.bind.annotation.*;
 import ro.siit.HRS.dto.create.EmployeeCreateDto;
 import ro.siit.HRS.dto.rturn.EmployeeReturnDto;
 import ro.siit.HRS.dto.update.EmployeeUpdateDto;
+import ro.siit.HRS.service.EmployeeService;
 import ro.siit.HRS.service.impl.EmployeeServiceImpl;
 
 @RequestMapping(path = "/employees")
 @RestController
 public class EmployeeController {
     @Autowired
-    private EmployeeServiceImpl employeeService;
+    private EmployeeService employeeService;
 
     @GetMapping(path = "/id")
     public EmployeeReturnDto getEmployeeById(@RequestParam Long id) {

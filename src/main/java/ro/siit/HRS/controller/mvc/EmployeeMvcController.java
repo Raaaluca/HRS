@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import ro.siit.HRS.dto.create.LeaveRequestCreateDto;
 import ro.siit.HRS.dto.update.EmployeeUpdateDto;
+import ro.siit.HRS.service.EmployeeService;
+import ro.siit.HRS.service.LeaveRequestService;
 import ro.siit.HRS.service.impl.EmployeeServiceImpl;
 import ro.siit.HRS.config.HrsUserDetails;
 import ro.siit.HRS.service.impl.LeaveRequestServiceImpl;
@@ -22,9 +24,9 @@ import ro.siit.HRS.service.impl.LeaveRequestServiceImpl;
 public class EmployeeMvcController {
 
     @Autowired
-    private EmployeeServiceImpl employeeService;
+    private EmployeeService employeeService;
     @Autowired
-    private LeaveRequestServiceImpl leaveRequestService;
+    private LeaveRequestService leaveRequestService;
 
     @GetMapping(path = "/selfservice")
     public String selfService(@AuthenticationPrincipal HrsUserDetails user, Model model) {
