@@ -1,7 +1,7 @@
 package ro.siit.HRS.controller.mvc;
 
 import jakarta.validation.Valid;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
@@ -17,17 +17,14 @@ import ro.siit.HRS.model.LeaveRequest;
 import ro.siit.HRS.config.HrsUserDetails;
 import ro.siit.HRS.service.LeaveRequestService;
 import ro.siit.HRS.service.ManagerService;
-import ro.siit.HRS.service.impl.LeaveRequestServiceImpl;
-import ro.siit.HRS.service.impl.ManagerServiceImpl;
 
 @Controller
 @RequestMapping(path = "/managers")
+@RequiredArgsConstructor
 public class ManagerMvcController {
 
-    @Autowired
-    private ManagerService managerService;
-    @Autowired
-    private LeaveRequestService leaveRequestService;
+    private final ManagerService managerService;
+    private final LeaveRequestService leaveRequestService;
 
     @GetMapping(path = "/selfservice")
     public String selfService(@AuthenticationPrincipal HrsUserDetails user, Model model) {

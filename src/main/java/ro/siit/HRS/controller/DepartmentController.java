@@ -1,17 +1,17 @@
 package ro.siit.HRS.controller;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import ro.siit.HRS.dto.create.DepartmentCreateDto;
 import ro.siit.HRS.dto.rturn.DepartmentReturnDto;
 import ro.siit.HRS.service.DepartmentService;
-import ro.siit.HRS.service.impl.DepartmentServiceImpl;
 
 @RequestMapping(path = "/departments")
 @RestController
+@RequiredArgsConstructor
 public class DepartmentController {
-    @Autowired
-    private DepartmentService departmentService;
+
+    private final DepartmentService departmentService;
 
     @PostMapping(path = "/create")
     public DepartmentReturnDto createDepartment(@RequestBody DepartmentCreateDto departmentCreateDto) {

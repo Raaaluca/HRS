@@ -1,6 +1,6 @@
 package ro.siit.HRS.service.impl;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import ro.siit.HRS.dto.create.EmployeeCreateDto;
@@ -21,20 +21,15 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
+@RequiredArgsConstructor
 public class EmployeeServiceImpl implements EmployeeService {
 
-    @Autowired
-    private EmployeeRepository employeeRepository;
-    @Autowired
-    private UserRepository userRepository;
-    @Autowired
-    private ManagerRepository managerRepository;
-    @Autowired
-    private DepartmentRepository departmentRepository;
-    @Autowired
-    private PasswordEncoder passwordEncoder;
-    @Autowired
-    private MapperUtil mapperUtil;
+    private final EmployeeRepository employeeRepository;
+    private final UserRepository userRepository;
+    private final ManagerRepository managerRepository;
+    private final DepartmentRepository departmentRepository;
+    private final PasswordEncoder passwordEncoder;
+    private final MapperUtil mapperUtil;
 
     public static final List<String> IT_DEPARTMENT_JOB_TITLES = List.of("IT Engineer", "Tester", "UI/UX Designer");
     public static final List<String> SALES_DEPARTMENT_JOB_TITLES = List.of("Sales Officer", "Associate Officer");

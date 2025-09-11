@@ -49,11 +49,6 @@ class EmployeeServiceTest {
     @InjectMocks
     private EmployeeServiceImpl employeeService;
 
-    @BeforeEach
-    void setUp() {
-
-    }
-
     @Test
     void createEmployee() {
 

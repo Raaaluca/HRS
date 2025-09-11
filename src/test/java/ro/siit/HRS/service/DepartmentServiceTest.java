@@ -6,6 +6,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
+import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.boot.test.context.SpringBootTest;
 import ro.siit.HRS.dto.create.DepartmentCreateDto;
@@ -13,6 +14,7 @@ import ro.siit.HRS.dto.rturn.DepartmentReturnDto;
 import ro.siit.HRS.model.Department;
 import ro.siit.HRS.repository.DepartmentRepository;
 import ro.siit.HRS.service.impl.DepartmentServiceImpl;
+import ro.siit.HRS.util.MapperUtil;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
@@ -21,15 +23,12 @@ import static org.mockito.ArgumentMatchers.any;
 @ExtendWith(MockitoExtension.class)
 class DepartmentServiceTest {
 
-    @Mock
+    @Spy
     private DepartmentRepository departmentRepository;
+    @Mock
+    private MapperUtil mapperUtil;
     @InjectMocks
     private DepartmentServiceImpl departmentService;
-
-    @BeforeEach
-    void setUp() {
-
-    }
 
     @Test
     void createDepartment() {
