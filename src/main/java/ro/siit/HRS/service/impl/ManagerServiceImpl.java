@@ -46,20 +46,10 @@ public class ManagerServiceImpl implements ManagerService {
         user.setUsername(managerCreateDto.getEmail());
         user.setPassword(passwordEncoder.encode(managerCreateDto.getNationalId()));
         user = userRepository.save(user);
-
+        
         manager.setUser(user);
-        manager.setAddress(managerCreateDto.getAddress());
-        manager.setEmail(managerCreateDto.getEmail());
-        manager.setCity(managerCreateDto.getCity());
-        manager.setGender(managerCreateDto.getGender());
-        manager.setName(managerCreateDto.getName());
-        manager.setStartDate(managerCreateDto.getStartDate());
-        manager.setEndDate(managerCreateDto.getEndDate());
-        manager.setNationalId(managerCreateDto.getNationalId());
-        manager.setPhoneNumber(managerCreateDto.getPhoneNumber());
-        manager.setAnnualLeaveDays(21);
-        manager.setJobTitle("Head of department");
-        manager = managerRepository.save(manager);
+        manager = managerRepository.save(mapperUtil.mapManagerEntity(managerCreateDto));
+
         return mapperUtil.mapManager(manager);
     }
 

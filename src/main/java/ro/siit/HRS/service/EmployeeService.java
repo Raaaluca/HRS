@@ -18,5 +18,6 @@ public interface EmployeeService {
     void updateEmployeeDto(EmployeeUpdateDto employeeUpdateDto);
     List<LeaveRequestReturnDto> myLeaveRequests(String username);
     Integer getEmployeeRemainingDays(String username);
+    Long getSuperiorIdByJobTitle(String jobTitle);
 
 }

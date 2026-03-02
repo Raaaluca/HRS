@@ -46,6 +46,7 @@ class DepartmentServiceTest {
         department.setManagerId(1L);
 
         Mockito.when(departmentRepository.save(any())).thenReturn(department);
+        Mockito.when(mapperUtil.mapDepartment(any())).thenReturn(expectedDepartmentReturnDto);
 
         DepartmentReturnDto resultedDepartmentReturnDto = departmentService.createDepartment(departmentCreateDto);
 

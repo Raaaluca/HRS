@@ -1,6 +1,7 @@
 package ro.siit.HRS.service.impl;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import ro.siit.HRS.dto.create.DepartmentCreateDto;
 import ro.siit.HRS.dto.rturn.DepartmentReturnDto;
@@ -11,6 +12,7 @@ import ro.siit.HRS.util.MapperUtil;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class DepartmentServiceImpl implements DepartmentService {
 
     private final DepartmentRepository departmentRepository;
@@ -18,11 +20,12 @@ public class DepartmentServiceImpl implements DepartmentService {
 
     public DepartmentReturnDto createDepartment(DepartmentCreateDto departmentCreateDto) {
 
+        log.info("Preparing to create department from {}", departmentCreateDto);
         Department department = new Department();
         department.setDepartmentName(departmentCreateDto.getDepartmentName());
         department.setManagerId(departmentCreateDto.getManagerId());
         department = departmentRepository.save(department);
-
+        log.info("Department created successfully with id: {}", department.getId());
         return mapperUtil.mapDepartment(department);
     }
 }

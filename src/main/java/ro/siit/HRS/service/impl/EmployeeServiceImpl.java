@@ -1,6 +1,7 @@
 package ro.siit.HRS.service.impl;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import ro.siit.HRS.dto.create.EmployeeCreateDto;
@@ -16,12 +17,12 @@ import ro.siit.HRS.repository.*;
 import ro.siit.HRS.service.EmployeeService;
 import ro.siit.HRS.util.MapperUtil;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class EmployeeServiceImpl implements EmployeeService {
 
     private final EmployeeRepository employeeRepository;
@@ -43,38 +44,55 @@ public class EmployeeServiceImpl implements EmployeeService {
         return mapperUtil.mapEmployee(employee);
     }
 
-    public EmployeeReturnDto createEmployee(EmployeeCreateDto employeeCreateDto) {
+    /**
+     * This method creates {@link User} Entity in DB based on {@link EmployeeCreateDto} object
+     * When a user from {@link Employee} Entity is created, will automatically have the role "EMPLOYEE"
+     * and the password will be the employee`s national id
+     *
+     * @param employeeCreateDto the {@link EmployeeCreateDto} parameter object
+     * @return the {@link User} Entity
+     */
+    public User createUser(EmployeeCreateDto employeeCreateDto) {
 
         User user = new User();
         user.setRole("EMPLOYEE");
         user.setUsername(employeeCreateDto.getEmail());
-        user.setPassword(passwordEncoder.encode(employeeCreateDto.getNationalId())); // SECURITY !!!
+        user.setPassword(passwordEncoder.encode(employeeCreateDto.getNationalId()));
 
-        Employee employee = new Employee();
-        employee.setUser(user);
+        return user;
+    }
+
+    /**
+     * This method creates an {@link Employee} entity in DB based on {@link EmployeeCreateDto} object
+     * When an employee is created, the related {@link User} is also created,
+     * the employee will have the manager assigned based on the job title
+     * and the {@link Manager} {@link List} of {@link Employee} will be updated
+     * Throws a {@link ManagerNotFoundException} when the manager is not found
+     *
+     * @param employeeCreateDto the {@link EmployeeCreateDto} parameter object
+     * @return the {@link EmployeeReturnDto} object
+     */
+    public EmployeeReturnDto createEmployee(EmployeeCreateDto employeeCreateDto) {
+
+        log.info("Preparing to create User from {}", employeeCreateDto);
+        User user = createUser(employeeCreateDto);
         userRepository.save(user);
+        log.info("User created successfully with id: {}", user.getId());
 
-        employee.setSuperiorId(getSuperiorIdByJobTitle(employeeCreateDto.getJobTitle()));
-        employee.setGender(employeeCreateDto.getGender());
-        employee.setCity(employeeCreateDto.getCity());
-        employee.setEmail(employeeCreateDto.getEmail());
-        employee.setAddress(employeeCreateDto.getAddress());
-        employee.setStartDate(employeeCreateDto.getStartDate());
-        employee.setEndDate(employeeCreateDto.getEndDate());
-        employee.setLeaveRequests(new ArrayList<>());
-        employee.setName(employeeCreateDto.getName());
-        employee.setNationalId(employeeCreateDto.getNationalId());
-        employee.setPhoneNumber(employeeCreateDto.getPhoneNumber());
-        employee.setJobTitle(employeeCreateDto.getJobTitle());
-        employee.setAnnualLeaveDays(21);
-
+        log.info("Preparing to set Employee from {}", employeeCreateDto);
+        Employee employee = mapperUtil.mapEmployeeEntity(employeeCreateDto);
+        employee.setUser(user);
         employee = employeeRepository.save(employee);
-        Employee finalEmployee = employee;
+        log.info("Employee created successfully with id: {}", employee.getId());
 
-        Manager manager = managerRepository.findById(employee.getSuperiorId()).orElseThrow(()
-                -> new ManagerNotFoundException("This manager id " + finalEmployee.getSuperiorId() + "does not exist"));
+        log.info("Preparing to get manager Id from {}", employee.getSuperiorId());
+        Long managerId = employee.getSuperiorId();
+        Manager manager = managerRepository.findById(managerId).orElseThrow(()
+                -> new ManagerNotFoundException("This manager id " + managerId + "does not exist"));
+
         manager.getEmployees().add(employee);
         managerRepository.save(manager);
+        log.info("Employee created successfully with id: {}", employee.getSuperiorId() );
 
         return mapperUtil.mapEmployee(employee);
     }
@@ -163,9 +181,9 @@ public class EmployeeServiceImpl implements EmployeeService {
         manager.getEmployees().remove(employee);
         manager.getLeaveRequestsToManage()
                 .removeAll(manager.getLeaveRequestsToManage()
-                .stream()
-                .filter(p -> p.getEmployeeId().equals(employee.getId()))
-                .toList());
+                        .stream()
+                        .filter(p -> p.getEmployeeId().equals(employee.getId()))
+                        .toList());
         managerRepository.save(manager);
 
         User user = userRepository.findById(employee.getUser().getId()).orElseThrow(()
@@ -215,7 +233,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 
         Employee employee = employeeRepository.findById(employeeUpdateDto.getId()).orElseThrow(()
                 -> new EmployeeNotFoundException(
-                        "This employee id: " + employeeUpdateDto.getId() + ", can not be found!!"));
+                "This employee id: " + employeeUpdateDto.getId() + ", can not be found!!"));
         if (employeeUpdateDto.getAddress() != null) {
             employee.setAddress(employeeUpdateDto.getAddress());
         }
