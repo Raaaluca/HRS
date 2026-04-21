@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ro.siit.HRS.dto.create.ManagerCreateDto;
 import ro.siit.HRS.dto.rturn.LeaveRequestReturnDto;
 import ro.siit.HRS.dto.rturn.ManagerReturnDto;
@@ -37,6 +38,7 @@ public class ManagerServiceImpl implements ManagerService {
                         "This manager id " + id + "does not exist!")));
     }
 
+    @Transactional
     public ManagerReturnDto createManager(ManagerCreateDto managerCreateDto) {
 
         Manager manager = new Manager();
@@ -143,6 +145,7 @@ public class ManagerServiceImpl implements ManagerService {
         return mapperUtil.mapManager(manager);
     }
 
+    @Transactional
     public String deleteManager(Long managerId) {
 
         Manager manager = managerRepository.findById(managerId).orElseThrow(()
