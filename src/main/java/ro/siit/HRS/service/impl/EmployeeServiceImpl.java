@@ -16,6 +16,7 @@ import ro.siit.HRS.model.*;
 import ro.siit.HRS.repository.*;
 import ro.siit.HRS.service.EmployeeService;
 import ro.siit.HRS.util.MapperUtil;
+import ro.siit.HRS.util.Role;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -55,7 +56,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     public User createUser(EmployeeCreateDto employeeCreateDto) {
 
         User user = new User();
-        user.setRole("EMPLOYEE");
+        user.setRole(Role.EMPLOYEE.name());
         user.setUsername(employeeCreateDto.getEmail());
         user.setPassword(passwordEncoder.encode(employeeCreateDto.getNationalId()));
 
