@@ -15,6 +15,7 @@ import ro.siit.HRS.model.*;
 import ro.siit.HRS.repository.*;
 import ro.siit.HRS.service.ManagerService;
 import ro.siit.HRS.util.MapperUtil;
+import ro.siit.HRS.util.Role;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -44,7 +45,7 @@ public class ManagerServiceImpl implements ManagerService {
         Manager manager = new Manager();
 
         User user = new User();
-        user.setRole("MANAGER");
+        user.setRole(Role.MANAGER.name());
         user.setUsername(managerCreateDto.getEmail());
         user.setPassword(passwordEncoder.encode(managerCreateDto.getNationalId()));
         user = userRepository.save(user);

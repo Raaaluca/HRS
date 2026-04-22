@@ -17,6 +17,7 @@ import ro.siit.HRS.model.User;
 import ro.siit.HRS.repository.ManagerRepository;
 import ro.siit.HRS.repository.UserRepository;
 import ro.siit.HRS.service.impl.ManagerServiceImpl;
+import ro.siit.HRS.util.Role;
 
 import java.time.LocalDate;
 import java.util.Optional;
@@ -63,7 +64,7 @@ class ManagerServiceTest {
         expectedManagerReturnDto.setPhoneNumber("0733222111");
 
         User user = new User();
-        user.setRole("MANAGER");
+        user.setRole(Role.MANAGER.name());
         user.setUsername(managerCreateDto.getEmail());
         user.setPassword(passwordEncoder.encode(managerCreateDto.getNationalId()));
 
