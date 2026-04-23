@@ -1,7 +1,7 @@
 package ro.siit.HRS.service;
 
 import ro.siit.HRS.dto.create.DepartmentCreateDto;
-import ro.siit.HRS.dto.rturn.DepartmentReturnDto;
+import ro.siit.HRS.dto.response.DepartmentReturnDto;
 
 public interface DepartmentService {
 

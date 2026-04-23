@@ -1,7 +1,7 @@
 package ro.siit.HRS.service;
 
 import ro.siit.HRS.dto.create.LeaveRequestCreateDto;
-import ro.siit.HRS.dto.rturn.LeaveRequestReturnDto;
+import ro.siit.HRS.dto.response.LeaveRequestReturnDto;
 
 public interface LeaveRequestService {
 

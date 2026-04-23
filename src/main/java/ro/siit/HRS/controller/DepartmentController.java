@@ -3,7 +3,7 @@ package ro.siit.HRS.controller;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import ro.siit.HRS.dto.create.DepartmentCreateDto;
-import ro.siit.HRS.dto.rturn.DepartmentReturnDto;
+import ro.siit.HRS.dto.response.DepartmentReturnDto;
 import ro.siit.HRS.service.DepartmentService;
 
 @RequestMapping(path = "/departments")

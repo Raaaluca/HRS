@@ -3,7 +3,7 @@ package ro.siit.HRS.controller;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import ro.siit.HRS.dto.create.LeaveRequestCreateDto;
-import ro.siit.HRS.dto.rturn.LeaveRequestReturnDto;
+import ro.siit.HRS.dto.response.LeaveRequestReturnDto;
 import ro.siit.HRS.service.LeaveRequestService;
 
 @RequestMapping(path = "/leaverequest")

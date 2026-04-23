@@ -1,8 +1,8 @@
 package ro.siit.HRS.service;
 
 import ro.siit.HRS.dto.create.EmployeeCreateDto;
-import ro.siit.HRS.dto.rturn.EmployeeReturnDto;
-import ro.siit.HRS.dto.rturn.LeaveRequestReturnDto;
+import ro.siit.HRS.dto.response.EmployeeReturnDto;
+import ro.siit.HRS.dto.response.LeaveRequestReturnDto;
 import ro.siit.HRS.dto.update.EmployeeUpdateDto;
 
 import java.util.List;

@@ -1,4 +1,4 @@
-package ro.siit.HRS.dto.rturn;
+package ro.siit.HRS.dto.response;
 
 import lombok.Data;
 
