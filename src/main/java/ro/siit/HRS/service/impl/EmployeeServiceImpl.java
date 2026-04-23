@@ -35,6 +35,9 @@ public class EmployeeServiceImpl implements EmployeeService {
     public static final List<String> IT_DEPARTMENT_JOB_TITLES = List.of("IT Engineer", "Tester", "UI/UX Designer");
     public static final List<String> SALES_DEPARTMENT_JOB_TITLES = List.of("Sales Officer", "Associate Officer");
     public static final List<String> HR_DEPARTMENT_JOB_TITLES = List.of("HR Admin", "Payroll Admin");
+    private static final String DEPT_IT    = "IT";
+    private static final String DEPT_SALES = "SALES";
+    private static final String DEPT_HR    = "HR";
 
     public EmployeeReturnDto findById(Long id) {
 
@@ -143,21 +146,21 @@ public class EmployeeServiceImpl implements EmployeeService {
 
         Long superiorId = null;
         if (IT_DEPARTMENT_JOB_TITLES.contains(jobTitle)) {
-            Department department = departmentRepository.findByDepartmentName("IT");
+            Department department = departmentRepository.findByDepartmentName(DEPT_IT);
             if (department == null) {
                 throw new DepartmentNotFoundException("IT Department was not found");
             }
             superiorId = department.getManagerId();
         }
         if (SALES_DEPARTMENT_JOB_TITLES.contains(jobTitle)) {
-            Department department = departmentRepository.findByDepartmentName("SALES");
+            Department department = departmentRepository.findByDepartmentName(DEPT_SALES);
             if (department == null) {
                 throw new DepartmentNotFoundException("SALES Department was not found");
             }
             superiorId = department.getManagerId();
         }
         if (HR_DEPARTMENT_JOB_TITLES.contains(jobTitle)) {
-            Department department = departmentRepository.findByDepartmentName("HR");
+            Department department = departmentRepository.findByDepartmentName(DEPT_HR);
             if (department == null) {
                 throw new DepartmentNotFoundException("HR Department was not found");
             }
