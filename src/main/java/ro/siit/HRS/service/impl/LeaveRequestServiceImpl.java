@@ -3,7 +3,7 @@ package ro.siit.HRS.service.impl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ro.siit.HRS.dto.create.LeaveRequestCreateDto;
-import ro.siit.HRS.dto.rturn.LeaveRequestReturnDto;
+import ro.siit.HRS.dto.response.LeaveRequestReturnDto;
 import ro.siit.HRS.exceptions.EmployeeNotFoundException;
 import ro.siit.HRS.exceptions.ManagerNotFoundException;
 import ro.siit.HRS.model.Employee;

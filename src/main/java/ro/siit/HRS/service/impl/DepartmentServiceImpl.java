@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import ro.siit.HRS.dto.create.DepartmentCreateDto;
-import ro.siit.HRS.dto.rturn.DepartmentReturnDto;
+import ro.siit.HRS.dto.response.DepartmentReturnDto;
 import ro.siit.HRS.model.Department;
 import ro.siit.HRS.repository.DepartmentRepository;
 import ro.siit.HRS.service.DepartmentService;

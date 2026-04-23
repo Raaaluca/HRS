@@ -3,7 +3,7 @@ package ro.siit.HRS.controller;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import ro.siit.HRS.dto.create.ManagerCreateDto;
-import ro.siit.HRS.dto.rturn.ManagerReturnDto;
+import ro.siit.HRS.dto.response.ManagerReturnDto;
 import ro.siit.HRS.dto.update.ManagerUpdateDto;
 import ro.siit.HRS.service.ManagerService;
 

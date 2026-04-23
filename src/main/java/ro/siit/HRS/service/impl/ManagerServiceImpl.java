@@ -1,13 +1,12 @@
 package ro.siit.HRS.service.impl;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ro.siit.HRS.dto.create.ManagerCreateDto;
-import ro.siit.HRS.dto.rturn.LeaveRequestReturnDto;
-import ro.siit.HRS.dto.rturn.ManagerReturnDto;
+import ro.siit.HRS.dto.response.LeaveRequestReturnDto;
+import ro.siit.HRS.dto.response.ManagerReturnDto;
 import ro.siit.HRS.dto.update.EmployeeUpdateDto;
 import ro.siit.HRS.dto.update.ManagerUpdateDto;
 import ro.siit.HRS.exceptions.ManagerNotFoundException;
@@ -18,7 +17,6 @@ import ro.siit.HRS.util.MapperUtil;
 import ro.siit.HRS.util.Role;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -36,7 +34,7 @@ public class ManagerServiceImpl implements ManagerService {
 
         return mapperUtil.mapManager(managerRepository.findById(id)
                 .orElseThrow(() -> new ManagerNotFoundException(
-                        "This manager id " + id + "does not exist!")));
+                        "This manager id " + id + " does not exist!")));
     }
 
     @Transactional
@@ -60,7 +58,7 @@ public class ManagerServiceImpl implements ManagerService {
     public void updateManagerFromEmployeeDto(EmployeeUpdateDto employeeUpdateDto) {
 
         Manager manager = managerRepository.findById(employeeUpdateDto.getId()).orElseThrow(()
-                -> new ManagerNotFoundException("This manager id " + employeeUpdateDto.getId() + "can not be found!!"));
+                -> new ManagerNotFoundException("This manager id " + employeeUpdateDto.getId() + " can not be found!!"));
         if (employeeUpdateDto.getAddress() != null) {
             manager.setAddress(employeeUpdateDto.getAddress());
         }
@@ -86,7 +84,7 @@ public class ManagerServiceImpl implements ManagerService {
     public void updateManagerDto(ManagerUpdateDto managerUpdateDto) {
 
         Manager manager = managerRepository.findById(managerUpdateDto.getId()).orElseThrow(()
-                -> new ManagerNotFoundException("This manager id " + managerUpdateDto.getId() + "can not be found!!"));
+                -> new ManagerNotFoundException("This manager id " + managerUpdateDto.getId() + " can not be found!!"));
         if (managerUpdateDto.getAddress() != null) {
             manager.setAddress(managerUpdateDto.getAddress());
         }
@@ -112,7 +110,7 @@ public class ManagerServiceImpl implements ManagerService {
     public ManagerReturnDto updateManager(ManagerUpdateDto managerUpdateDto) {
 
         Manager manager = managerRepository.findById(managerUpdateDto.getId()).orElseThrow(()
-                -> new ManagerNotFoundException("This manager id " + managerUpdateDto.getId() + "can not be found!!"));
+                -> new ManagerNotFoundException("This manager id " + managerUpdateDto.getId() + " can not be found!!"));
         if (managerUpdateDto.getAddress() != null) {
             manager.setAddress(managerUpdateDto.getAddress());
         }
@@ -150,7 +148,7 @@ public class ManagerServiceImpl implements ManagerService {
     public String deleteManager(Long managerId) {
 
         Manager manager = managerRepository.findById(managerId).orElseThrow(()
-                -> new ManagerNotFoundException("This manager id " + managerId + "was not found!"));
+                -> new ManagerNotFoundException("This manager id " + managerId + " was not found!"));
 
         managerRepository.deleteById(managerId);
         userRepository.deleteById(manager.getUser().getId());
@@ -165,8 +163,8 @@ public class ManagerServiceImpl implements ManagerService {
         return manager
                 .getLeaveRequestsToManage()
                 .stream()
-                .map(p -> mapperUtil.mapLeaveRequestReturnDto(p))
-                .collect(Collectors.toList());
+                .map(mapperUtil::mapLeaveRequestReturnDto)
+                .toList();
     }
 
     public List<LeaveRequestReturnDto> myLeaveRequests(String username) {
@@ -177,8 +175,8 @@ public class ManagerServiceImpl implements ManagerService {
         return manager
                 .getLeaveRequests()
                 .stream()
-                .map(p -> mapperUtil.mapLeaveRequestReturnDto(p))
-                .collect(Collectors.toList());
+                .map(mapperUtil::mapLeaveRequestReturnDto)
+                .toList();
     }
 
     public String getAuthenticationDetails(String username) {

@@ -5,8 +5,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import ro.siit.HRS.dto.create.EmployeeCreateDto;
-import ro.siit.HRS.dto.rturn.EmployeeReturnDto;
-import ro.siit.HRS.dto.rturn.LeaveRequestReturnDto;
+import ro.siit.HRS.dto.response.EmployeeReturnDto;
+import ro.siit.HRS.dto.response.LeaveRequestReturnDto;
 import ro.siit.HRS.dto.update.EmployeeUpdateDto;
 import ro.siit.HRS.exceptions.DepartmentNotFoundException;
 import ro.siit.HRS.exceptions.EmployeeNotFoundException;
@@ -19,7 +19,6 @@ import ro.siit.HRS.util.MapperUtil;
 import ro.siit.HRS.util.Role;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -40,7 +39,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     public EmployeeReturnDto findById(Long id) {
 
         Employee employee = employeeRepository.findById(id).orElseThrow(()
-                -> new EmployeeNotFoundException("This employee id " + id + "does not exist!"));
+                -> new EmployeeNotFoundException("This employee id " + id + " does not exist!"));
 
         return mapperUtil.mapEmployee(employee);
     }
@@ -53,7 +52,7 @@ public class EmployeeServiceImpl implements EmployeeService {
      * @param employeeCreateDto the {@link EmployeeCreateDto} parameter object
      * @return the {@link User} Entity
      */
-    public User createUser(EmployeeCreateDto employeeCreateDto) {
+    private User createUser(EmployeeCreateDto employeeCreateDto) {
 
         User user = new User();
         user.setRole(Role.EMPLOYEE.name());
@@ -89,11 +88,11 @@ public class EmployeeServiceImpl implements EmployeeService {
         log.info("Preparing to get manager Id from {}", employee.getSuperiorId());
         Long managerId = employee.getSuperiorId();
         Manager manager = managerRepository.findById(managerId).orElseThrow(()
-                -> new ManagerNotFoundException("This manager id " + managerId + "does not exist"));
+                -> new ManagerNotFoundException("This manager id " + managerId + " does not exist"));
 
         manager.getEmployees().add(employee);
         managerRepository.save(manager);
-        log.info("Employee created successfully with id: {}", employee.getSuperiorId() );
+        log.info("Employee {} successfully assigned to Manager {}", employee.getId(), employee.getSuperiorId());
 
         return mapperUtil.mapEmployee(employee);
     }
@@ -101,7 +100,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     public EmployeeReturnDto updateEmployee(EmployeeUpdateDto employeeUpdateDto) {
 
         Employee employee = employeeRepository.findById(employeeUpdateDto.getId()).orElseThrow(()
-                -> new EmployeeNotFoundException("This employee id " + employeeUpdateDto.getId() + "can not be found!!"));
+                -> new EmployeeNotFoundException("This employee id " + employeeUpdateDto.getId() + " can not be found!!"));
         if (employeeUpdateDto.getAddress() != null) {
             employee.setAddress(employeeUpdateDto.getAddress());
         }
@@ -170,14 +169,14 @@ public class EmployeeServiceImpl implements EmployeeService {
     public String deleteEmployee(Long employeeId) {
 
         Employee employee = employeeRepository.findById(employeeId).orElseThrow(()
-                -> new EmployeeNotFoundException("The employee with id " + employeeId + "was not found!"));
+                -> new EmployeeNotFoundException("The employee with id " + employeeId + " was not found!"));
 
         employee.getLeaveRequests().clear();
         employeeRepository.save(employee);
 
         Long managerId = employee.getSuperiorId();
         Manager manager = managerRepository.findById(managerId).orElseThrow(()
-                -> new ManagerNotFoundException("This manager id " + managerId + "does not exist!"));
+                -> new ManagerNotFoundException("This manager id " + managerId + " does not exist!"));
 
         manager.getEmployees().remove(employee);
         manager.getLeaveRequestsToManage()
@@ -218,8 +217,8 @@ public class EmployeeServiceImpl implements EmployeeService {
 
         return employee.getLeaveRequests()
                 .stream()
-                .map(p -> mapperUtil.mapLeaveRequestReturnDto(p))
-                .collect(Collectors.toList());
+                .map(mapperUtil::mapLeaveRequestReturnDto)
+                .toList();
     }
 
     public Integer getEmployeeRemainingDays(String username) {

@@ -1,6 +1,5 @@
 package ro.siit.HRS.service;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -10,7 +9,7 @@ import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.boot.test.context.SpringBootTest;
 import ro.siit.HRS.dto.create.DepartmentCreateDto;
-import ro.siit.HRS.dto.rturn.DepartmentReturnDto;
+import ro.siit.HRS.dto.response.DepartmentReturnDto;
 import ro.siit.HRS.model.Department;
 import ro.siit.HRS.repository.DepartmentRepository;
 import ro.siit.HRS.service.impl.DepartmentServiceImpl;
