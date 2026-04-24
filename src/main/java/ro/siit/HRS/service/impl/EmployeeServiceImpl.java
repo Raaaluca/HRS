@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ro.siit.HRS.dto.create.EmployeeCreateDto;
 import ro.siit.HRS.dto.response.EmployeeReturnDto;
 import ro.siit.HRS.dto.response.LeaveRequestReturnDto;
@@ -75,6 +76,7 @@ public class EmployeeServiceImpl implements EmployeeService {
      * @param employeeCreateDto the {@link EmployeeCreateDto} parameter object
      * @return the {@link EmployeeReturnDto} object
      */
+    @Transactional
     public EmployeeReturnDto createEmployee(EmployeeCreateDto employeeCreateDto) {
 
         log.info("Preparing to create User from {}", employeeCreateDto);
@@ -168,6 +170,7 @@ public class EmployeeServiceImpl implements EmployeeService {
         throw new DepartmentNotFoundException("No department found for job title: " + jobTitle);
     }
 
+    @Transactional
     public String deleteEmployee(Long employeeId) {
 
         Employee employee = employeeRepository.findById(employeeId).orElseThrow(()
