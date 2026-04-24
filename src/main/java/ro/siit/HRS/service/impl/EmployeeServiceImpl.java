@@ -144,29 +144,28 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     public Long getSuperiorIdByJobTitle(String jobTitle) {
 
-        Long superiorId = null;
         if (IT_DEPARTMENT_JOB_TITLES.contains(jobTitle)) {
             Department department = departmentRepository.findByDepartmentName(DEPT_IT);
             if (department == null) {
-                throw new DepartmentNotFoundException("IT Department was not found");
+                throw new DepartmentNotFoundException(DEPT_IT + " Department was not found");
             }
-            superiorId = department.getManagerId();
+            return department.getManagerId();
         }
         if (SALES_DEPARTMENT_JOB_TITLES.contains(jobTitle)) {
             Department department = departmentRepository.findByDepartmentName(DEPT_SALES);
             if (department == null) {
-                throw new DepartmentNotFoundException("SALES Department was not found");
+                throw new DepartmentNotFoundException(DEPT_SALES + " Department was not found");
             }
-            superiorId = department.getManagerId();
+            return department.getManagerId();
         }
         if (HR_DEPARTMENT_JOB_TITLES.contains(jobTitle)) {
             Department department = departmentRepository.findByDepartmentName(DEPT_HR);
             if (department == null) {
-                throw new DepartmentNotFoundException("HR Department was not found");
+                throw new DepartmentNotFoundException(DEPT_HR + " Department was not found");
             }
-            superiorId = department.getManagerId();
+            return department.getManagerId();
         }
-        return superiorId;
+        throw new DepartmentNotFoundException("No department found for job title: " + jobTitle);
     }
 
     public String deleteEmployee(Long employeeId) {
