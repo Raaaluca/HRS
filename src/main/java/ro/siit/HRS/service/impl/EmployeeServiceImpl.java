@@ -117,6 +117,7 @@ public class EmployeeServiceImpl implements EmployeeService {
         }
         if (employeeUpdateDto.getEmail() != null) {
             employee.setEmail(employeeUpdateDto.getEmail());
+            employee.getUser().setUsername(employeeUpdateDto.getEmail());
         }
         if (employeeUpdateDto.getJobTitle() != null) {
 
