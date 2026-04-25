@@ -123,13 +123,15 @@ public class EmployeeServiceImpl implements EmployeeService {
 
             employee.setJobTitle(employeeUpdateDto.getJobTitle());
 
-            Manager oldManager = managerRepository.findById(employee.getSuperiorId()).orElseThrow();
+            Manager oldManager = managerRepository.findById(employee.getSuperiorId()).orElseThrow(()
+                    -> new ManagerNotFoundException("No manager found for this employee: " + employeeUpdateDto.getId()));
             oldManager.getEmployees().remove(employee);
             managerRepository.save(oldManager);
 
             employee.setSuperiorId(getSuperiorIdByJobTitle(employee.getJobTitle()));
 
-            Manager newManager = managerRepository.findById(employee.getSuperiorId()).orElseThrow();
+            Manager newManager = managerRepository.findById(employee.getSuperiorId()).orElseThrow(()
+                    -> new ManagerNotFoundException("No manager found for this employee: " + employeeUpdateDto.getId()));
             newManager.getEmployees().add(employee);
             managerRepository.save(newManager);
         }
@@ -190,7 +192,7 @@ public class EmployeeServiceImpl implements EmployeeService {
         managerRepository.save(manager);
 
         User user = userRepository.findById(employee.getUser().getId()).orElseThrow(()
-                -> new UserNotFoundException("The user with id " + employee.getUser().getId() + "does not exist!"));
+                -> new UserNotFoundException("The user with id " + employee.getUser().getId() + " does not exist!"));
         employeeRepository.delete(employee);
         userRepository.deleteById(user.getId());
 
@@ -199,24 +201,30 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     public String getAuthenticationDetails(String username) {
 
-        User user = userRepository.findByUsername(username).orElseThrow();
-        Employee employee = employeeRepository.findByUser(user).orElseThrow();
+        User user = userRepository.findByUsername(username).orElseThrow(()
+                -> new UserNotFoundException("Username not found: " + username));
+        Employee employee = employeeRepository.findByUser(user).orElseThrow(()
+                -> new EmployeeNotFoundException("No corresponding employee found for this user: " + user.getUsername()));
 
         return employee.getName() + ", " + employee.getJobTitle();
     }
 
     public EmployeeReturnDto getUpdatePersonalDetails(String username) {
 
-        User user = userRepository.findByUsername(username).orElseThrow();
-        Employee employee = employeeRepository.findByUser(user).orElseThrow();
+        User user = userRepository.findByUsername(username).orElseThrow(()
+                -> new UserNotFoundException("Username not found: " + username));
+        Employee employee = employeeRepository.findByUser(user).orElseThrow(()
+                -> new EmployeeNotFoundException("No corresponding employee found for this user: " + user.getUsername()));
 
         return mapperUtil.mapEmployee(employee);
     }
 
     public List<LeaveRequestReturnDto> myLeaveRequests(String username) {
 
-        User user = userRepository.findByUsername(username).orElseThrow();
-        Employee employee = employeeRepository.findByUser(user).orElseThrow();
+        User user = userRepository.findByUsername(username).orElseThrow(()
+                -> new UserNotFoundException("Username not found: " + username));
+        Employee employee = employeeRepository.findByUser(user).orElseThrow(()
+                -> new EmployeeNotFoundException("No corresponding employee found for this user: " + user.getUsername()));
 
         return employee.getLeaveRequests()
                 .stream()
@@ -226,8 +234,10 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     public Integer getEmployeeRemainingDays(String username) {
 
-        User user = userRepository.findByUsername(username).orElseThrow();
-        Employee employee = employeeRepository.findByUser(user).orElseThrow();
+        User user = userRepository.findByUsername(username).orElseThrow(()
+                -> new UserNotFoundException("Username not found: " + username));
+        Employee employee = employeeRepository.findByUser(user).orElseThrow(()
+                -> new EmployeeNotFoundException("No corresponding employee found for this user: " + user.getUsername()));
 
         return employee.getAnnualLeaveDays();
     }
@@ -236,7 +246,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 
         Employee employee = employeeRepository.findById(employeeUpdateDto.getId()).orElseThrow(()
                 -> new EmployeeNotFoundException(
-                "This employee id: " + employeeUpdateDto.getId() + ", can not be found!!"));
+                "This employee id: " + employeeUpdateDto.getId() + " can not be found!!"));
         if (employeeUpdateDto.getAddress() != null) {
             employee.setAddress(employeeUpdateDto.getAddress());
         }
