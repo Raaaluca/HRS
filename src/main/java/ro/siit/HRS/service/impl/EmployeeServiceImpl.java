@@ -186,10 +186,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 
         manager.getEmployees().remove(employee);
         manager.getLeaveRequestsToManage()
-                .removeAll(manager.getLeaveRequestsToManage()
-                        .stream()
-                        .filter(p -> p.getEmployeeId().equals(employee.getId()))
-                        .toList());
+                .removeIf(p -> p.getEmployeeId().equals(employee.getId()));
         managerRepository.save(manager);
 
         User user = userRepository.findById(employee.getUser().getId()).orElseThrow(()
