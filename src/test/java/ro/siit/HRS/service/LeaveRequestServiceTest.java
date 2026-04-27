@@ -1,6 +1,5 @@
 package ro.siit.HRS.service;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -9,13 +8,14 @@ import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.boot.test.context.SpringBootTest;
 import ro.siit.HRS.dto.create.LeaveRequestCreateDto;
-import ro.siit.HRS.dto.rturn.LeaveRequestReturnDto;
+import ro.siit.HRS.dto.response.LeaveRequestReturnDto;
 import ro.siit.HRS.model.Employee;
 import ro.siit.HRS.model.LeaveRequest;
 import ro.siit.HRS.model.Manager;
 import ro.siit.HRS.repository.EmployeeRepository;
 import ro.siit.HRS.repository.LeaveRequestRepository;
 import ro.siit.HRS.repository.ManagerRepository;
+import ro.siit.HRS.service.impl.LeaveRequestServiceImpl;
 
 import java.util.ArrayList;
 import java.util.Optional;
@@ -34,12 +34,7 @@ class LeaveRequestServiceTest {
     @Mock
     private EmployeeRepository employeeRepository;
     @InjectMocks
-    private LeaveRequestService leaveRequestService;
-
-    @BeforeEach
-    void setUp() {
-
-    }
+    private LeaveRequestServiceImpl leaveRequestService;
 
     @Test
     void getEmployeeNameById() {

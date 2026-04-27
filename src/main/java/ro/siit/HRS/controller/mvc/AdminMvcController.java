@@ -1,7 +1,7 @@
 package ro.siit.HRS.controller.mvc;
 
 import jakarta.validation.Valid;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -11,23 +11,21 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import ro.siit.HRS.dto.create.EmployeeCreateDto;
-import ro.siit.HRS.dto.rturn.EmployeeReturnDto;
+import ro.siit.HRS.dto.response.EmployeeReturnDto;
 import ro.siit.HRS.dto.update.EmployeeUpdateDto;
 import ro.siit.HRS.service.AdminService;
 import ro.siit.HRS.service.EmployeeService;
-import ro.siit.HRS.service.HrsUserDetails;
 import ro.siit.HRS.service.ManagerService;
+import ro.siit.HRS.config.HrsUserDetails;
 
 @Controller
 @RequestMapping(path = "/admin")
+@RequiredArgsConstructor
 public class AdminMvcController {
 
-    @Autowired
-    private AdminService adminService;
-    @Autowired
-    private EmployeeService employeeService;
-    @Autowired
-    private ManagerService managerService;
+    private final AdminService adminService;
+    private final EmployeeService employeeService;
+    private final ManagerService managerService;
 
     @GetMapping(path = "/allemployees")
     public String getEmployees(@AuthenticationPrincipal HrsUserDetails user, Model model) {

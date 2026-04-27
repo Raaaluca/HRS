@@ -1,23 +1,22 @@
 package ro.siit.HRS.service;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import ro.siit.HRS.dto.create.ManagerCreateDto;
-import ro.siit.HRS.dto.rturn.ManagerReturnDto;
+import ro.siit.HRS.dto.response.ManagerReturnDto;
 import ro.siit.HRS.dto.update.ManagerUpdateDto;
 import ro.siit.HRS.model.Manager;
 import ro.siit.HRS.model.User;
 import ro.siit.HRS.repository.ManagerRepository;
 import ro.siit.HRS.repository.UserRepository;
+import ro.siit.HRS.service.impl.ManagerServiceImpl;
+import ro.siit.HRS.util.Role;
 
 import java.time.LocalDate;
 import java.util.Optional;
@@ -36,12 +35,7 @@ class ManagerServiceTest {
     @Mock
     private ManagerRepository managerRepository;
     @InjectMocks
-    private ManagerService managerService;
-
-    @BeforeEach
-    void setUp() {
-
-    }
+    private ManagerServiceImpl managerService;
 
     @Test
     void createManager() {
@@ -69,7 +63,7 @@ class ManagerServiceTest {
         expectedManagerReturnDto.setPhoneNumber("0733222111");
 
         User user = new User();
-        user.setRole("MANAGER");
+        user.setRole(Role.MANAGER.name());
         user.setUsername(managerCreateDto.getEmail());
         user.setPassword(passwordEncoder.encode(managerCreateDto.getNationalId()));
 

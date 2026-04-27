@@ -1,19 +1,23 @@
 package ro.siit.HRS.util;
 
-import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
-import ro.siit.HRS.dto.rturn.DepartmentReturnDto;
-import ro.siit.HRS.dto.rturn.EmployeeReturnDto;
-import ro.siit.HRS.dto.rturn.LeaveRequestReturnDto;
-import ro.siit.HRS.dto.rturn.ManagerReturnDto;
+import ro.siit.HRS.dto.create.EmployeeCreateDto;
+import ro.siit.HRS.dto.create.ManagerCreateDto;
+import ro.siit.HRS.dto.response.DepartmentReturnDto;
+import ro.siit.HRS.dto.response.EmployeeReturnDto;
+import ro.siit.HRS.dto.response.LeaveRequestReturnDto;
+import ro.siit.HRS.dto.response.ManagerReturnDto;
 import ro.siit.HRS.dto.update.ManagerUpdateDto;
 import ro.siit.HRS.model.Department;
 import ro.siit.HRS.model.Employee;
 import ro.siit.HRS.model.LeaveRequest;
 import ro.siit.HRS.model.Manager;
+import ro.siit.HRS.service.EmployeeService;
 import ro.siit.HRS.service.LeaveRequestService;
+
+import java.util.ArrayList;
 
 @Component
 public class MapperUtil {
@@ -21,7 +25,47 @@ public class MapperUtil {
     @Autowired
     @Lazy
     private LeaveRequestService leaveRequestService;
+    @Autowired
+    @Lazy
+    private EmployeeService employeeService;
 
+    public Manager mapManagerEntity(ManagerCreateDto managerCreateDto) {
+
+        Manager manager = new Manager();
+        manager.setAddress(managerCreateDto.getAddress());
+        manager.setEmail(managerCreateDto.getEmail());
+        manager.setCity(managerCreateDto.getCity());
+        manager.setGender(managerCreateDto.getGender());
+        manager.setName(managerCreateDto.getName());
+        manager.setStartDate(managerCreateDto.getStartDate());
+        manager.setEndDate(managerCreateDto.getEndDate());
+        manager.setNationalId(managerCreateDto.getNationalId());
+        manager.setPhoneNumber(managerCreateDto.getPhoneNumber());
+        manager.setAnnualLeaveDays(21);
+        manager.setJobTitle("Head of department");
+
+        return manager;
+    }
+
+    public Employee mapEmployeeEntity(EmployeeCreateDto employeeCreateDto) {
+
+        Employee employee = new Employee();
+        employee.setSuperiorId(employeeService.getSuperiorIdByJobTitle(employeeCreateDto.getJobTitle()));
+        employee.setGender(employeeCreateDto.getGender());
+        employee.setCity(employeeCreateDto.getCity());
+        employee.setEmail(employeeCreateDto.getEmail());
+        employee.setAddress(employeeCreateDto.getAddress());
+        employee.setStartDate(employeeCreateDto.getStartDate());
+        employee.setEndDate(employeeCreateDto.getEndDate());
+        employee.setLeaveRequests(new ArrayList<>());
+        employee.setName(employeeCreateDto.getName());
+        employee.setNationalId(employeeCreateDto.getNationalId());
+        employee.setPhoneNumber(employeeCreateDto.getPhoneNumber());
+        employee.setJobTitle(employeeCreateDto.getJobTitle());
+        employee.setAnnualLeaveDays(21);
+
+        return employee;
+    }
     public EmployeeReturnDto mapEmployee(Employee employee) {
 
         EmployeeReturnDto employeeReturnDto = new EmployeeReturnDto();

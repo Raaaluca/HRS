@@ -1,6 +1,5 @@
 package ro.siit.HRS.service;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -10,7 +9,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import ro.siit.HRS.dto.create.EmployeeCreateDto;
-import ro.siit.HRS.dto.rturn.EmployeeReturnDto;
+import ro.siit.HRS.dto.response.EmployeeReturnDto;
 import ro.siit.HRS.dto.update.EmployeeUpdateDto;
 import ro.siit.HRS.model.Department;
 import ro.siit.HRS.model.Employee;
@@ -20,6 +19,8 @@ import ro.siit.HRS.repository.DepartmentRepository;
 import ro.siit.HRS.repository.EmployeeRepository;
 import ro.siit.HRS.repository.ManagerRepository;
 import ro.siit.HRS.repository.UserRepository;
+import ro.siit.HRS.service.impl.EmployeeServiceImpl;
+import ro.siit.HRS.service.impl.LeaveRequestServiceImpl;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -33,7 +34,7 @@ import static org.mockito.ArgumentMatchers.any;
 class EmployeeServiceTest {
 
     @InjectMocks
-    private LeaveRequestService leaveRequestService;
+    private LeaveRequestServiceImpl leaveRequestService;
     @Mock
     private PasswordEncoder passwordEncoder;
     @Mock
@@ -45,12 +46,7 @@ class EmployeeServiceTest {
     @Mock
     private ManagerRepository managerRepository;
     @InjectMocks
-    private EmployeeService employeeService;
-
-    @BeforeEach
-    void setUp() {
-
-    }
+    private EmployeeServiceImpl employeeService;
 
     @Test
     void createEmployee() {

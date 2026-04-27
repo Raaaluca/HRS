@@ -30,12 +30,11 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 
-        http.csrf(AbstractHttpConfigurer::disable)
-                .userDetailsService(userDetailsService)
+        http.userDetailsService(userDetailsService)
                 .authorizeHttpRequests((authorize) -> authorize
-                        .requestMatchers("/admin**").hasRole("ADMIN")
-                        .requestMatchers("/managers**").hasRole("MANAGER")
-                        .requestMatchers("/employees**").hasRole("EMPLOYEE")
+                        .requestMatchers("/admin/**").hasRole("ADMIN")
+                        .requestMatchers("/managers/**").hasRole("MANAGER")
+                        .requestMatchers("/employees/**").hasRole("EMPLOYEE")
                         .anyRequest()
                         .authenticated()
                 )
@@ -43,5 +42,4 @@ public class SecurityConfig {
                 .formLogin(Customizer.withDefaults());
         return http.build();
     }
-
 }

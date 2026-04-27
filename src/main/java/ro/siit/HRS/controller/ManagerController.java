@@ -1,19 +1,18 @@
 package ro.siit.HRS.controller;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import ro.siit.HRS.dto.create.ManagerCreateDto;
-import ro.siit.HRS.dto.rturn.EmployeeReturnDto;
-import ro.siit.HRS.dto.rturn.ManagerReturnDto;
-import ro.siit.HRS.dto.update.EmployeeUpdateDto;
+import ro.siit.HRS.dto.response.ManagerReturnDto;
 import ro.siit.HRS.dto.update.ManagerUpdateDto;
 import ro.siit.HRS.service.ManagerService;
 
 @RestController
 @RequestMapping(path = "/managers")
+@RequiredArgsConstructor
 public class ManagerController {
-    @Autowired
-    private ManagerService managerService;
+
+    private final ManagerService managerService;
 
     @GetMapping(path = "/id")
     public ManagerReturnDto getManagerById(@RequestParam Long id) {
