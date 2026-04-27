@@ -86,7 +86,7 @@ src/main/java/ro/siit/HRS/
 ├── dto/
 │   ├── create/      # DTOs for entity creation
 │   ├── update/      # DTOs for entity updates
-│   └── rturn/       # DTOs for responses
+│   └── response/       # DTOs for responses
 ├── exceptions/      # Custom exception classes
 ├── model/           # JPA entities
 ├── repository/      # Spring Data JPA repositories
