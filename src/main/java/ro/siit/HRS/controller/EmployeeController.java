@@ -36,7 +36,7 @@ public class EmployeeController {
     }
 
     @PutMapping(path = "/update")
-    public EmployeeReturnDto update(@RequestBody EmployeeUpdateDto employeeUpdateDto) {
+    public EmployeeReturnDto update(@RequestBody @Valid EmployeeUpdateDto employeeUpdateDto) {
 
         return employeeService.updateEmployee(employeeUpdateDto);
     }
