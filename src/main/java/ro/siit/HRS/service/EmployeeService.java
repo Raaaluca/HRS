@@ -11,7 +11,7 @@ public interface EmployeeService {
 
     EmployeeReturnDto findById(Long id);
     EmployeeReturnDto createEmployee(EmployeeCreateDto employeeCreateDto);
-    String deleteEmployee(Long employeeId);
+    void deleteEmployee(Long employeeId);
     EmployeeReturnDto updateEmployee(EmployeeUpdateDto employeeUpdateDto);
     String getAuthenticationDetails(String username);
     EmployeeReturnDto getUpdatePersonalDetails(String username);

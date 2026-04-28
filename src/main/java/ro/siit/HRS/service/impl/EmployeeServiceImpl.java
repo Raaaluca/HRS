@@ -174,7 +174,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Transactional
-    public String deleteEmployee(Long employeeId) {
+    public void deleteEmployee(Long employeeId) {
 
         Employee employee = employeeRepository.findById(employeeId).orElseThrow(()
                 -> new EmployeeNotFoundException("The employee with id " + employeeId + " was not found!"));
@@ -195,8 +195,6 @@ public class EmployeeServiceImpl implements EmployeeService {
                 -> new UserNotFoundException("The user with id " + employee.getUser().getId() + " does not exist!"));
         employeeRepository.delete(employee);
         userRepository.deleteById(user.getId());
-
-        return "This employee has been deleted!";
     }
 
     public String getAuthenticationDetails(String username) {
