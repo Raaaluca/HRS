@@ -2,6 +2,7 @@ package ro.siit.HRS.controller;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ro.siit.HRS.dto.create.EmployeeCreateDto;
 import ro.siit.HRS.dto.response.EmployeeReturnDto;
@@ -28,9 +29,10 @@ public class EmployeeController {
     }
 
     @DeleteMapping(path = "/delete")
-    public String deleteEmployee(@RequestParam Long employeeId){
+    public ResponseEntity<Void> deleteEmployee(@RequestParam Long employeeId) {
 
-        return employeeService.deleteEmployee(employeeId);
+        employeeService.deleteEmployee(employeeId);
+        return ResponseEntity.noContent().build();
     }
 
     @PutMapping(path = "/update")
