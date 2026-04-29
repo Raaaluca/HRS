@@ -76,7 +76,7 @@
 
             <div class="row g-5">
 
-                <div sec:authorize="hasAuthority('ADMIN')" data-aos="fade-up" data-aos-delay="100">
+                <div sec:authorize="hasAuthority('ROLE_ADMIN')" data-aos="fade-up" data-aos-delay="100">
                     <form ACTION="#" th:action="@{/admin/update}" th:modelAttribute="employeeUpdateDto" method="POST">
                         <input type="hidden" th:value="${employeeUpdateDto.id}" name="id"/>
                         <input type="hidden" th:value="${employeeUpdateDto.jobTitle}" name="jobTitle"/>
