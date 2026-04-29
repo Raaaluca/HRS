@@ -2,6 +2,7 @@ package ro.siit.HRS.controller;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ro.siit.HRS.dto.create.EmployeeCreateDto;
@@ -16,28 +17,37 @@ public class EmployeeController {
 
     private final EmployeeService employeeService;
 
-    @GetMapping(path = "/id")
-    public EmployeeReturnDto getEmployeeById(@RequestParam Long id) {
+    @GetMapping(path = "/{employeeId}")
+    public ResponseEntity<EmployeeReturnDto> getEmployeeById(@PathVariable Long employeeId) {
 
-        return employeeService.findById(id);
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(employeeService.findById(employeeId));
     }
 
-    @PostMapping(path = "/create")
-    public EmployeeReturnDto createEmployee(@RequestBody @Valid EmployeeCreateDto employeeCreateDto) {
+    @PostMapping
+    public ResponseEntity<EmployeeReturnDto> createEmployee(@RequestBody @Valid EmployeeCreateDto employeeCreateDto) {
 
-        return employeeService.createEmployee(employeeCreateDto);
+        return ResponseEntity
+                .status(HttpStatus.CREATED)
+                .body(employeeService.createEmployee(employeeCreateDto));
     }
 
-    @DeleteMapping(path = "/delete")
-    public ResponseEntity<Void> deleteEmployee(@RequestParam Long employeeId) {
+    @DeleteMapping(path = "/{employeeId}")
+    public ResponseEntity<Void> deleteEmployee(@PathVariable Long employeeId) {
 
         employeeService.deleteEmployee(employeeId);
-        return ResponseEntity.noContent().build();
+
+        return ResponseEntity
+                .noContent()
+                .build();
     }
 
-    @PutMapping(path = "/update")
-    public EmployeeReturnDto update(@RequestBody @Valid EmployeeUpdateDto employeeUpdateDto) {
+    @PutMapping
+    public ResponseEntity<EmployeeReturnDto> updateEmployee(@RequestBody @Valid EmployeeUpdateDto employeeUpdateDto) {
 
-        return employeeService.updateEmployee(employeeUpdateDto);
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(employeeService.updateEmployee(employeeUpdateDto));
     }
 }

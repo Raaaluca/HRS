@@ -76,7 +76,7 @@
 
             <div class="row g-5">
 
-                <div sec:authorize="hasAuthority('ADMIN')" data-aos="fade-up" data-aos-delay="100">
+                <div sec:authorize="hasAuthority('ROLE_ADMIN')" data-aos="fade-up" data-aos-delay="100">
                     <form ACTION="#" th:action="@{/admin/create}" th:modelAttribute="employeeCreateDto" method="POST">
                         <p><strong> Name </strong></p>
                         <input th:value="${employeeCreateDto.name}" name="name"/>

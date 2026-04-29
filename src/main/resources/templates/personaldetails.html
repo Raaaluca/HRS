@@ -76,7 +76,7 @@
 
             <div class="row g-5">
 
-                <div sec:authorize="hasAuthority('MANAGER')" data-aos="fade-up" data-aos-delay="100">
+                <div sec:authorize="hasAuthority('ROLE_MANAGER')" data-aos="fade-up" data-aos-delay="100">
                     <form ACTION="#" th:action="@{/managers/personaldetails/update}" th:modelAttribute="managerUpdateDto" method="POST">
                         <input type="hidden" th:value="${managerUpdateDto.id}" name="id"/>
                         <p><strong> Name </strong></p>
@@ -101,7 +101,7 @@
                     </form>
                 </div><!-- End Service Item -->
 
-                <div sec:authorize="hasAuthority('EMPLOYEE')" data-aos="fade-up" data-aos-delay="100">
+                <div sec:authorize="hasAuthority('ROLE_EMPLOYEE')" data-aos="fade-up" data-aos-delay="100">
                     <form ACTION="#" th:action="@{/employees/personaldetails/update}" th:modelAttribute="employeeUpdateDto" method="POST">
                         <input type="hidden" th:value="${employeeUpdateDto.id}" name="id"/>
                         <p><strong> Name </strong></p>
@@ -125,7 +125,7 @@
                     </form>
                 </div><!-- End Service Item -->
 
-                <div sec:authorize="hasAuthority('ADMIN')" data-aos="fade-up" data-aos-delay="100">
+                <div sec:authorize="hasAuthority('ROLE_ADMIN')" data-aos="fade-up" data-aos-delay="100">
                     <form ACTION="#" th:action="@{/employees/personaldetails/update}" th:modelAttribute="employeeUpdateDto" method="POST">
                         <input type="hidden" th:value="${employeeUpdateDto.id}" name="id"/>
                         <p><strong> Name </strong></p>
