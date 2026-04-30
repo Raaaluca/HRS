@@ -1,6 +1,9 @@
 package ro.siit.HRS.controller;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ro.siit.HRS.dto.create.ManagerCreateDto;
 import ro.siit.HRS.dto.response.ManagerReturnDto;
@@ -14,32 +17,43 @@ public class ManagerController {
 
     private final ManagerService managerService;
 
-    @GetMapping(path = "/id")
-    public ManagerReturnDto getManagerById(@RequestParam Long id) {
+    @GetMapping(path = "/{managerId}")
+    public ResponseEntity<ManagerReturnDto> getManagerById(@PathVariable Long managerId) {
 
-        return managerService.findById(id);
+        return ResponseEntity
+                .ok()
+                .body(managerService.findById(managerId));
     }
 
-    @PostMapping(path = "/create")
-    public ManagerReturnDto createManager(@RequestBody ManagerCreateDto managerCreateDto) {
+    @PostMapping
+    public ResponseEntity<ManagerReturnDto> createManager(@RequestBody @Valid ManagerCreateDto managerCreateDto) {
 
-        return managerService.createManager(managerCreateDto);
+        return ResponseEntity
+                .status(HttpStatus.CREATED)
+                .body(managerService.createManager(managerCreateDto));
     }
 
-    @GetMapping(path = "/add")
-    public ManagerReturnDto addEmployee(@RequestParam Long employeeId, @RequestParam Long managerId) {
+    @PutMapping(path = "/add/{employeeId}/{managerId}")
+    public ResponseEntity<ManagerReturnDto> addEmployee(@PathVariable Long employeeId, @PathVariable Long managerId) {
 
-        return managerService.assignEmployeeToManager(employeeId, managerId);
+        return ResponseEntity.ok(managerService.assignEmployeeToManager(employeeId, managerId));
     }
 
-    @DeleteMapping(path = "/delete")
-    public String deleteManager(@RequestParam Long managerId) {
+    @DeleteMapping
+    public ResponseEntity<Void> deleteManager(@RequestParam Long managerId) {
 
-        return managerService.deleteManager(managerId);
+        managerService.deleteManager(managerId);
+
+        return ResponseEntity
+                .noContent()
+                .build();
     }
-    @PutMapping(path = "/update")
-    public ManagerReturnDto update(@RequestBody ManagerUpdateDto managerUpdateDto) {
 
-        return managerService.updateManager(managerUpdateDto);
+    @PutMapping
+    public ResponseEntity<ManagerReturnDto> updateManager(@RequestBody @Valid ManagerUpdateDto managerUpdateDto) {
+
+        return ResponseEntity
+                .ok()
+                .body(managerService.updateManager(managerUpdateDto));
     }
 }
