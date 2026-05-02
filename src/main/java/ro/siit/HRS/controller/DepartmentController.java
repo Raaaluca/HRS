@@ -1,6 +1,9 @@
 package ro.siit.HRS.controller;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ro.siit.HRS.dto.create.DepartmentCreateDto;
 import ro.siit.HRS.dto.response.DepartmentReturnDto;
@@ -13,10 +16,12 @@ public class DepartmentController {
 
     private final DepartmentService departmentService;
 
-    @PostMapping(path = "/create")
-    public DepartmentReturnDto createDepartment(@RequestBody DepartmentCreateDto departmentCreateDto) {
+    @PostMapping
+    public ResponseEntity<DepartmentReturnDto> createDepartment(@RequestBody @Valid DepartmentCreateDto departmentCreateDto) {
 
-        return departmentService.createDepartment(departmentCreateDto);
+        return ResponseEntity
+                .status(HttpStatus.CREATED)
+                .body(departmentService.createDepartment(departmentCreateDto));
     }
 }
 
