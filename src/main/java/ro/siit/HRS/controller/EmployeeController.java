@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import ro.siit.HRS.dto.create.EmployeeCreateDto;
 import ro.siit.HRS.dto.response.EmployeeReturnDto;
 import ro.siit.HRS.dto.update.EmployeeUpdateDto;
+import ro.siit.HRS.exceptions.EmployeeNotFoundException;
 import ro.siit.HRS.service.EmployeeService;
 
 @RequestMapping(path = "/employees")
@@ -36,7 +37,11 @@ public class EmployeeController {
     @DeleteMapping(path = "/{employeeId}")
     public ResponseEntity<Void> deleteEmployee(@PathVariable Long employeeId) {
 
+        try {
         employeeService.deleteEmployee(employeeId);
+        } catch (EmployeeNotFoundException e) {
+            //already deleted, so it's ok
+        }
 
         return ResponseEntity
                 .noContent()

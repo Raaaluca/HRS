@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import ro.siit.HRS.dto.create.ManagerCreateDto;
 import ro.siit.HRS.dto.response.ManagerReturnDto;
 import ro.siit.HRS.dto.update.ManagerUpdateDto;
+import ro.siit.HRS.exceptions.ManagerNotFoundException;
 import ro.siit.HRS.service.ManagerService;
 
 @RestController
@@ -20,17 +21,13 @@ public class ManagerController {
     @GetMapping(path = "/{managerId}")
     public ResponseEntity<ManagerReturnDto> getManagerById(@PathVariable Long managerId) {
 
-        return ResponseEntity
-                .ok()
-                .body(managerService.findById(managerId));
+        return ResponseEntity.ok().body(managerService.findById(managerId));
     }
 
     @PostMapping
     public ResponseEntity<ManagerReturnDto> createManager(@RequestBody @Valid ManagerCreateDto managerCreateDto) {
 
-        return ResponseEntity
-                .status(HttpStatus.CREATED)
-                .body(managerService.createManager(managerCreateDto));
+        return ResponseEntity.status(HttpStatus.CREATED).body(managerService.createManager(managerCreateDto));
     }
 
     @PutMapping(path = "/add/{employeeId}/{managerId}")
@@ -42,18 +39,18 @@ public class ManagerController {
     @DeleteMapping
     public ResponseEntity<Void> deleteManager(@RequestParam Long managerId) {
 
-        managerService.deleteManager(managerId);
+        try {
+            managerService.deleteManager(managerId);
+        } catch (ManagerNotFoundException e) {
+            // already deleted, so it's ok
+        }
 
-        return ResponseEntity
-                .noContent()
-                .build();
+        return ResponseEntity.noContent().build();
     }
 
     @PutMapping
     public ResponseEntity<ManagerReturnDto> updateManager(@RequestBody @Valid ManagerUpdateDto managerUpdateDto) {
 
-        return ResponseEntity
-                .ok()
-                .body(managerService.updateManager(managerUpdateDto));
+        return ResponseEntity.ok().body(managerService.updateManager(managerUpdateDto));
     }
 }
