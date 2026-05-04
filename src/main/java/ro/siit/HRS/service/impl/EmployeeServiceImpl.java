@@ -36,9 +36,9 @@ public class EmployeeServiceImpl implements EmployeeService {
     public static final List<String> IT_DEPARTMENT_JOB_TITLES = List.of("IT Engineer", "Tester", "UI/UX Designer");
     public static final List<String> SALES_DEPARTMENT_JOB_TITLES = List.of("Sales Officer", "Associate Officer");
     public static final List<String> HR_DEPARTMENT_JOB_TITLES = List.of("HR Admin", "Payroll Admin");
-    private static final String DEPT_IT    = "IT";
+    private static final String DEPT_IT = "IT";
     private static final String DEPT_SALES = "SALES";
-    private static final String DEPT_HR    = "HR";
+    private static final String DEPT_HR = "HR";
 
     public EmployeeReturnDto findById(Long id) {
 
@@ -106,21 +106,9 @@ public class EmployeeServiceImpl implements EmployeeService {
 
         Employee employee = employeeRepository.findById(employeeUpdateDto.getId()).orElseThrow(()
                 -> new EmployeeNotFoundException("This employee id " + employeeUpdateDto.getId() + " can not be found!!"));
-        if (employeeUpdateDto.getAddress() != null) {
-            employee.setAddress(employeeUpdateDto.getAddress());
-        }
-        if (employeeUpdateDto.getName() != null) {
-            employee.setName(employeeUpdateDto.getName());
-        }
-        if (employeeUpdateDto.getCity() != null) {
-            employee.setCity(employeeUpdateDto.getCity());
-        }
-        if (employeeUpdateDto.getEmail() != null) {
-            employee.setEmail(employeeUpdateDto.getEmail());
-            employee.getUser().setUsername(employeeUpdateDto.getEmail());
-        }
-        if (employeeUpdateDto.getJobTitle() != null) {
+        applyCommonFieldsUpdate(employee, employeeUpdateDto);
 
+        if (employeeUpdateDto.getJobTitle() != null) {
             employee.setJobTitle(employeeUpdateDto.getJobTitle());
 
             Manager oldManager = managerRepository.findById(employee.getSuperiorId()).orElseThrow(()
@@ -134,12 +122,6 @@ public class EmployeeServiceImpl implements EmployeeService {
                     -> new ManagerNotFoundException("No manager found for this employee: " + employeeUpdateDto.getId()));
             newManager.getEmployees().add(employee);
             managerRepository.save(newManager);
-        }
-        if (employeeUpdateDto.getPhoneNumber() != null) {
-            employee.setPhoneNumber(employeeUpdateDto.getPhoneNumber());
-        }
-        if (employeeUpdateDto.getEndDate() != null) {
-            employee.setEndDate(employeeUpdateDto.getEndDate());
         }
 
         employee = employeeRepository.save(employee);
@@ -245,25 +227,31 @@ public class EmployeeServiceImpl implements EmployeeService {
         Employee employee = employeeRepository.findById(employeeUpdateDto.getId()).orElseThrow(()
                 -> new EmployeeNotFoundException(
                 "This employee id: " + employeeUpdateDto.getId() + " can not be found!!"));
-        if (employeeUpdateDto.getAddress() != null) {
-            employee.setAddress(employeeUpdateDto.getAddress());
-        }
-        if (employeeUpdateDto.getName() != null) {
-            employee.setName(employeeUpdateDto.getName());
-        }
-        if (employeeUpdateDto.getCity() != null) {
-            employee.setCity(employeeUpdateDto.getCity());
-        }
-        if (employeeUpdateDto.getEmail() != null) {
-            employee.setEmail(employeeUpdateDto.getEmail());
-            employee.getUser().setUsername(employee.getEmail());
-        }
-        if (employeeUpdateDto.getEndDate() != null) {
-            employee.setEndDate(employeeUpdateDto.getEndDate());
-        }
-        if (employeeUpdateDto.getPhoneNumber() != null) {
-            employee.setPhoneNumber(employeeUpdateDto.getPhoneNumber());
-        }
+
+        applyCommonFieldsUpdate(employee, employeeUpdateDto);
         employeeRepository.save(employee);
+    }
+
+    private void applyCommonFieldsUpdate(Employee emp, EmployeeUpdateDto dto) {
+
+        if (dto.getName() != null) {
+            emp.setName(dto.getName());
+        }
+        if (dto.getAddress() != null) {
+            emp.setAddress(dto.getAddress());
+        }
+        if (dto.getCity() != null) {
+            emp.setCity(dto.getCity());
+        }
+        if (dto.getEmail() != null) {
+            emp.setEmail(dto.getEmail());
+            emp.getUser().setUsername(dto.getEmail());
+        }
+        if (dto.getPhoneNumber() != null) {
+            emp.setPhoneNumber(dto.getPhoneNumber());
+        }
+        if (dto.getEndDate() != null) {
+            emp.setEndDate(dto.getEndDate());
+        }
     }
 }

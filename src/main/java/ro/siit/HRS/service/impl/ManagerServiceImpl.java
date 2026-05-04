@@ -16,6 +16,7 @@ import ro.siit.HRS.service.ManagerService;
 import ro.siit.HRS.util.MapperUtil;
 import ro.siit.HRS.util.Role;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -59,51 +60,39 @@ public class ManagerServiceImpl implements ManagerService {
 
         Manager manager = managerRepository.findById(employeeUpdateDto.getId()).orElseThrow(()
                 -> new ManagerNotFoundException("This manager id " + employeeUpdateDto.getId() + " can not be found!!"));
-        if (employeeUpdateDto.getAddress() != null) {
-            manager.setAddress(employeeUpdateDto.getAddress());
+        applyManagerUpdates(manager, employeeUpdateDto.getAddress(), employeeUpdateDto.getName(), employeeUpdateDto.getCity(), employeeUpdateDto.getEmail(), employeeUpdateDto.getEndDate(), employeeUpdateDto.getPhoneNumber());
+
+        managerRepository.save(manager);
+    }
+
+    private void applyManagerUpdates(Manager manager, String address, String name, String city, String email, LocalDate endDate, String phoneNumber) {
+        if (address != null) {
+            manager.setAddress(address);
         }
-        if (employeeUpdateDto.getName() != null) {
-            manager.setName(employeeUpdateDto.getName());
+        if (name != null) {
+            manager.setName(name);
         }
-        if (employeeUpdateDto.getCity() != null) {
-            manager.setCity(employeeUpdateDto.getCity());
+        if (city != null) {
+            manager.setCity(city);
         }
-        if (employeeUpdateDto.getEmail() != null) {
-            manager.setEmail(employeeUpdateDto.getEmail());
+        if (email != null) {
+            manager.setEmail(email);
             manager.getUser().setUsername(manager.getEmail());
         }
-        if (employeeUpdateDto.getEndDate() != null) {
-            manager.setEndDate(employeeUpdateDto.getEndDate());
+        if (endDate != null) {
+            manager.setEndDate(endDate);
         }
-        if (employeeUpdateDto.getPhoneNumber() != null) {
-            manager.setPhoneNumber(employeeUpdateDto.getPhoneNumber());
+        if (phoneNumber != null) {
+            manager.setPhoneNumber(phoneNumber);
         }
-        managerRepository.save(manager);
     }
 
     public void updateManagerDto(ManagerUpdateDto managerUpdateDto) {
 
         Manager manager = managerRepository.findById(managerUpdateDto.getId()).orElseThrow(()
                 -> new ManagerNotFoundException("This manager id " + managerUpdateDto.getId() + " can not be found!!"));
-        if (managerUpdateDto.getAddress() != null) {
-            manager.setAddress(managerUpdateDto.getAddress());
-        }
-        if (managerUpdateDto.getName() != null) {
-            manager.setName(managerUpdateDto.getName());
-        }
-        if (managerUpdateDto.getCity() != null) {
-            manager.setCity(managerUpdateDto.getCity());
-        }
-        if (managerUpdateDto.getEmail() != null) {
-            manager.setEmail(managerUpdateDto.getEmail());
-            manager.getUser().setUsername(manager.getEmail());
-        }
-        if (managerUpdateDto.getEndDate() != null) {
-            manager.setEndDate(managerUpdateDto.getEndDate());
-        }
-        if (managerUpdateDto.getPhoneNumber() != null) {
-            manager.setPhoneNumber(managerUpdateDto.getPhoneNumber());
-        }
+        applyManagerUpdates(manager, managerUpdateDto.getAddress(), managerUpdateDto.getName(), managerUpdateDto.getCity(), managerUpdateDto.getEmail(), managerUpdateDto.getEndDate(), managerUpdateDto.getPhoneNumber());
+
         managerRepository.save(manager);
     }
 
@@ -111,25 +100,8 @@ public class ManagerServiceImpl implements ManagerService {
 
         Manager manager = managerRepository.findById(managerUpdateDto.getId()).orElseThrow(()
                 -> new ManagerNotFoundException("This manager id " + managerUpdateDto.getId() + " can not be found!!"));
-        if (managerUpdateDto.getAddress() != null) {
-            manager.setAddress(managerUpdateDto.getAddress());
-        }
-        if (managerUpdateDto.getName() != null) {
-            manager.setName(managerUpdateDto.getName());
-        }
-        if (managerUpdateDto.getCity() != null) {
-            manager.setCity(managerUpdateDto.getCity());
-        }
-        if (managerUpdateDto.getEmail() != null) {
-            manager.setEmail(managerUpdateDto.getEmail());
-            manager.getUser().setUsername(manager.getEmail());
-        }
-        if (managerUpdateDto.getEndDate() != null) {
-            manager.setEndDate(managerUpdateDto.getEndDate());
-        }
-        if (managerUpdateDto.getPhoneNumber() != null) {
-            manager.setPhoneNumber(managerUpdateDto.getPhoneNumber());
-        }
+        applyManagerUpdates(manager, managerUpdateDto.getAddress(), managerUpdateDto.getName(), managerUpdateDto.getCity(), managerUpdateDto.getEmail(), managerUpdateDto.getEndDate(), managerUpdateDto.getPhoneNumber());
+
         manager = managerRepository.save(manager);
 
         return mapperUtil.mapManager(manager);
@@ -210,4 +182,5 @@ public class ManagerServiceImpl implements ManagerService {
 
         return manager.getAnnualLeaveDays();
     }
+    
 }
