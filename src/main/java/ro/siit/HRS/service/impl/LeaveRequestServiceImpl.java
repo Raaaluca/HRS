@@ -1,6 +1,7 @@
 package ro.siit.HRS.service.impl;
 
 import lombok.RequiredArgsConstructor;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ro.siit.HRS.dto.create.LeaveRequestCreateDto;
@@ -75,17 +76,12 @@ public class LeaveRequestServiceImpl implements LeaveRequestService {
     @Transactional
     public LeaveRequestReturnDto createLeaveRequest(LeaveRequestCreateDto leaveRequestCreateDto) {
 
-        LeaveRequest leaveRequest = new LeaveRequest();
-        leaveRequest.setType(leaveRequestCreateDto.getTypeOfLeaveRequest());
-        leaveRequest.setNumberOfDays(leaveRequestCreateDto.getNumberOfDaysForLeaveRequest());
-        leaveRequest.setManagerId(leaveRequestCreateDto.getManagerId());
-        leaveRequest.setEmployeeId(leaveRequestCreateDto.getEmployeeId());
-        leaveRequest.setApproved(false);
+        LeaveRequest leaveRequest = mapperUtil.mapLeaveRequestDto(leaveRequestCreateDto);
         leaveRequest = leaveRequestRepository.save(leaveRequest);
 
         if (leaveRequestCreateDto.getEmployeeId() != null) {
             Employee employee = employeeRepository.findById(leaveRequestCreateDto.getEmployeeId()).orElseThrow(()
-                    -> new EmployeeNotFoundException("This employee id " + leaveRequestCreateDto.getEmployeeId() + "was not found!"));
+                    -> new EmployeeNotFoundException("This employee id " + leaveRequestCreateDto.getEmployeeId() + " was not found!"));
             int remaining = employee.getAnnualLeaveDays();
             int requested = leaveRequestCreateDto.getNumberOfDaysForLeaveRequest();
             if (requested > remaining) {
@@ -96,16 +92,17 @@ public class LeaveRequestServiceImpl implements LeaveRequestService {
             employeeRepository.save(employee);
 
             Manager manager = managerRepository.findById(employee.getSuperiorId()).orElseThrow(()
-                    -> new ManagerNotFoundException("This manager id " + employee.getSuperiorId() + "was not found!"));
+                    -> new ManagerNotFoundException("This manager id " + employee.getSuperiorId() + " was not found!"));
             manager.getLeaveRequestsToManage().add(leaveRequest);
             managerRepository.save(manager);
         } else {
             Manager manager = managerRepository.findById(leaveRequestCreateDto.getManagerId()).orElseThrow(()
-                    -> new ManagerNotFoundException("This manager id " + leaveRequestCreateDto.getManagerId() + "was not found!"));
+                    -> new ManagerNotFoundException("This manager id " + leaveRequestCreateDto.getManagerId() + " was not found!"));
             manager.getLeaveRequests().add(leaveRequest);
             manager.setAnnualLeaveDays(manager.getAnnualLeaveDays() - leaveRequestCreateDto.getNumberOfDaysForLeaveRequest());
             managerRepository.save(manager);
         }
         return mapperUtil.mapLeaveRequestReturnDto(leaveRequest);
     }
+
 }
