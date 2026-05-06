@@ -2,6 +2,7 @@ package ro.siit.HRS.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ro.siit.HRS.dto.create.LeaveRequestCreateDto;
 import ro.siit.HRS.dto.response.LeaveRequestReturnDto;
 import ro.siit.HRS.exceptions.EmployeeNotFoundException;
@@ -71,6 +72,7 @@ public class LeaveRequestServiceImpl implements LeaveRequestService {
         createLeaveRequest(leaveRequestCreateDto);
     }
 
+    @Transactional
     public LeaveRequestReturnDto createLeaveRequest(LeaveRequestCreateDto leaveRequestCreateDto) {
 
         LeaveRequest leaveRequest = new LeaveRequest();
