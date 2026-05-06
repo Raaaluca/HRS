@@ -1,9 +1,11 @@
 package ro.siit.HRS.util;
 
+import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 import ro.siit.HRS.dto.create.EmployeeCreateDto;
+import ro.siit.HRS.dto.create.LeaveRequestCreateDto;
 import ro.siit.HRS.dto.create.ManagerCreateDto;
 import ro.siit.HRS.dto.response.DepartmentReturnDto;
 import ro.siit.HRS.dto.response.EmployeeReturnDto;
@@ -114,6 +116,16 @@ public class MapperUtil {
         departmentReturnDto.setManagerId(department.getManagerId());
 
         return departmentReturnDto;
+    }
+
+    public LeaveRequest mapLeaveRequestDto(LeaveRequestCreateDto leaveRequestCreateDto) {
+        LeaveRequest leaveRequest = new LeaveRequest();
+        leaveRequest.setType(leaveRequestCreateDto.getTypeOfLeaveRequest());
+        leaveRequest.setNumberOfDays(leaveRequestCreateDto.getNumberOfDaysForLeaveRequest());
+        leaveRequest.setManagerId(leaveRequestCreateDto.getManagerId());
+        leaveRequest.setEmployeeId(leaveRequestCreateDto.getEmployeeId());
+        leaveRequest.setApproved(false);
+        return leaveRequest;
     }
 
     public LeaveRequestReturnDto mapLeaveRequestReturnDto(LeaveRequest leaveRequest) {
