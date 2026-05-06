@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import ro.siit.HRS.dto.create.LeaveRequestCreateDto;
 import ro.siit.HRS.dto.response.LeaveRequestReturnDto;
 import ro.siit.HRS.exceptions.EmployeeNotFoundException;
+import ro.siit.HRS.exceptions.InsufficientLeaveDaysException;
 import ro.siit.HRS.exceptions.ManagerNotFoundException;
 import ro.siit.HRS.model.Employee;
 import ro.siit.HRS.model.LeaveRequest;
@@ -45,7 +46,7 @@ public class LeaveRequestServiceImpl implements LeaveRequestService {
         return employee.getAnnualLeaveDays();
     }
 
-    public String getSuperiorNameBySuperiorId(Long superiorId){
+    public String getSuperiorNameBySuperiorId(Long superiorId) {
 
         Manager manager = managerRepository.findById(superiorId).orElseThrow();
         return manager.getName();
@@ -59,6 +60,7 @@ public class LeaveRequestServiceImpl implements LeaveRequestService {
         leaveRequestCreateDto.setManagerId(manager.getId());
         createLeaveRequest(leaveRequestCreateDto);
     }
+
     public void createEmployeeLeaveRequestByUsername(LeaveRequestCreateDto leaveRequestCreateDto, String username) {
 
         User user = userRepository.findByUsername(username).orElseThrow();
@@ -82,8 +84,13 @@ public class LeaveRequestServiceImpl implements LeaveRequestService {
         if (leaveRequestCreateDto.getEmployeeId() != null) {
             Employee employee = employeeRepository.findById(leaveRequestCreateDto.getEmployeeId()).orElseThrow(()
                     -> new EmployeeNotFoundException("This employee id " + leaveRequestCreateDto.getEmployeeId() + "was not found!"));
+            int remaining = employee.getAnnualLeaveDays();
+            int requested = leaveRequestCreateDto.getNumberOfDaysForLeaveRequest();
+            if (requested > remaining) {
+                throw new InsufficientLeaveDaysException("Requested " + requested + " days, but only " + remaining + " remaining");
+            }
             employee.getLeaveRequests().add(leaveRequest);
-            employee.setAnnualLeaveDays(employee.getAnnualLeaveDays() - leaveRequestCreateDto.getNumberOfDaysForLeaveRequest());
+            employee.setAnnualLeaveDays(remaining - requested);
             employeeRepository.save(employee);
 
             Manager manager = managerRepository.findById(employee.getSuperiorId()).orElseThrow(()
