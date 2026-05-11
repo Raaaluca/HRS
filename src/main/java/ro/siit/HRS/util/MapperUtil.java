@@ -83,7 +83,6 @@ public class MapperUtil {
         employeeReturnDto.setStartDate(employee.getStartDate());
         employeeReturnDto.setEndDate(employee.getEndDate());
         employeeReturnDto.setJobTitle(employee.getJobTitle());
-        employeeReturnDto.setPhoneNumber(employee.getPhoneNumber());
         employeeReturnDto.setAnnualLeaveDays(employee.getAnnualLeaveDays());
 
         return employeeReturnDto;
@@ -103,7 +102,6 @@ public class MapperUtil {
         employeeReturnDto.setStartDate(manager.getStartDate());
         employeeReturnDto.setEndDate(manager.getEndDate());
         employeeReturnDto.setJobTitle(manager.getJobTitle());
-        employeeReturnDto.setPhoneNumber(manager.getPhoneNumber());
         employeeReturnDto.setAnnualLeaveDays(manager.getAnnualLeaveDays());
 
         return employeeReturnDto;
