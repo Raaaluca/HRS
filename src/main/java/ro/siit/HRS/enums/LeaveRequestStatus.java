@@ -1,4 +1,4 @@
-package ro.siit.HRS.util;
+package ro.siit.HRS.enums;
 
 public enum LeaveRequestStatus {
     APPROVED,

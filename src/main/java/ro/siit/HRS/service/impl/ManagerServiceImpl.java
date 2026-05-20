@@ -14,7 +14,7 @@ import ro.siit.HRS.model.*;
 import ro.siit.HRS.repository.*;
 import ro.siit.HRS.service.ManagerService;
 import ro.siit.HRS.util.MapperUtil;
-import ro.siit.HRS.util.Role;
+import ro.siit.HRS.enums.Role;
 
 import java.time.LocalDate;
 import java.util.List;

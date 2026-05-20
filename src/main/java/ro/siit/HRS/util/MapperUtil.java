@@ -11,6 +11,7 @@ import ro.siit.HRS.dto.response.EmployeeReturnDto;
 import ro.siit.HRS.dto.response.LeaveRequestReturnDto;
 import ro.siit.HRS.dto.response.ManagerReturnDto;
 import ro.siit.HRS.dto.update.ManagerUpdateDto;
+import ro.siit.HRS.enums.LeaveRequestStatus;
 import ro.siit.HRS.model.Department;
 import ro.siit.HRS.model.Employee;
 import ro.siit.HRS.model.LeaveRequest;

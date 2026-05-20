@@ -16,7 +16,7 @@ import ro.siit.HRS.model.User;
 import ro.siit.HRS.repository.ManagerRepository;
 import ro.siit.HRS.repository.UserRepository;
 import ro.siit.HRS.service.impl.ManagerServiceImpl;
-import ro.siit.HRS.util.Role;
+import ro.siit.HRS.enums.Role;
 
 import java.time.LocalDate;
 import java.util.Optional;

@@ -17,7 +17,7 @@ import ro.siit.HRS.model.*;
 import ro.siit.HRS.repository.*;
 import ro.siit.HRS.service.EmployeeService;
 import ro.siit.HRS.util.MapperUtil;
-import ro.siit.HRS.util.Role;
+import ro.siit.HRS.enums.Role;
 
 import java.util.List;
 
