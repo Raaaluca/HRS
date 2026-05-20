@@ -138,11 +138,9 @@ public class MapperUtil {
             leaveRequestReturnDto.setAnnualLeaveDays(leaveRequestService.getAnnualLeaveDaysByEmployeeId(leaveRequest.getEmployeeId()));
             leaveRequestReturnDto.setSuperiorName(leaveRequestService.getSuperiorNameBySuperiorId(leaveRequest.getManagerId()));
         }
-        if (leaveRequest.isApproved()) {
-            leaveRequestReturnDto.setStatus("APPROVED");
-        } else {
-            leaveRequestReturnDto.setStatus("PENDING...");
-        }
+        leaveRequestReturnDto.setStatus(leaveRequest.isApproved()
+                ? LeaveRequestStatus.APPROVED.name()
+                : LeaveRequestStatus.PENDING.name());
 
         return leaveRequestReturnDto;
     }
