@@ -1,6 +1,5 @@
 package ro.siit.HRS.util;
 
-import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
@@ -24,6 +23,7 @@ import java.util.ArrayList;
 @Component
 public class MapperUtil {
 
+    public static final int ANNUAL_LEAVE_DAYS = 21;
     @Autowired
     @Lazy
     private LeaveRequestService leaveRequestService;
@@ -43,7 +43,7 @@ public class MapperUtil {
         manager.setEndDate(managerCreateDto.getEndDate());
         manager.setNationalId(managerCreateDto.getNationalId());
         manager.setPhoneNumber(managerCreateDto.getPhoneNumber());
-        manager.setAnnualLeaveDays(21);
+        manager.setAnnualLeaveDays(ANNUAL_LEAVE_DAYS);
         manager.setJobTitle("Head of department");
 
         return manager;
@@ -64,7 +64,7 @@ public class MapperUtil {
         employee.setNationalId(employeeCreateDto.getNationalId());
         employee.setPhoneNumber(employeeCreateDto.getPhoneNumber());
         employee.setJobTitle(employeeCreateDto.getJobTitle());
-        employee.setAnnualLeaveDays(21);
+        employee.setAnnualLeaveDays(ANNUAL_LEAVE_DAYS);
 
         return employee;
     }
