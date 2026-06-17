@@ -6,7 +6,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import ro.siit.HRS.dto.create.EmployeeCreateDto;
 import ro.siit.HRS.dto.response.EmployeeReturnDto;
@@ -21,6 +20,7 @@ import ro.siit.HRS.repository.ManagerRepository;
 import ro.siit.HRS.repository.UserRepository;
 import ro.siit.HRS.service.impl.EmployeeServiceImpl;
 import ro.siit.HRS.service.impl.LeaveRequestServiceImpl;
+import ro.siit.HRS.util.MapperUtil;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -29,12 +29,9 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 
-@SpringBootTest
 @ExtendWith(MockitoExtension.class)
 class EmployeeServiceTest {
 
-    @InjectMocks
-    private LeaveRequestServiceImpl leaveRequestService;
     @Mock
     private PasswordEncoder passwordEncoder;
     @Mock
@@ -47,6 +44,8 @@ class EmployeeServiceTest {
     private ManagerRepository managerRepository;
     @InjectMocks
     private EmployeeServiceImpl employeeService;
+    @Mock
+    private MapperUtil mapperUtil;
 
     @Test
     void createEmployee() {
@@ -184,13 +183,13 @@ class EmployeeServiceTest {
         User user = new User();
         user.setId(2L);
         employee.setUser(user);
+//
+//        Mockito.when(employeeRepository.findById(employeeId)).thenReturn(Optional.of(employee));
+//        Mockito.when(managerRepository.findById(any())).thenReturn(Optional.of(manager));
+//        Mockito.when(userRepository.findById(any())).thenReturn(Optional.of(user));
 
-        Mockito.when(employeeRepository.findById(employeeId)).thenReturn(Optional.of(employee));
-        Mockito.when(managerRepository.findById(any())).thenReturn(Optional.of(manager));
-        Mockito.when(userRepository.findById(any())).thenReturn(Optional.of(user));
-
-        String resultedMessage = employeeService.deleteEmployee(employeeId);
-        assertEquals(expectedMessage, resultedMessage);
+        employeeService.deleteEmployee(employeeId);
+        assertTrue(manager.getEmployees().isEmpty());
     }
 
 
